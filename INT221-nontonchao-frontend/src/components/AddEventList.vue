@@ -33,7 +33,7 @@ const addEventList = async () => {
     }
 
     //const res = await fetch('http://localhost:8080/api/events', {
-    const res = await fetch('http://localhost/api/events', {
+    const res = await fetch('/api/events', {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
