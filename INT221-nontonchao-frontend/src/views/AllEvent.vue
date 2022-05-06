@@ -18,7 +18,7 @@ const getAllEventList = async () => {
 
 const deleteEventFromId = async (id) => {
   //const res = await fetch(`http://localhost:8080/api/events/delete/${id}`, {
-  const res = await fetch(`http://localhost/api/events/delete/${id}`, {
+  const res = await fetch(`/api/events/delete/${id}`, {
     method: "DELETE",
   });
   if (res.status == 200) {
