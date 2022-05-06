@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+ database:
+  container_name: db
+  image: oasip-db-img
+  build: /db/.
+  restart: always
+  volumes:
+   - type: bind
+     source: /home/student209/dbpj-test/my.cnf
+     target: /etc/my.cnf
+  ports:
+   - "3306:3306"
+  environment:
+   MYSQL_ROOT_PASSWORD: "1111"
+
+ backend:
+  container_name: backend
