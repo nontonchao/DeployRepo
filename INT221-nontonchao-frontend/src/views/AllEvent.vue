@@ -6,7 +6,7 @@ const eventList = ref({});
 
 const getAllEventList = async () => {
   //const res = await fetch("http://localhost:8080/api/events", {
-  const res = await fetch("http://frontend/api/events", {
+  const res = await fetch("/api/events", {
     method: "GET",
   });
   if (res.status == 200) {
@@ -18,7 +18,7 @@ const getAllEventList = async () => {
 
 const deleteEventFromId = async (id) => {
   //const res = await fetch(`http://localhost:8080/api/events/delete/${id}`, {
-  const res = await fetch(`backend/api/events/delete/${id}`, {
+  const res = await fetch(`/api/events/delete/${id}`, {
     method: "DELETE",
   });
   if (res.status == 200) {

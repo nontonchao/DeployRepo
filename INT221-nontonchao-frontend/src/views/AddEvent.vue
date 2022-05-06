@@ -6,7 +6,7 @@ const eventCateList = ref({});
 
 const getEventCategoryList = async () => {
     //const res = await fetch("http://localhost:8080/api/events-category", {
-    const res = await fetch("backend/api/events-category", {
+    const res = await fetch("/api/events-category", {
         method: 'GET'
     });
     if (res.status == 200) {

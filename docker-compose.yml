@@ -3,7 +3,7 @@ services:
  database:
   container_name: db
   image: oasip-db-img
-  build: /db/.
+  build: ./db/.
   restart: always
   volumes:
    - type: bind
