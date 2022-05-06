@@ -10,7 +10,7 @@ const email = ref('');
 const getAllEventList = async () => {
     let ret = {};
     //const res = await fetch("http://localhost:8080/api/events", {
-    const res = await fetch("http://localhost/api/events", {
+    const res = await fetch("http://backend:8080/api/events", {
         method: 'GET'
     });
     if (res.status == 200) {
@@ -24,7 +24,7 @@ const getAllEventList = async () => {
 
 const editDateTime = async (updateEvent) => {
     //const res = await fetch(`http://localhost:8080/api/events/edit/`, {
-    const res = await fetch(`http://localhost/api/events/edit/`, {
+    const res = await fetch(`http://backend:8080/api/events/edit/`, {
         method: 'PUT',
         headers: {
             'content-type': 'application/json'
@@ -42,7 +42,7 @@ const editDateTime = async (updateEvent) => {
 const FindEventByEmail = async () => {
     let ret = {};
     //const res = await fetch(`http://localhost:8080/api/events/find/${email.value}`, {
-    const res = await fetch(`http://localhost/api/events/find/${email.value}`, {
+    const res = await fetch(`http://backend:8080/api/events/find/${email.value}`, {
         method: 'GET'
     });
     if (res.status == 200) {
@@ -57,7 +57,7 @@ const FindEventByEmail = async () => {
 
 const deleteEventFromId = async (id) => {
     //const res = await fetch(`http://localhost:8080/api/events/delete/${id}`, {
-    const res = await fetch(`http://localhost/api/events/delete/${id}`, {
+    const res = await fetch(`http://backend:8080/api/events/delete/${id}`, {
         method: 'DELETE'
     });
     if (res.status == 200) {
