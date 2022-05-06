@@ -7,7 +7,7 @@ import AllEvent from "../views/AllEvent.vue";
 import AboutUs from "../views/AboutUS.vue";
 import CheckEvent from "../views/CheckEvent.vue";
 
-const history = createWebHashHistory('/sy1/');
+const history = createWebHashHistory();
 const routes = [
 
     {
