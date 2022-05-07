@@ -39,7 +39,7 @@ const addEventList = async () => {
   };
 
   //const res = await fetch('http://localhost:8080/api/events', {
-  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/events`, {
+  const res = await fetch(`${import.meta.env.BASE_URL}/api/events`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
