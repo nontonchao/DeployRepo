@@ -10,8 +10,7 @@ const props = defineProps({
   },
 });
 
-
-let tmp = ({ eventCategory: { eventCategoryName: 'dummy event' } });
+let tmp = { eventCategory: { eventCategoryName: "dummy event" } };
 
 onBeforeMount(() => {
   if (props.eventList.length > 0) {
@@ -19,14 +18,14 @@ onBeforeMount(() => {
   } else {
     tmp.value = {
       eventCategory: {
-        eventCategoryName: 'dummy event'
-      }
+        eventCategoryName: "dummy event",
+      },
     };
   }
-})
+});
 
 const currentdate = new Date();
-const datetime = currentdate.toISOString().substring(0, 16)
+const datetime = currentdate.toISOString().substring(0, 16);
 
 const isDel = ref(false);
 const toggleDel = () => {
@@ -46,37 +45,38 @@ function showTime(DateTime, add) {
   let out = ret.toISOString().split("T")[1].split(".")[0].substring(0, 5);
   return out;
 }
-
 </script>
 
 <template>
-  <div class=" flex-col p-4 w-full max-w-xs	 md:w-3/4 px-6   overflow-auto container md:container md:mx-auto  ">
+  <div class=" flex-col p-4 w-full max-w-xs md:w-full px-6 overflow-auto container md:container md:mx-auto ">
     <div v-if="eventList.length <= 0">
-      <h1 class="p-16 text-5xl text-center text-yellow-300 ">No Scheduled Events</h1>
+      <h1 class="p-16 text-5xl text-center text-yellow-300">
+        No Scheduled Events
+      </h1>
     </div>
     <div v-else>
-      <div class="w-full md:w-full  px-6 mb-8 md:mb-10  md:justify-around leading-8 pb-12 flex-wrap justify-center grid grid-cols-4 gap-8 
-      ">
+      <div
+        class="w-full md:w-full px-6 mb-8 md:mb-10 md:flex  md:justify-around leading-8 pb-12 flex-wrap justify-center grid grid-cols-4 gap-8 ">
         <div v-for="(result, index) in eventList" :key="index">
           <div
-            class="shadow-lg w-full h-auto pt-8  rounded-t-3xl text-center my-10 p-15 leading-8 rounded-lg rounded-b-3xl 
-         transition ease-in-out delay-150 bg-yellow-100 hover:-translate-y-1 hover:scale-110 hover:bg-yellow-300 duration-300 ">
+            class="shadow-lg w-full h-auto pt-8  rounded-t-3xl text-center my-10 p-15 leading-8 rounded-lg rounded-b-3xl transition ease-in-out delay-150 bg-yellow-100 hover:-translate-y-1 hover:scale-110 hover:bg-yellow-300 duration-300">
             <div class="">
-              <p class="font-bold py-8 text-xl text-center">{{ result.eventCategory.eventCategoryName }}</p>
-              <div class="flex-auto">
-                <div class=" flex justify-start pl-12 pb-5">
-                  <img src="/icon/user-icon.jpg" style="height: 120px " class="max-w-full h-auto rounded-full">
+              <p class="font-bold py-8 text-xl text-center">
+                {{ result.eventCategory.eventCategoryName }}
+              </p>
+              <div class="flex justify-around">
+                <div class="md:flex-shrink-0 flex justify-start pl-12 pb-5">
+                  <img src="/icon/user-icon.jpg" style="height: 120px" class="max-w-full h-auto rounded-full" />
                   <div class="flex justify-end">
-                    <div class="text-right pt-16 pl-10 text-xs font-bold">
+                    <div class="text-right pt-16 pl-10 m-4 text-xs font-bold mt-4 md:mt-0 md:ml-6">
                       <p>SY1</p>
                       <p>Nontonchao</p>
-
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="bg-white  rounded-b-3xl pt-8">
+            <div class="bg-white rounded-b-3xl pt-8">
               <div class="flex justify-around ... text-sm pb-16">
                 <div class="text-left">
                   <p>หมายเลขนัดหมาย</p>
@@ -84,33 +84,44 @@ function showTime(DateTime, add) {
                 </div>
                 <div class="text-right">
                   <p>วันที่</p>
-                  <p class="font-bold"> {{ result.eventStartTime.substring(0, 10) }}</p>
+                  <p class="font-bold">
+                    {{ result.eventStartTime.substring(0, 10) }}
+                  </p>
                 </div>
               </div>
 
               <div class="flex justify-around ... text-sm pb-8">
                 <div class="text-left">
                   <p>ตั้งแต่</p>
-                  <p class="font-bold"> {{ result.eventStartTime.substring(11, 16) }}</p>
+                  <p class="font-bold">
+                    {{ result.eventStartTime.substring(11, 16) }}
+                  </p>
                 </div>
                 <div class="text-center">
                   <p>ถึง</p>
-                  <p class="font-bold"> {{ showTime(result.eventStartTime, result.eventDuration) }}</p>
+                  <p class="font-bold">
+                    {{ showTime(result.eventStartTime, result.eventDuration) }}
+                  </p>
                 </div>
                 <div class="text-right">
                   <p>ระยะเวลา</p>
-                  <p class="font-bold"> {{ result.eventDuration }} นาที</p>
+                  <p class="font-bold">{{ result.eventDuration }} นาที</p>
                 </div>
               </div>
-              <hr>
-              <div class="text-left pl-8 text-sm p-8  leading-7">
+              <hr />
+              <div class="text-left pl-8 text-sm p-8 leading-7">
                 <p>ผู้นัดหมาย</p>
-                <p class="font-bold"> {{ result.bookingName }}</p>
-
+                <p class="font-bold">{{ result.bookingName }}</p>
               </div>
               <div>
-                <button class="bg-yellow-100 hover:bg-yellow-300 w-full rounded-lg rounded-b-3xl " @click="tmp = result; newDT = tmp.eventStartTime; tmpdt = tmp.eventStartTime.replace(':00Z', ''); toggleEdit();
-                ">รายละเอียดเพิ่มเติม</button>
+                <button class="bg-yellow-100 hover:bg-yellow-300 w-full rounded-lg rounded-b-3xl" @click="
+  tmp = result;
+newDT = tmp.eventStartTime;
+tmpdt = tmp.eventStartTime.replace(':00Z', '');
+toggleEdit();
+                ">
+                  รายละเอียดเพิ่มเติม
+                </button>
               </div>
             </div>
           </div>
@@ -129,10 +140,13 @@ function showTime(DateTime, add) {
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <!-- Modal header -->
           <div class="flex justify-center items-center p-5 rounded-t border-b dark:border-gray-600 content-center">
-            <h3 class="font-semibold text-gray-900 lg:text-2xl dark:text-white text-center ">
+            <h3 class="font-semibold text-gray-900 lg:text-2xl dark:text-white text-center">
               ยืนยันการยกเลิกนัด
             </h3>
-            <button @click="toggleDel(); toggleEdit(); " type="button"
+            <button @click="
+  toggleDel();
+toggleEdit();
+            " type="button"
               class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-toggle="defaultModal">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -155,9 +169,11 @@ function showTime(DateTime, add) {
           <!-- Modal footer -->
           <div
             class="flex items-center justify-end p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-            <button data-modal-toggle="defaultModal" type="button" @click="$emit('delete', tmp.id); toggleDel();
+            <button data-modal-toggle="defaultModal" type="button" @click="
+  $emit('delete', tmp.id);
+toggleDel();
             "
-              class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm  text-center font-bold py-2 px-4 rounded-full m-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm text-center font-bold py-2 px-4 rounded-full m-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               ยืนยัน
             </button>
           </div>
@@ -189,7 +205,6 @@ function showTime(DateTime, add) {
           <!-- Modal body -->
           <div class="p-6 space-y-6 max-w-md container mx-auto content-center leading-8">
             <div class="w-full md:w-full px-3 mb-6 md:mb-0">
-
               <p>ชื่อผู้นัดหมาย : {{ tmp.bookingName }}</p>
               <p>อีเมล : {{ tmp.bookingEmail }}</p>
               <p>คลินิก : {{ tmp.eventCategory.eventCategoryName }}</p>
@@ -199,8 +214,7 @@ function showTime(DateTime, add) {
               <input type="datetime-local" v-model="tmpdt" required :min="datetime"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
               <div class="w-full md:w-full px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 m-3">รายละเอียด
-                  :
+                <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 m-3">รายละเอียด :
                 </label>
                 <textarea type="text" v-model="tmp.eventNotes"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -211,14 +225,22 @@ function showTime(DateTime, add) {
           <!-- Modal footer -->
           <div
             class="flex items-center justify-end p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-            <button data-modal-toggle="defaultModal" type="button" @click="tmp.eventStartTime = (tmpdt + ':00Z');
-            $emit('edit', tmp); toggleEdit();"
-              class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm  text-center font-bold py-2 px-4 rounded-full m-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <button data-modal-toggle="defaultModal" type="button" @click="
+  tmp.eventStartTime = tmpdt + ':00Z';
+$emit('edit', tmp);
+toggleEdit();
+            "
+              class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm text-center font-bold py-2 px-4 rounded-full m-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               ยืนยันการแก้ไข
             </button>
             <button
-              class="text-white bg-red-400 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm  text-center font-bold py-2 px-4 rounded-full m-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 "
-              @click="toggleDel(); toggleEdit();">ยกเลิกนัด</button>
+              class="text-white bg-red-400 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm text-center font-bold py-2 px-4 rounded-full m-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              @click="
+  toggleDel();
+toggleEdit();
+              ">
+              ยกเลิกนัด
+            </button>
           </div>
         </div>
       </div>

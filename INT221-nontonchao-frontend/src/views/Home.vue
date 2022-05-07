@@ -48,17 +48,12 @@ const features = [
 
                 <div class="flex right-0 py-10 pb-72 w-full md:w-full justify-center leading-8 ">
                     <router-link
-                        class="bg-main rounded-full flex p-5 mx-10 hover:text-white drop-shadow-2xl transform hover:scale-125 transition ease-in-out delay-150  hover:-translate-y-1  hover:bg-pink-200 duration-300 ... "
+                        class="bg-white border-4 border-main  text-black rounded-full font-bold flex p-5 mx-10 hover:text-white drop-shadow-2xl transform  transition ease-in-out delay-150  hover:-translate-y-1  hover:bg-main duration-300 ... "
                         :to="{ name: 'AddEvent' }">จองนัดหมาย
-                        <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
+                        
                     </router-link>
                     <router-link
-                        class="mx-10 bg-acqua rounded-full p-5 hover:text-white drop-shadow-2xl transform hover:scale-125 transition ease-in-out delay-150  hover:-translate-y-1  hover:bg-green-300 duration-300 ..."
+                        class="bg-white border-4 border-green-700 text-black rounded-full font-bold flex p-5 mx-10 hover:text-white drop-shadow-2xl transform  transition ease-in-out delay-150  hover:-translate-y-1  hover:bg-green-700 duration-300 ... "
                         :to="{ name: 'CheckEvent' }">
                         ตรวจสอบนัดหมาย</router-link>
                 </div>
@@ -66,7 +61,7 @@ const features = [
 
 
         </div>
-        <div class="pl-64 pt-32 animate-bounce lg:animate-bounce md:animate-bounce animate-none rounded-md">
+        <div class="pl-64 pt-32 animate-bounce  lg:animate-bounce md:animate-bounce-2 animate-none rounded-md ">
             <img src="/img/logo.png" style="height: 300px">
         </div>
     </div>
