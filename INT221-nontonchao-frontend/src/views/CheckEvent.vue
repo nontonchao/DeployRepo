@@ -17,7 +17,7 @@ const eventCateList = ref({});
 
 const getEventCategoryList = async () => {
   //const res = await fetch("http://localhost:8080/api/events-category", {
-  const res = await fetch("/api/events-category", {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/events-category`, {
     method: "GET",
   });
   if (res.status == 200) {
@@ -30,7 +30,7 @@ const getEventCategoryList = async () => {
 const getAllEventList = async () => {
   let ret = {};
   //const res = await fetch("http://localhost:8080/api/events", {
-  const res = await fetch("/api/events", {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/sy1/api/events`, {
     method: "GET",
   });
   if (res.status == 200) {
@@ -44,7 +44,7 @@ const getAllEventList = async () => {
 
 const editDateTime = async (updateEvent) => {
   //const res = await fetch(`http://localhost:8080/api/events/edit/`, {
-  const res = await fetch(`/api/events/edit/`, {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/events/edit/`, {
     method: "PUT",
     headers: {
       "content-type": "application/json",
@@ -61,7 +61,7 @@ const editDateTime = async (updateEvent) => {
 
 const deleteEventFromId = async (id) => {
   //const res = await fetch(`http://localhost:8080/api/events/delete/${id}`, {
-  const res = await fetch(`/api/events/delete/${id}`, {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/events/delete/${id}`, {
     method: "DELETE",
   });
   if (res.status == 200) {
