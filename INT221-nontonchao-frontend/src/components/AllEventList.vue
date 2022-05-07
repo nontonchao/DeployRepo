@@ -101,7 +101,8 @@ const gen_color = (id) => {
                 <div class="text-right">
                   <p>วันที่</p>
                   <p class="font-bold">
-                    {{ result.eventStartTime.substring(0, 10) }}
+                    <!-- {{ result.eventStartTime.substring(0, 10) }} -->
+                    {{ new Date(result.eventStartTime).toDateString() }}
                   </p>
                 </div>
               </div>
@@ -130,14 +131,12 @@ const gen_color = (id) => {
                 <p class="font-bold">{{ result.bookingName }}</p>
               </div>
               <div>
-                <button
-                  :class="'bg-yellow-100 hover:bg-yellow-300 w-full rounded-lg rounded-b-3xl ' + gen_color(result.eventCategory.id)"
-                  @click="
+                <button :class="'w-full rounded-lg rounded-b-3xl ' + gen_color(result.eventCategory.id)" @click="
   tmp = result;
 newDT = tmp.eventStartTime;
 tmpdt = tmp.eventStartTime.replace(':00Z', '');
 toggleEdit();
-                  ">
+                ">
                   รายละเอียดเพิ่มเติม
                 </button>
               </div>

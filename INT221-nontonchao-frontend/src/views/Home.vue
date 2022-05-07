@@ -4,27 +4,27 @@ import FeatureCard from '../components/FeatureCard.vue';
 
 const features = [
     {
-        imgPath: '/sy1/icon/booking-icon.png',
+        imgPath: '/icon/booking-icon.png',
         title: 'จองการนัดหมาย',
         desc: 'สามารถจองการนัดหมายได้อย่างสะดวก และง่ายดาย เพียงไม่กี่คลิกก็สามารถจองนัดหมายได้แล้ว'
     },
     {
-        imgPath: '/sy1//icon/s.png',
+        imgPath: '/icon/s.png',
         title: 'ตรวจสอบการนัดหมาย',
         desc: 'สามารถตรวจสอบการนัดหมายได้ ไม่ว่าจะเป็นการตรวจสอบทั้งหมด การตรวจสอบ / ค้นหาจาก Email'
     },
     {
-        imgPath: '/sy1//icon/edit-icon.png',
+        imgPath: '/icon/edit-icon.png',
         title: 'แก้ไขการนัดหมาย',
         desc: 'หากต้องการแก้ไขการนัดหมายก็สามารถทำได้เองโดยไม่ต้องยุ่งยาก'
     },
     {
-        imgPath: '/sy1//icon/canc.png',
+        imgPath: '/icon/canc.png',
         title: 'ยกเลิกนัดหมาย',
         desc: 'หากนัดหมายไปแล้วไม่สะดวก หรือต้องการยกเลิกนัดหมายก็สามารถทำได้เลย'
     },
     {
-        imgPath: '/sy1//icon/realtime-icon.png',
+        imgPath: '/icon/realtime-icon.png',
         title: 'RealTime',
         desc: 'อัพเดทข้อมูลเรียลไทม์ตลอด หลีกเลี่ยงปัญหาการจองซ้อนทับกัน'
     },
@@ -61,8 +61,8 @@ const features = [
 
 
             </div>
-            <div class="pl-64 pt-32 animate-bounce  lg:animate-bounce md:animate-bounce-2 animate-none rounded-md ">
-                <img src="/img/logo.png" style="height: 300px">
+            <div class="animate-bounce w-700 h-20">
+                <img src="/img/home-icon.png" style="width:700px">
             </div>
         </div>
 

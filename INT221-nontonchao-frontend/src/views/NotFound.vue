@@ -32,10 +32,12 @@ const closeModal = () => appRouter.push({ name: 'Home' })
   display: table;
   transition: opacity 0.3s ease;
 }
+
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
 }
+
 .modal-container {
   width: 300px;
   margin: 0px auto;
@@ -44,12 +46,13 @@ const closeModal = () => appRouter.push({ name: 'Home' })
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
 }
+
 .modal-header h3 {
   margin-top: 0;
   color: red;
 }
+
 .modal-body {
   margin: 20px 0;
 }
-
 </style>
