@@ -45,6 +45,22 @@ function showTime(DateTime, add) {
   let out = ret.toISOString().split("T")[1].split(".")[0].substring(0, 5);
   return out;
 }
+
+const gen_color = (id) => {
+  switch (id) {
+    case 1:
+      return 'bg-yellow-100 hover:bg-yellow-300';
+    case 2:
+      return 'bg-green-300 hover:bg-green-500';
+    case 3:
+      return 'bg-purple-200 hover:bg-purple-400';
+    case 4:
+      return 'bg-blue-300 hover:bg-blue-500';
+    case 5:
+      return 'bg-gray-300 hover:bg-gray-400';
+  }
+}
+
 </script>
 
 <template>
@@ -59,9 +75,9 @@ function showTime(DateTime, add) {
         class="w-full md:w-full px-6 mb-8 md:mb-10 md:flex  md:justify-around leading-8 pb-12 flex-wrap justify-center grid grid-cols-4 gap-8 ">
         <div v-for="(result, index) in eventList" :key="index">
           <div
-            class="shadow-lg w-full h-auto pt-8  rounded-t-3xl text-center my-10 p-15 leading-8 rounded-lg rounded-b-3xl transition ease-in-out delay-150 bg-yellow-100 hover:-translate-y-1 hover:scale-110 hover:bg-yellow-300 duration-300">
+            :class="'shadow-lg w-full h-auto pt-8  rounded-t-3xl text-center my-10 p-15 leading-8 rounded-lg rounded-b-3xl transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ' + gen_color(result.eventCategory.id)">
             <div class="">
-              <p class="font-bold py-8 text-xl text-center">
+              <p class=" font-bold py-8 text-xl text-center">
                 {{ result.eventCategory.eventCategoryName }}
               </p>
               <div class="flex justify-around">
@@ -114,12 +130,14 @@ function showTime(DateTime, add) {
                 <p class="font-bold">{{ result.bookingName }}</p>
               </div>
               <div>
-                <button class="bg-yellow-100 hover:bg-yellow-300 w-full rounded-lg rounded-b-3xl" @click="
+                <button
+                  :class="'bg-yellow-100 hover:bg-yellow-300 w-full rounded-lg rounded-b-3xl ' + gen_color(result.eventCategory.id)"
+                  @click="
   tmp = result;
 newDT = tmp.eventStartTime;
 tmpdt = tmp.eventStartTime.replace(':00Z', '');
 toggleEdit();
-                ">
+                  ">
                   รายละเอียดเพิ่มเติม
                 </button>
               </div>

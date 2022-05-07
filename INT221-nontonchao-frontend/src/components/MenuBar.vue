@@ -7,7 +7,7 @@
             <router-link :to="{ name: 'Home' }"><img class="ml-12" src="/img/logo.png" alt="logo" width="50"
                     height="50"></router-link>
             <router-link :to="{ name: 'Home' }">
-                <p class="text-white font-bold p-3 text-2xl mx-5">OASIP by NTC</p>
+                <p class="text-white font-bold p-3 text-2xl mx-5">OASIP-SY1 by NTC</p>
             </router-link>
         </div>
         <div class="flex mr-12">

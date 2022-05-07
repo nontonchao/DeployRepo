@@ -30,7 +30,7 @@ const getEventCategoryList = async () => {
 const getAllEventList = async () => {
   let ret = {};
   //const res = await fetch("http://localhost:8080/api/events", {
-  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/sy1/api/events`, {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/events`, {
     method: "GET",
   });
   if (res.status == 200) {
@@ -83,6 +83,7 @@ const filterEvent = (search) => {
     (x.bookingName.includes(search) || x.bookingEmail == (search)) && x.eventCategory.eventCategoryName.includes(selectedClinic.value == 'ทั้งหมด' ? '' : selectedClinic.value) &&
     (status.value == 'ทั้งหมด' ? x : (status.value == 'กำลังจะมาถึง' ? x.eventStartTime >= datetime : x.eventStartTime < datetime)));
 }
+
 </script>
 
 <template>
@@ -110,7 +111,7 @@ const filterEvent = (search) => {
       </div>
       <div class="w-auto">
         <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">วันที่</label>
-        <input type="date" v-model="selectDate" required
+        <input type="date" v-model="selectDate" :disabled="status != 'ทั้งหมด'" required
           class="shadow appearance-none border rounded w-auto py-2 px-3 text-gray-700 leading-tight focus:shadow-outline transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" />
       </div>
       <div class="w-auto">
