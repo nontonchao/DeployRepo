@@ -4,27 +4,27 @@ import FeatureCard from '../components/FeatureCard.vue';
 
 const features = [
     {
-        imgPath: '/icon/booking-icon.png',
+        imgPath: '/sy1/icon/booking-icon.png',
         title: 'จองการนัดหมาย',
         desc: 'สามารถจองการนัดหมายได้อย่างสะดวก และง่ายดาย เพียงไม่กี่คลิกก็สามารถจองนัดหมายได้แล้ว'
     },
     {
-        imgPath: '/icon/s.png',
+        imgPath: '/sy1/icon/s.png',
         title: 'ตรวจสอบการนัดหมาย',
         desc: 'สามารถตรวจสอบการนัดหมายได้ ไม่ว่าจะเป็นการตรวจสอบทั้งหมด การตรวจสอบ / ค้นหาจาก Email'
     },
     {
-        imgPath: '/icon/edit-icon.png',
+        imgPath: '/sy1/icon/edit-icon.png',
         title: 'แก้ไขการนัดหมาย',
         desc: 'หากต้องการแก้ไขการนัดหมายก็สามารถทำได้เองโดยไม่ต้องยุ่งยาก'
     },
     {
-        imgPath: '/icon/canc.png',
+        imgPath: '/sy1/icon/canc.png',
         title: 'ยกเลิกนัดหมาย',
         desc: 'หากนัดหมายไปแล้วไม่สะดวก หรือต้องการยกเลิกนัดหมายก็สามารถทำได้เลย'
     },
     {
-        imgPath: '/icon/realtime-icon.png',
+        imgPath: '/sy1/icon/realtime-icon.png',
         title: 'RealTime',
         desc: 'อัพเดทข้อมูลเรียลไทม์ตลอด หลีกเลี่ยงปัญหาการจองซ้อนทับกัน'
     },
