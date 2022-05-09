@@ -5,7 +5,7 @@ import Footer from '../components/Footer.vue';
 const members = [
     {
         name: 'Siam Yamsaengsung (Khun)',
-        imagePath: '/members/PO.jpg',
+        imagePath: '/sy1/members/PO.jpg',
         desc: 'our cute mentor.',
         git: 'https://github.com/siam-yam',
         fb: 'https://www.facebook.com/siamyam',
@@ -13,7 +13,7 @@ const members = [
     },
     {
         name: 'Chokjaroen Tanjaroenrat (Ny)',
-        imagePath: '/members/dev024.jpg',
+        imagePath: '/sy1/members/dev024.jpg',
         desc: 'our cute backend.',
         git: 'https://github.com/itsmeny',
         fb: 'https://www.facebook.com/cjrtp',
@@ -21,7 +21,7 @@ const members = [
     },
     {
         name: 'Nattakan Thaweewatthanaprayun (Mint)',
-        imagePath: '/members/dev031.jpg',
+        imagePath: '/sy1/members/dev031.jpg',
         desc: 'our cute leader.',
         git: 'https://github.com/dknxsmph',
         fb: 'https://www.facebook.com/dknsxmph',
@@ -29,7 +29,7 @@ const members = [
     },
     {
         name: 'Nitipoom Suttachai (Poom)',
-        imagePath: '/members/dev071.jpg',
+        imagePath: '/sy1/members/dev071.jpg',
         desc: 'our cute boiler.',
         git: 'https://github.com/Nitipoom1456',
         fb: 'https://www.facebook.com/Nitipoom.Sutachai',
