@@ -42,7 +42,7 @@ let tmpdt = ref("");
 function showTime(DateTime, add) {
   let ret = new Date(DateTime);
   ret.setMinutes(ret.getMinutes() + add);
-  let out = ret.toLocaleTimeString().substring(0, 5);
+  let out = ret.toLocaleTimeString();
   return out;
 }
 
@@ -61,8 +61,8 @@ const gen_color = (id) => {
   }
 }
 
-Number.prototype.pad = function (n) {
-  return new Array(n).join('0').slice((n || 2) * -1) + this;
+const numberFormat = function (number, width) {
+  return new Array(+width + 1 - (number + '').length).join('0') + number;
 }
 
 </script>
@@ -115,7 +115,7 @@ Number.prototype.pad = function (n) {
                 <div class="text-left">
                   <p>ตั้งแต่</p>
                   <p class="font-bold">
-                    {{ new Date(result.eventStartTime).toLocaleTimeString().substring(0, 5) }}
+                    {{ new Date(result.eventStartTime).toLocaleTimeString() }}
                   </p>
                 </div>
                 <div class="text-center">
@@ -140,7 +140,7 @@ Number.prototype.pad = function (n) {
               <div>
                 <button :class="'w-full rounded-lg rounded-b-3xl ' + gen_color(result.eventCategory.id)" @click="
   tmp = result;
-tmpdt = `${new Date(tmp.eventStartTime).getFullYear()}-${(new Date(tmp.eventStartTime).getMonth() + 1).pad(2)}-${new Date(tmp.eventStartTime).getDate().pad(2)}T${new Date(tmp.eventStartTime).toLocaleTimeString('it-IT')}`;
+tmpdt = `${new Date(tmp.eventStartTime).getFullYear()}-${(numberFormat(new Date(tmp.eventStartTime).getMonth() + 1, 2))}-${numberFormat(new Date(tmp.eventStartTime).getDate(), 2)}T${new Date(tmp.eventStartTime).toLocaleTimeString('it-IT')}`;
 toggleEdit();
                 ">
                   รายละเอียดเพิ่มเติม
