@@ -72,7 +72,7 @@ const deleteEventFromId = async (id) => {
     eventList.value = eventList.value.filter((event) => event.id !== id);
     filter_list.value = filter_list.value.filter((event) => event.id !== id);
   } else {
-    console.log("error while fetching");
+    console.log("error while fetching || error :" + await res.text());
   }
 };
 

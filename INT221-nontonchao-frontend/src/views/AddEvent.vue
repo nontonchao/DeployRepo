@@ -27,4 +27,5 @@ onBeforeMount(async () => {
   <AddEventList :cliniclist="eventCateList" />
 </template>
 
-<style></style>
+<style>
+</style>

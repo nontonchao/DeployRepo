@@ -128,7 +128,10 @@ const gen_color = (id) => {
               <hr />
               <div class="text-left pl-8 text-sm p-8 leading-7">
                 <p>ผู้นัดหมาย</p>
-                <p class="font-bold">{{ result.bookingName }}</p>
+                <p class="font-bold" v-if="result.bookingName.length > 30">{{ result.bookingName.substring(0, 30) }}
+                  ....
+                </p>
+                <p v-else class="font-bold">{{ result.bookingName }}</p>
               </div>
               <div>
                 <button :class="'w-full rounded-lg rounded-b-3xl ' + gen_color(result.eventCategory.id)" @click="

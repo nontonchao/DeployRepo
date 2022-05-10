@@ -41,7 +41,7 @@ const members = [
 </script>
  
 <template>
-    <div class=""  >
+    <div class="">
         <h1 class="text-center text-4xl font-bold pt-12 pb-12">เกี่ยวกับเรา</h1>
         <div class="w-full max-w-sm md:w-full px-6 mb-8 container mx-auto content-center leading-8">
             <ProfileCard :person="members[0]" />
