@@ -24,7 +24,7 @@ const addEventList = async () => {
   toSend.value = {
     bookingName: name.value,
     bookingEmail: email.value,
-    eventStartTime: startTime.value + ":00.000+07:00",
+    eventStartTime: startTime.value.toISOString(),
     eventDuration: JSON.stringify(
       props.cliniclist.filter((x) => x.eventCategoryName === clinicX.value)[0]
         .eventDuration

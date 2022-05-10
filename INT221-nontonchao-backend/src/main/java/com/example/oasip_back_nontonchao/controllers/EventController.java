@@ -4,13 +4,13 @@ import com.example.oasip_back_nontonchao.entities.Event;
 import com.example.oasip_back_nontonchao.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/events")
 public class EventController {
     @Autowired
