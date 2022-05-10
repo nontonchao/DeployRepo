@@ -11,11 +11,11 @@ defineProps({
  
 <template>
     <div
-        class="max-w-sm bg-white rounded-lg border border-gray-200  transition ease-in-out delay-150 hover:scale-110 shadow-md dark:bg-gray-800 dark:border-gray-700">
+        class="max-w-sm bg-white rounded-lg border border-gray-200  transition ease-in-out delay-150 hover:scale-110 shadow-md">
         <img class="rounded-t-lg" :src="person.imagePath" alt="" width="600" height="800" />
         <div class="p-5">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ person.name }}</h5>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ person.desc }}</p>
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{{ person.name }}</h5>
+            <p class="mb-3 font-normal text-gray-700">{{ person.desc }}</p>
         </div>
         <div class="flex justify-center">
             <div class="flex leading-8 m-5 space-x-3 shadow-lg">

@@ -32,9 +32,9 @@ const features = [
 
 </script>
  <template>
-    <div class="py-32 px-32">
+    <div class=" ">
         <div class="flex overflow-hidden w-full ">
-            <div class="mb-4 lg:mb-20">
+            <div class="mb-4 lg:mb-20 p-24 pt-48 ">
                 <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6"><strong>Online
                         Appointment
                     </strong>
@@ -45,28 +45,29 @@ const features = [
                 <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px  pb-6"><strong>
                         Integrated Project Clinics (OASIP-SY1)</strong>
                 </h1>
-
-                <div class="flex right-0 py-10 pb-72 w-full md:w-full justify-center leading-8 ">
-                    <router-link
-                        class="bg-white border-4 border-main  text-black rounded-full font-bold flex p-5 mx-10 hover:text-white drop-shadow-2xl transform  transition ease-in-out delay-150  hover:-translate-y-1  hover:bg-main duration-300 ... "
-                        :to="{ name: 'AddEvent' }">จองนัดหมาย
+                <div class="right-0 py-10 pb-32 justify-center leading-8 flex flex-wrap  ">
+                    <div class="pb-8 pr-4">
+                        <router-link :to="{ name: 'AddEvent' }">
+                            <button
+                                class="bg-white border-4 border-main  text-black rounded-full font-bold flex p-3  hover:text-white drop-shadow-2xl transform  transition ease-in-out delay-150  hover:-translate-y-1  hover:bg-main duration-300 ... ">
+                                จองนัดหมาย
+                            </button>
+                        </router-link>
+                    </div>
+                    <router-link :to="{ name: 'CheckEvent' }">
+                        <button class="bg-white border-4 border-green-700 text-black rounded-full font-bold flex p-3
+                            hover:text-white drop-shadow-2xl transform transition ease-in-out delay-150
+                            hover:-translate-y-1 hover:bg-green-700 duration-300 ... "> ตรวจสอบนัดหมาย</button>
 
                     </router-link>
-                    <router-link
-                        class="bg-white border-4 border-green-700 text-black rounded-full font-bold flex p-5 mx-10 hover:text-white drop-shadow-2xl transform  transition ease-in-out delay-150  hover:-translate-y-1  hover:bg-green-700 duration-300 ... "
-                        :to="{ name: 'CheckEvent' }">
-                        ตรวจสอบนัดหมาย</router-link>
                 </div>
-
-
-
             </div>
-            <div class="animate-bounce w-700 h-20">
+            <div class="animate-bounce w-700 h-20 md:shrink-0 object-cover w-6/12">
                 <img src="/img/home-icon.png" style="width:700px">
             </div>
         </div>
 
-        <div class="mb-4 lg:mb-20 pb-24">
+        <div class="mb-4 lg:mb-20 p-24 pb-24">
             <h1 class="text-center text-2xl lg:text-5xl font-bold text-gray tracking-1px">
                 ที่มา
             </h1>
@@ -79,13 +80,27 @@ const features = [
                 </p>
             </h2>
         </div>
+        <div class="mb-4 lg:mb-20 p-24 ">
+            <h1 class="text-center text-2xl mt-8 lg:text-5xl font-bold text-gray tracking-1px pb-16">
+                Features
+            </h1>
 
-        <h1 class="text-center text-2xl mt-8 lg:text-5xl font-bold text-gray tracking-1px pb-16">
-            Features
-        </h1>
+            <div class="flex flex-wrap justify-center">
+                <FeatureCard v-for="(card, index) in features" :key="index" :data="card" />
+            </div>
+        </div>
+    </div>
 
-        <div class="flex flex-wrap justify-center">
-            <FeatureCard v-for="(card, index) in features" :key="index" :data="card" />
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+        <div class="md:flex">
+            <div class="md:shrink-0">
+                <img src="/img/home-icon.png" style="width:700px">
+            </div>
+            <div class="p-8">
+                <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Case study</div>
+                <p class="mt-2 text-slate-500">Getting a new business off the ground is a lot of hard work. Here are
+                    five ideas you can use to find your first customers.</p>
+            </div>
         </div>
     </div>
     <Footer class="bottom-0" />

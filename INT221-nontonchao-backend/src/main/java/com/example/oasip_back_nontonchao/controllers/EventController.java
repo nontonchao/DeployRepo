@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 @RequestMapping("/api/events")
 public class EventController {
     @Autowired
@@ -28,6 +28,7 @@ public class EventController {
         } else {
             Event event = update;
             List<Event> compare = service.getEventsFromCategory(update.getEventCategory().getId());
+            compare.remove(compare.indexOf(update) + 1);
             if (compare.stream().count() == 0) {
                 service.addEvent(event);
                 return ResponseEntity.ok(HttpStatus.OK);

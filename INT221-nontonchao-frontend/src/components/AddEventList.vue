@@ -17,14 +17,11 @@ const startTime = ref("");
 
 const toSend = ref("");
 
-const currentdate = new Date();
-const datetime = currentdate.toISOString().substring(0, 11) + currentdate.getHours() + `:` + currentdate.getMinutes();
-
 const addEventList = async () => {
   toSend.value = {
     bookingName: name.value,
     bookingEmail: email.value,
-    eventStartTime: startTime.value.toISOString(),
+    eventStartTime: new Date(startTime.value).toISOString().replace('.000Z', 'Z'),
     eventDuration: JSON.stringify(
       props.cliniclist.filter((x) => x.eventCategoryName === clinicX.value)[0]
         .eventDuration
@@ -38,7 +35,9 @@ const addEventList = async () => {
     },
   };
 
-  //const res = await fetch('http://localhost:8080/api/events', {
+  console.log("DATE SEND: " + new Date(startTime.value).toISOString().replace('.000Z', 'Z'));
+  // const res = await fetch('http://localhost:8080/api/events', {
+    //const res = await fetch(`http://10.4.56.118:8080/api/events`, {
   const res = await fetch(`${import.meta.env.BASE_URL}/api/events`, {
     method: "POST",
     headers: {
