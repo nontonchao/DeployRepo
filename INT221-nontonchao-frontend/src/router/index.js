@@ -10,7 +10,7 @@ import AddEvent from "../views/AddEvent.vue";
 import AboutUs from "../views/AboutUS.vue";
 import CheckEvent from "../views/CheckEvent.vue";
 
-const history = createWebHistory('/sy1/');
+const history = createWebHashHistory();
 const routes = [{
         path: "/",
         name: "Home",

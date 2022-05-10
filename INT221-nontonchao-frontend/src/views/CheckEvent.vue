@@ -17,7 +17,6 @@ const eventCateList = ref({});
 
 const getEventCategoryList = async () => {
   //const res = await fetch("http://localhost:8080/api/events-category", {
-  // const res = await fetch("http://10.4.56.118:8080/api/events-category", {
   const res = await fetch(`${import.meta.env.BASE_URL}/api/events-category`, {
     method: "GET",
   });
@@ -31,7 +30,6 @@ const getEventCategoryList = async () => {
 const getAllEventList = async () => {
   let ret = {};
   //const res = await fetch("http://localhost:8080/api/events", {
-  // const res = await fetch("http://10.4.56.118:8080/api/events", {
   const res = await fetch(`${import.meta.env.BASE_URL}/api/events`, {
     method: "GET",
   });
@@ -46,7 +44,6 @@ const getAllEventList = async () => {
 
 const editDateTime = async (updateEvent) => {
   //const res = await fetch(`http://localhost:8080/api/events/edit/`, {
-  // const res = await fetch(`http://10.4.56.118:8080/api/events/edit/`, {
   const res = await fetch(`${import.meta.env.BASE_URL}/api/events/edit/`, {
     method: "PUT",
     headers: {
@@ -64,7 +61,6 @@ const editDateTime = async (updateEvent) => {
 
 const deleteEventFromId = async (id) => {
   //const res = await fetch(`http://localhost:8080/api/events/delete/${id}`, {
-  // const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${id}`, {
   const res = await fetch(`${import.meta.env.BASE_URL}/api/events/delete/${id}`, {
     method: "DELETE",
   });
