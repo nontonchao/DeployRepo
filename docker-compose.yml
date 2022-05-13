@@ -1,5 +1,16 @@
 version: '3.3'
 services:
+ proxy:
+  container_name: reverse-proxy
+  image: nginx:1.21.6-alpine
+  restart: always
+  volumes:
+   - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf
+  ports:
+   - "80:80"
+  networks:
+   - oasip-nw
+
  database:
   container_name: db
   image: oasip-db-img
@@ -35,8 +46,6 @@ services:
   restart: on-failure
   volumes:
    - ./INT221-nontonchao-frontend/nginx.conf:/etc/nginx/conf.d/default.conf
-  ports:
-   - "80:80"
   depends_on:
    - backend
   networks:
