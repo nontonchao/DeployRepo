@@ -9,17 +9,17 @@ const toggleMenu = () => {
 </script>
  
 <template>
-    <nav class="bg-main border-gray-200 px-2 sm:px-4 py-2.5 rounded">
+    <nav class="bg-main border-gray-200 px-4 sm:px-2 py-2.5 rounded mx-auto">
         <div class="container flex flex-wrap justify-between items-center mx-auto">
-            <router-link :to="{ name: 'Home' }"><img class="ml-12" src="/img/logo.png" alt="logo" width="50"
+            <router-link :to="{ name: 'Home' }"><img src="/img/logo.png" alt="logo" width="50"
                     height="50"></router-link>
             <router-link :to="{ name: 'Home' }">
-                <p class="text-black font-bold p-3 text-2xl mx-5 text-right">OASIP-SY1 by NTC</p>
+                <p class="text-black font-bold p-3 text-2xl mx-auto text-right">OASIP-SY1 by NTC</p>
             </router-link>
 
             <button data-collapse-toggle="mobile-menu" type="button"
                 @click="toggleMenu()"
-                class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400"
+                class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400"
                 aria-controls="mobile-menu" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +36,7 @@ const toggleMenu = () => {
 
             <div class="w-full md:block md:w-auto" 
             :class="[isOpen ? '' : 'hidden']" id="mobile-menu">
-                <ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+                <ul class="flex flex-col mt-4 md:flex-row md:space-x-4 md:mt-0 md:text-sm md:font-medium">
                     <li>
                         <router-link
                             class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 " 

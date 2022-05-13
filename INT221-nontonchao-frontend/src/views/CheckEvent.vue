@@ -28,7 +28,7 @@ const eventCateList = ref({});
 const getEventCategoryList = async () => {
   //const res = await fetch("http://localhost:8080/api/events-category", {
   // const res = await fetch("http://10.4.56.118:8080/api/events-category", {
-  const res = await fetch(`${import.meta.env.BASE_URL}api/events-category`, {
+  const res = await fetch(`${import.meta.env.BASE_URL}/api/events-category`, {
     method: "GET",
   });
   if (res.status == 200) {
@@ -42,7 +42,7 @@ const getAllEventList = async (page) => {
   let ret = {};
   //const res = await fetch(`http://localhost:8080/api/events?page=${page}`, {
   // const res = await fetch(`http://10.4.56.118:8080/api/events?page=${page}`, {
-  const res = await fetch(`${import.meta.env.BASE_URL}api/events?page=${page}`, {
+  const res = await fetch(`${import.meta.env.BASE_URL}/api/events?page=${page}`, {
     method: "GET",
   });
   if (res.status == 200) {
@@ -60,7 +60,7 @@ const getAllEventList = async (page) => {
 const editDateTime = async (updateEvent) => {
   // const res = await fetch(`http://localhost:8080/api/events/edit/`, {
   // const res = await fetch(`http://10.4.56.118:8080/api/events/edit/`, {
-  const res = await fetch(`${import.meta.env.BASE_URL}api/events/edit/`, {
+  const res = await fetch(`${import.meta.env.BASE_URL}/api/events/edit/`, {
     method: "PUT",
     headers: {
       "content-type": "application/json",
@@ -79,7 +79,7 @@ const editDateTime = async (updateEvent) => {
 const deleteEventFromId = async (id) => {
   // const res = await fetch(`http://localhost:8080/api/events/delete/${id}`, {
   // const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${id}`, {
-  const res = await fetch(`${import.meta.env.BASE_URL}api/events/delete/${id}`, {
+  const res = await fetch(`${import.meta.env.BASE_URL}/api/events/delete/${id}`, {
     method: "DELETE",
   });
   if (res.status == 200) {
@@ -236,7 +236,8 @@ const filterEvent = (search) => {
           </li>
           <li v-for="i in tPage">
             <button
-              class="w-10 h-10 text-black transition-colors duration-150 bg-acqua border border-r-0 border-acqua rounded-full focus:shadow-outline"
+              class="w-10 h-10 text-black transition-colors duration-150 hover:bg-acqua rounded-full focus:shadow-outline"
+              :class="i-1 == currPage ? 'bg-white' : ''"
               @click="getAllEventList(i - 1)">
               {{ i }}
             </button>

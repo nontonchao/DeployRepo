@@ -8,25 +8,31 @@ const props = defineProps({
   },
 });
 const durat = ref("");
+
+const isEdit = ref(false);
+const toggleEdit = () => {
+  isEdit.value = !isEdit.value;
+};
+
 </script>
 
 <template>
   <div class="overflow-x-auto">
     <div
-      class="min-w-screen min-h-screen bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden"
+      class="min-w-screen min-h-screen flex items-center justify-center bg-gray-100 font-sans overflow-hidden"
     >
       <div class="w-full lg:w-5/6">
         <div class="bg-white shadow-md rounded my-6">
-          <table class="min-w-max w-full table-auto">
+          <table class="min-w-max w-full font-mitr table-auto">
             <thead>
               <tr
                 class="bg-gray-200 text-gray-600 uppercase text-sm leading-10"
               >
-                <th class="py-3 px-6 text-left">ชื่อหมวดหมู่</th>
-                <th class="py-3 px-6 text-left">ระยะเวลา</th>
-                <th class="py-3 px-6 text-center">อาจารย์ที่ปรึกษา</th>
-                <th class="py-3 px-6 text-center">เพิ่มเติม</th>
-                <th class="py-3 px-6 text-center">แก้ไข</th>
+                <th class="py-3 px-6 text-base text-left">ชื่อหมวดหมู่</th>
+                <th class="py-3 px-6 text-base text-left">ระยะเวลา</th>
+                <th class="py-3 px-6 text-base text-center">อาจารย์ที่ปรึกษา</th>
+                <th class="py-3 px-6 text-base text-center">เพิ่มเติม</th>
+                <th class="py-3 px-6 text-base text-center">แก้ไข</th>
               </tr>
             </thead>
             <tbody class="text-gray-600 text-sm font-light">
@@ -88,9 +94,9 @@ const durat = ref("");
                     </div>
                   </div>
                 </td>
-                <td class="py-3 px-6 text-center">
-                  <div class="flex item-center justify-center">
-                    <div
+                <td @click="toggleEdit()" class="py-3 px-6 text-center">
+                  <div  class="flex item-center justify-center">
+                    <div 
                       class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
                     >
                       <svg
@@ -118,18 +124,17 @@ const durat = ref("");
   </div>
   <!-- Modal body -->
   <div
+    v-show="isEdit"
     class="p-6 space-y-6 max-w-md container mx-auto content-center leading-8 bg-gray-500"
-    v-for="(cate, index) in cateList"
-    :key="index"
   >
     <div class="w-full md:w-full px-3 mb-6 md:mb-0">
       <p>อาจารย์ที่ปรึกษา :</p>
       <div class="w-full md:w-full px-3 mb-6 md:mb-0 flex flex-col">
         <p>ระยะเวลา :</p>
-        <input type="nuumber" v-model="durat" />
+        <input type="number" v-model="durat" />
       </div>
       <div class="w-full md:w-full px-3 mb-6 md:mb-0">
-        <p>รายละเอียด : {{ cate.eventCategoryDescription }}</p>
+        <p>รายละเอียด : </p>
       </div>
     </div>
     <!-- Modal footer -->

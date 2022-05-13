@@ -79,7 +79,7 @@ const gen_color = (id) => {
 
 <template>
   <div
-    class="drop-shadow-2xl flex-col p-4 w-full max-w-xs md:w-full px-6 overflow-auto container md:container md:mx-auto"
+    class="drop-shadow-2xl flex-col p-4 w-full max-w-xs md:w-full px-6 overflow-auto container md:container md:mx-auto sm:block sm:mx-auto"
   >
     <div v-if="eventList.length <= 0">
       <h1 class="p-16 text-5xl text-center text-yellow-300">
@@ -88,7 +88,7 @@ const gen_color = (id) => {
     </div>
     <div v-else>
       <div
-        class="w-full md:w-full px-6 mb-8 md:mb-10 md:flex md:justify-around leading-8 pb-12 flex-wrap justify-center grid grid-cols-4 gap-8">      
+        class="w-full mx-auto px-6 mb-8 md:mb-10 md:flex md:justify-around leading-8 pb-12 flex-wrap justify-center grid lg:grid-cols-4 gap-8">      
 
         <div v-for="(result, index) in eventList" :key="index">
           <div
@@ -272,7 +272,7 @@ const gen_color = (id) => {
           </div>
           <!-- Modal footer -->
           <div
-            class="flex items-center justify-end space-x-2 rounded-b border-gray-200 dark:border-gray-600 p-8"
+            class="flex items-center justify-end space-x-2 rounded-b border-gray-200 dark:border-gray-600 p-3"
           >
             <button
               data-modal-toggle="defaultModal"

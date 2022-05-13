@@ -33,19 +33,19 @@ const features = [
 </script>
  <template>
     <div class="container mx-auto px-4 pt-16 flex flex-col">
-        <div class="flex overflow-hidden w-full flex-shrink  justify-between mx-auto">
-            <div class="mb-4 lg:mb-20 p-24 pt-48 ">
+        <div class="flex overflow-hidden w-full flex-shrink text-center justify-between mx-auto">
+            <div class="mb-4 lg:mb-20 lg:p-24 sm:p-10 lg:pt-48 sm:pt-14 ">
                 <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6"><strong>Online
                         Appointment
                     </strong>
                 </h1>
-                <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px  pb-6"><strong>
+                <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6"><strong>
                         Scheduling System for </strong>
                 </h1>
-                <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px  pb-6"><strong>
+                <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6"><strong>
                         Integrated Project Clinics</strong>
                 </h1>
-                  <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px  pb-6"><strong>
+                  <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6"><strong>
                         (OASIP-SY1)</strong>
                 </h1>
                 <div class="right-0 py-10 pb-32 justify-center leading-8 flex flex-wrap  ">
@@ -64,12 +64,12 @@ const features = [
                     </router-link>
                 </div>
             </div>
-            <div class="animate-bounce w-700 h-20 md:shrink-0 object-cover w-6/12 pt-20 ">
-                <img src="/img/home-icon.png" style="width:700px">
+            <div class="animate-bounce flex-wrap w-700 h-20 md:shrink-0 object-cover w-6/12 pt-20 items-center ">
+                <img src="/img/home-icon.png" style="width:400px;height:400px"> 
             </div>
         </div>
 
-        <div class="mb-4 lg:mb-20 p-24 pb-24">
+        <div class="mb-4 lg:mb-20 lg:p-24 sm:p-10 mx-4 lg:pb-24 ">
             <h1 class="text-center text-2xl lg:text-5xl font-bold text-gray tracking-1px">
                 ที่มา
             </h1>
@@ -82,12 +82,12 @@ const features = [
                 </p>
             </h2>
         </div>
-        <div class="mb-4 lg:mb-20 p-24 ">
+        <div class="mb-4 lg:mb-20 lg:p-24 sm:p-10 ">
             <h1 class="text-center text-2xl mt-8 lg:text-5xl font-bold text-gray tracking-1px pb-16">
                 Features
             </h1>
 
-            <div class="flex flex-wrap justify-center">
+            <div class="flex flex-wrap justify-center drop-shadow-xl">
                 <FeatureCard v-for="(card, index) in features" :key="index" :data="card" />
             </div>
         </div>
