@@ -1,4 +1,11 @@
 <script setup>
+import { ref } from 'vue'
+
+const isOpen = ref()
+const toggleMenu = () => {
+    isOpen.value = !isOpen.value
+}
+
 </script>
  
 <template>
@@ -11,6 +18,7 @@
             </router-link>
 
             <button data-collapse-toggle="mobile-menu" type="button"
+                @click="toggleMenu()"
                 class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400"
                 aria-controls="mobile-menu" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
@@ -26,26 +34,32 @@
                 </svg>
             </button>
 
-            <div class="hidden w-full md:block md:w-auto" id="mobile-menu">
+            <div class="w-full md:block md:w-auto" 
+            :class="[isOpen ? '' : 'hidden']" id="mobile-menu">
                 <ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
                     <li>
                         <router-link
-                            class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-black drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 ..."
+                            class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 " 
                             :to="{ name: 'Home' }">หน้าหลัก</router-link>
                     </li>
                     <li>
                         <router-link
-                            class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-black drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 ..."
+                            class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 "
                             :to="{ name: 'AddEvent' }">จองนัดหมาย</router-link>
                     </li>
                     <li>
                         <router-link
-                            class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-black drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 ..."
+                            class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 "
                             :to="{ name: 'CheckEvent' }">ตรวจสอบนัดหมาย</router-link>
                     </li>
                     <li>
                         <router-link
-                            class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-black drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 ..."
+                            class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300"
+                            :to="{ name: 'EventCategoryList' }">หมวดหมู่</router-link>
+                    </li>
+                        <li>
+                        <router-link
+                            class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300"
                             :to="{ name: 'AboutUs' }">เกี่ยวกับเรา</router-link>
                     </li>
                 </ul>

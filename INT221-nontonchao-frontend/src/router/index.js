@@ -9,6 +9,7 @@ import NotFound from "../views/NotFound.vue";
 import AddEvent from "../views/AddEvent.vue";
 import AboutUs from "../views/AboutUS.vue";
 import CheckEvent from "../views/CheckEvent.vue";
+import EventCategoryList from "../views/EventCategoryList.vue";
 
 const history = createWebHistory('/sy1/');
 const routes = [{
@@ -36,7 +37,13 @@ const routes = [{
         name: "CheckEvent",
         component: CheckEvent,
     },
+    {
+        path: "/event-category",
+        name: "EventCategoryList",
+        component: EventCategoryList,
+    },
 ];
+
 
 const router = createRouter({ history, routes });
 

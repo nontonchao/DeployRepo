@@ -32,8 +32,8 @@ const features = [
 
 </script>
  <template>
-    <div class=" ">
-        <div class="flex overflow-hidden w-full ">
+    <div class="container mx-auto px-4 pt-16 flex flex-col">
+        <div class="flex overflow-hidden w-full flex-shrink  justify-between mx-auto">
             <div class="mb-4 lg:mb-20 p-24 pt-48 ">
                 <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6"><strong>Online
                         Appointment
@@ -43,13 +43,16 @@ const features = [
                         Scheduling System for </strong>
                 </h1>
                 <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px  pb-6"><strong>
-                        Integrated Project Clinics (OASIP-SY1)</strong>
+                        Integrated Project Clinics</strong>
+                </h1>
+                  <h1 class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px  pb-6"><strong>
+                        (OASIP-SY1)</strong>
                 </h1>
                 <div class="right-0 py-10 pb-32 justify-center leading-8 flex flex-wrap  ">
                     <div class="pb-8 pr-4">
                         <router-link :to="{ name: 'AddEvent' }">
                             <button
-                                class="bg-white border-4 border-main  text-black rounded-full font-bold flex p-3  hover:text-white drop-shadow-2xl transform  transition ease-in-out delay-150  hover:-translate-y-1  hover:bg-main duration-300 ... ">
+                                class="bg-white border-4 border-main  text-black rounded-full font-bold flex p-3  hover:text-white drop-shadow-2xl transform  transition ease-in-out delay-150  hover:-translate-y-1  hover:bg-main duration-300 ">
                                 จองนัดหมาย
                             </button>
                         </router-link>
@@ -57,12 +60,11 @@ const features = [
                     <router-link :to="{ name: 'CheckEvent' }">
                         <button class="bg-white border-4 border-green-700 text-black rounded-full font-bold flex p-3
                             hover:text-white drop-shadow-2xl transform transition ease-in-out delay-150
-                            hover:-translate-y-1 hover:bg-green-700 duration-300 ... "> ตรวจสอบนัดหมาย</button>
-
+                            hover:-translate-y-1 hover:bg-green-700 duration-300"> ตรวจสอบนัดหมาย</button>
                     </router-link>
                 </div>
             </div>
-            <div class="animate-bounce w-700 h-20 md:shrink-0 object-cover w-6/12">
+            <div class="animate-bounce w-700 h-20 md:shrink-0 object-cover w-6/12 pt-20 ">
                 <img src="/img/home-icon.png" style="width:700px">
             </div>
         </div>
@@ -90,22 +92,7 @@ const features = [
             </div>
         </div>
     </div>
-
-    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-        <div class="md:flex">
-            <div class="md:shrink-0">
-                <img src="/img/home-icon.png" style="width:700px">
-            </div>
-            <div class="p-8">
-                <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Case study</div>
-                <p class="mt-2 text-slate-500">Getting a new business off the ground is a lot of hard work. Here are
-                    five ideas you can use to find your first customers.</p>
-            </div>
-        </div>
-    </div>
     <Footer class="bottom-0" />
-
-
 </template>
 
 

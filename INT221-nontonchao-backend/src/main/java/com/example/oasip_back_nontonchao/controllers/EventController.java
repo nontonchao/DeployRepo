@@ -1,5 +1,6 @@
 package com.example.oasip_back_nontonchao.controllers;
 
+import com.example.oasip_back_nontonchao.dtos.EventPage;
 import com.example.oasip_back_nontonchao.entities.Event;
 import com.example.oasip_back_nontonchao.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class EventController {
     private EventService service;
 
     @GetMapping("")
-    public List<Event> getAllEvent() {
-        return service.getEvents();
+    public EventPage getAllEvent(@RequestParam(defaultValue = "") int page) {
+        return service.getEvents(page);
     }
 
     @PutMapping("/edit")
@@ -27,8 +28,7 @@ public class EventController {
             return new ResponseEntity("date time error", HttpStatus.BAD_REQUEST);
         } else {
             Event event = update;
-            List<Event> compare = service.getEventsFromCategory(update.getEventCategory().getId());
-            compare.remove(compare.indexOf(update) + 1);
+            List<Event> compare = service.getEventsFromCategoryExcept(update.getEventCategory().getId(), update.getId());
             if (compare.stream().count() == 0) {
                 service.addEvent(event);
                 return ResponseEntity.ok(HttpStatus.OK);
