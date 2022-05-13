@@ -38,7 +38,7 @@ const props = defineProps({
                     <div class="mr-2">
                       <img
                         class="w-6 h-6 rounded-full"
-                        src="/icon/client-icon.jpg"
+                        src="/sy1/icon/client-icon.jpg"
                       />
                     </div>
                     <span class="font-medium">{{
@@ -55,7 +55,7 @@ const props = defineProps({
                   <div class="flex items-center justify-center">
                     <img
                       class="w-6 h-6 rounded-full border-gray-200 border transform hover:scale-125"
-                      src="/Adviser/adviser-icon.jpg"
+                      src="/sy1/Adviser/adviser-icon.jpg"
                     />
                   </div>
                 </td>
