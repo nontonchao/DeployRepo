@@ -41,7 +41,7 @@ const getAllEventList = async (page) => {
   let ret = {};
   // const res = await fetch(`http://localhost:8080/api/events?page=${page}`, {
     //const res = await fetch("http://10.4.56.118:8080/api/events", {
-  const res = await fetch(`${import.meta.env.BASE_URL}/api/events`, {
+  const res = await fetch(`${import.meta.env.BASE_URL}/api/events?page=${page}`, {
     method: "GET",
   });
   if (res.status == 200) {

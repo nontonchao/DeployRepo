@@ -35,12 +35,12 @@ const props = defineProps({
               >
                 <td class="py-3 px-6 text-left whitespace-nowrap">
                   <div class="flex items-center">
-                    <div class="mr-2">
+                    <!-- <div class="mr-2">
                       <img
                         class="w-6 h-6 rounded-full"
                         src="/sy1/icon/client-icon.jpg"
                       />
-                    </div>
+                    </div> -->
                     <span class="font-medium">{{
                       cate.eventCategoryName
                     }}</span>
@@ -55,7 +55,7 @@ const props = defineProps({
                   <div class="flex items-center justify-center">
                     <img
                       class="w-6 h-6 rounded-full border-gray-200 border transform hover:scale-125"
-                      src="/sy1/Adviser/adviser-icon.jpg"
+                      src="/Adviser/adviser-icon.jpg"
                     />
                   </div>
                 </td>
