@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from "vue";
 const props = defineProps({
   cateList: {
     type: Object,
@@ -6,6 +7,7 @@ const props = defineProps({
     default: {},
   },
 });
+const durat = ref("");
 </script>
 
 <template>
@@ -35,12 +37,12 @@ const props = defineProps({
               >
                 <td class="py-3 px-6 text-left whitespace-nowrap">
                   <div class="flex items-center">
-                    <!-- <div class="mr-2">
+                    <div class="mr-2">
                       <img
-                        class="w-6 h-6 rounded-full"
-                        src="/sy1/icon/client-icon.jpg"
+                        class="w-10 h-10 rounded-full"
+                        src="/icon/client-icon.jpg"
                       />
-                    </div> -->
+                    </div>
                     <span class="font-medium">{{
                       cate.eventCategoryName
                     }}</span>
@@ -54,7 +56,7 @@ const props = defineProps({
                 <td class="py-3 px-6 text-center">
                   <div class="flex items-center justify-center">
                     <img
-                      class="w-6 h-6 rounded-full border-gray-200 border transform hover:scale-125"
+                      class="w-10 h-10 rounded-full border-gray-200 border transform hover:scale-125"
                       src="/Adviser/adviser-icon.jpg"
                     />
                   </div>
@@ -117,25 +119,27 @@ const props = defineProps({
   <!-- Modal body -->
   <div
     class="p-6 space-y-6 max-w-md container mx-auto content-center leading-8 bg-gray-500"
+    v-for="(cate, index) in cateList"
+    :key="index"
   >
     <div class="w-full md:w-full px-3 mb-6 md:mb-0">
       <p>อาจารย์ที่ปรึกษา :</p>
       <div class="w-full md:w-full px-3 mb-6 md:mb-0 flex flex-col">
         <p>ระยะเวลา :</p>
-        <input type="nuumber" />
+        <input type="nuumber" v-model="durat" />
       </div>
       <div class="w-full md:w-full px-3 mb-6 md:mb-0">
-        <p>รายละเอียด :</p>
+        <p>รายละเอียด : {{ cate.eventCategoryDescription }}</p>
       </div>
     </div>
     <!-- Modal footer -->
     <div
-      class="flex items-center justify-end p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"
+      class="flex items-center justify-end p-6 space-x-2 rounded-b border-t border-gray-200 "
     >
       <button
         data-modal-toggle="defaultModal"
         type="button"
-        class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm text-center font-bold py-2 px-4 rounded-full m-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm text-center font-bold py-2 px-4 rounded-full m-1 "
       >
         ยืนยันการแก้ไข
       </button>

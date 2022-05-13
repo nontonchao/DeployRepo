@@ -304,7 +304,7 @@ const ValidateTime = (time) => {
         <!-- Modal header 400 -->
         <div v-show="is400==true" class="flex justify-between items-start p-5">
           <h3
-            class="text-xl text-red-500 font-semibold text-gray-900 lg:text-2xl"
+            class="text-xl text-red-500 font-semibold lg:text-2xl"
           >
             เกิดข้อผิดพลาด
           </h3>

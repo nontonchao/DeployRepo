@@ -272,7 +272,7 @@ const gen_color = (id) => {
           </div>
           <!-- Modal footer -->
           <div
-            class="flex items-center justify-end p-3 space-x-2 rounded-b border-gray-200 dark:border-gray-600 p-8"
+            class="flex items-center justify-end space-x-2 rounded-b border-gray-200 dark:border-gray-600 p-8"
           >
             <button
               data-modal-toggle="defaultModal"

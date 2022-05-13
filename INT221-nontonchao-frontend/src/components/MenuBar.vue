@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
-const isOpen = ref()
+const isOpen = ref(false)
 const toggleMenu = () => {
     isOpen.value = !isOpen.value
 }
@@ -40,27 +40,27 @@ const toggleMenu = () => {
                     <li>
                         <router-link
                             class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 " 
-                            :to="{ name: 'Home' }">หน้าหลัก</router-link>
+                            :to="{ name: 'Home' }" @click="toggleMenu()" >หน้าหลัก</router-link>
                     </li>
                     <li>
                         <router-link
                             class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 "
-                            :to="{ name: 'AddEvent' }">จองนัดหมาย</router-link>
+                            :to="{ name: 'AddEvent' }" @click="toggleMenu()">จองนัดหมาย</router-link>
                     </li>
                     <li>
                         <router-link
                             class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300 "
-                            :to="{ name: 'CheckEvent' }">ตรวจสอบนัดหมาย</router-link>
+                            :to="{ name: 'CheckEvent' }" @click="toggleMenu()">ตรวจสอบนัดหมาย</router-link>
                     </li>
                     <li>
                         <router-link
                             class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300"
-                            :to="{ name: 'EventCategoryList' }">หมวดหมู่</router-link>
+                            :to="{ name: 'EventCategoryList' }" @click="toggleMenu()">หมวดหมู่</router-link>
                     </li>
                         <li>
                         <router-link
                             class="text-lg font-bold py-2 px-4 rounded-3xl hover:text-white drop-shadow-2xl transform  text-black delay-50 hover:-translate-y-1  duration-300"
-                            :to="{ name: 'AboutUs' }">เกี่ยวกับเรา</router-link>
+                            :to="{ name: 'AboutUs' }" @click="toggleMenu()" >เกี่ยวกับเรา</router-link>
                     </li>
                 </ul>
             </div>

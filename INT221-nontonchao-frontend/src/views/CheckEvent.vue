@@ -10,6 +10,7 @@ const selectedClinic = ref("ทั้งหมด");
 const status = ref("ทั้งหมด");
 const is400 = ref(false);
 const tPage = ref(0);
+const currPage = ref(0);
 
 const numberFormat = function (number, width) {
   return new Array(+width + 1 - (number + "").length).join("0") + number;
@@ -25,8 +26,8 @@ const datetime = `${currentdate.getFullYear()}-${numberFormat(
 const eventCateList = ref({});
 
 const getEventCategoryList = async () => {
-  // const res = await fetch("http://localhost:8080/api/events-category", {
-    //const res = await fetch("http://10.4.56.118:8080/api/events-category", {
+  //const res = await fetch("http://localhost:8080/api/events-category", {
+  // const res = await fetch("http://10.4.56.118:8080/api/events-category", {
   const res = await fetch(`${import.meta.env.BASE_URL}api/events-category`, {
     method: "GET",
   });
@@ -39,8 +40,8 @@ const getEventCategoryList = async () => {
 
 const getAllEventList = async (page) => {
   let ret = {};
-  // const res = await fetch(`http://localhost:8080/api/events?page=${page}`, {
-    //const res = await fetch("http://10.4.56.118:8080/api/events", {
+  //const res = await fetch(`http://localhost:8080/api/events?page=${page}`, {
+  // const res = await fetch(`http://10.4.56.118:8080/api/events?page=${page}`, {
   const res = await fetch(`${import.meta.env.BASE_URL}api/events?page=${page}`, {
     method: "GET",
   });
@@ -48,6 +49,7 @@ const getAllEventList = async (page) => {
     ret = await res.json();
     tPage.value = ret.totalPages;
     eventList.value = ret.content;
+    currPage.value = ret.number
     filter_list.value = eventList.value;
   } else {
     console.log("error while fetching");
@@ -57,7 +59,7 @@ const getAllEventList = async (page) => {
 
 const editDateTime = async (updateEvent) => {
   // const res = await fetch(`http://localhost:8080/api/events/edit/`, {
-    //const res = await fetch(`http://10.4.56.118:8080/api/events/edit/`, {
+  // const res = await fetch(`http://10.4.56.118:8080/api/events/edit/`, {
   const res = await fetch(`${import.meta.env.BASE_URL}api/events/edit/`, {
     method: "PUT",
     headers: {
@@ -76,7 +78,7 @@ const editDateTime = async (updateEvent) => {
 
 const deleteEventFromId = async (id) => {
   // const res = await fetch(`http://localhost:8080/api/events/delete/${id}`, {
-    // const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${id}`, {
+  // const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${id}`, {
   const res = await fetch(`${import.meta.env.BASE_URL}api/events/delete/${id}`, {
     method: "DELETE",
   });
@@ -223,6 +225,7 @@ const filterEvent = (search) => {
         <ul class="inline-flex space-x-2">
           <li>
             <button
+              @click="currPage -= 1;currPage < 0 ? getAllEventList(0): getAllEventList(currPage);"
               class="flex items-center justify-center w-10 h-10 text-green-600 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-green-100">
               <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                 <path
@@ -240,6 +243,7 @@ const filterEvent = (search) => {
           </li>
           <li>
             <button
+              @click="currPage += 1;currPage >= tPage ? getAllEventList(tPage-1) : getAllEventList(currPage);"
               class="flex items-center justify-center w-10 h-10 text-green-600 transition-colors duration-150  rounded-full focus:shadow-outline hover:bg-green-100">
               <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                 <path
