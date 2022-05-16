@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 
 const props = defineProps({
   cliniclist: {
@@ -18,6 +18,22 @@ const msgNoti = ref("");
 const toSend = ref("");
 const is400 = ref(false);
 const is200 = ref(false);
+
+
+const getCurrDate = () => {
+  const today = new Date();
+  return `${today.getFullYear()}-${numberFormat(
+  new Date(today.toString()).getMonth() + 1,
+  2
+)}-${numberFormat(new Date(today.toString()).getDate(), 2)}T${today
+  .toLocaleTimeString("it-IT")
+  .substring(0, 5)}`;
+}
+
+onBeforeMount(() => {
+  console.log(getCurrDate())
+});
+
 
 const addEventList = async () => {
   toSend.value = {
@@ -56,9 +72,9 @@ const addEventList = async () => {
   if (res.status == 200) {
     console.log("event added :)");
     toggleQue();
-    is200.value = true
+    is200.value = true;
   } else if (res.status == 400) {
-    is400.value = true
+    is400.value = true;
     console.log("error while adding || error: " + (await res.text()));
   } else {
     console.log("error while adding || error: " + (await res.text()));
@@ -71,11 +87,13 @@ const toggleQue = () => {
   is400.value = false;
 };
 
-const isFullfill = () => {
+const isNotFullfill = () => {
   if (
     name.value === "" ||
-    email.value === "" || emailErr.value == 2 ||
-    startTime.value === "" || new Date().toLocaleString() > startTime.value
+    email.value === "" ||
+    emailErr.value == 2 ||
+    startTime.value === "" ||
+    getCurrDate() > startTime.value
   ) {
     return true;
   } else {
@@ -95,13 +113,6 @@ const numberFormat = function (number, width) {
   return new Array(+width + 1 - (number + "").length).join("0") + number;
 };
 
-const today = new Date();
-const currDate = `${today.getFullYear()}-${numberFormat(
-  new Date(today.toString()).getMonth() + 1,2
-)}-${numberFormat(new Date(today.toString()).getDate(), 2)}T${today
-  .toLocaleTimeString("it-IT")
-  .substring(0, 5)}`;
-
 
 const emailErr = ref(0);
 const ValidateEmail = (mail) => {
@@ -115,18 +126,22 @@ const ValidateEmail = (mail) => {
 };
 
 const timeErr = ref(0);
+
+//better use watch
 const ValidateTime = (time) => {
+  console.log(`startime: ${startTime.value}`)
+  console.log(`currDate: ${getCurrDate()}`)
   return time == "" ? (timeErr.value = 0) : (timeErr.value = 1);
 };
 </script>
 
 <template>
   <div
-    class="w-full pt-4 max-w-lg md:w-3/5 px-6 mb-8 container mx-auto content-center leading-8 "
+    class="w-full pt-4 max-w-lg md:w-3/5 px-6 mb-8 container mx-auto content-center leading-8"
   >
     <div
       v-show="false"
-      class="w- full border-solid border border-red-600 font-bold rounded-lg "
+      class="w- full border-solid border border-red-600 font-bold rounded-lg"
     >
       <div class="p-3 w-full bg-red-600 text-white rounded-lg">
         <p>เกิดข้อผิดพลาด</p>
@@ -222,19 +237,19 @@ const ValidateTime = (time) => {
         <p class="text-red-600 text-sm font-bold pl-2" v-show="startTime == ''">
           * กรุณาเลือกวันและเวลา
         </p>
-        <p class="text-red-600 text-sm font-bold pl-2 " v-show="currDate > startTime">
+        <p
+          class="text-red-600 text-sm font-bold pl-2"
+          v-show="getCurrDate() > startTime"
+        >
           * กรุณาเลือกช่วงเวลาในปัจจุบันหรืออนาคต
-        </p>
-        <p class="text-green-400 text-sm font-bold pl-2 " v-show="currDate < startTime">
-          * อนาคต
         </p>
         <input
           type="datetime-local"
           v-model="startTime"
-          @keyup="ValidateTime(startTime)"
+          @change="ValidateTime(startTime)"
           required
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          :min="currDate"
+          :min="getCurrDate()"
         />
       </div>
     </div>
@@ -257,8 +272,8 @@ const ValidateTime = (time) => {
     </div>
     <div class="w-full m-5 md:w-full px-3 mb-8 md:mb-0">
       <button
-        @click="toggleQue()"
-        :disabled="isFullfill()"
+        @click="isNotFullfill() ? '' : toggleQue()"
+        :disabled="isNotFullfill()"
         class="bg-white border-4 border-main text-black rounded-3xl font-bold flex p-3 hover:text-white drop-shadow-2xl hover:-translate-y-1 hover:bg-main"
         type="button"
       >
@@ -279,7 +294,10 @@ const ValidateTime = (time) => {
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow">
         <!-- Modal header 200 -->
-        <div v-show="is400==false" class="flex justify-between items-start p-5 rounded-t border-b">
+        <div
+          v-show="is400 == false"
+          class="flex justify-between items-start p-5 rounded-t border-b"
+        >
           <h3 class="text-xl font-semibold text-gray-900 lg:text-2xl">
             ยืนยันการจอง
           </h3>
@@ -304,10 +322,11 @@ const ValidateTime = (time) => {
           </button>
         </div>
         <!-- Modal header 400 -->
-        <div v-show="is400==true" class="flex justify-between items-start p-5">
-          <h3
-            class="text-xl text-red-500 font-semibold lg:text-2xl"
-          >
+        <div
+          v-show="is400 == true"
+          class="flex justify-between items-start p-5"
+        >
+          <h3 class="text-xl text-red-500 font-semibold lg:text-2xl">
             เกิดข้อผิดพลาด
           </h3>
           <button
@@ -332,7 +351,7 @@ const ValidateTime = (time) => {
         </div>
 
         <!-- Modal body 200 -->
-        <div v-show="is400==false" class="p-6 space-y-6">
+        <div v-show="is400 == false" class="p-6 space-y-6">
           <h3 class="text-base leading-relaxed text-yellow-300">
             <strong>{{ clinicX }}</strong>
           </h3>
@@ -344,7 +363,7 @@ const ValidateTime = (time) => {
           </p>
         </div>
         <!-- Modal body 400 -->
-        <div v-show="is400==true" class="p-6 space-y-6 text-center">
+        <div v-show="is400 == true" class="p-6 space-y-6 text-center">
           <svg
             class="mx-auto mb-4 w-14 h-14 text-yellow-400"
             fill="none"
@@ -371,7 +390,8 @@ const ValidateTime = (time) => {
 
         <!-- Modal footer -->
         <div
-          v-show="is400==false" class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200"
+          v-show="is400 == false"
+          class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200"
         >
           <button
             data-modal-toggle="defaultModal"
@@ -400,46 +420,40 @@ const ValidateTime = (time) => {
   <!-- modal successful -->
   <div
     v-show="is200"
-    id="popup-modal"
+    id="defaultModal"
     tabindex="-1"
     aria-hidden="true"
-    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full"
+    class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex backdrop bg-black/50"
   >
-    <div class="relative p-4 w-full max-w-md h-full md:h-auto">
-      <div class="relative bg-white rounded-lg shadow">
-        <div class="p-6 text-center" @click="is200 = !is200">
-          <svg
-            class="h-6 w-6 text-green-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 13l4 4L19 7"
-            ></path>
-          </svg>
-          <h3 class="mb-5 text-lg font-normal text-gray-500">
-            การนัดหมายของคุณสำเร็จแล้ว
-          </h3>
-          <a>ดูรายละเอียด...</a>
-          <button
-            @click="is200 = !is200"
-            data-modal-toggle="popup-modal"
-            type="button"
-            class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-          >
-            ตกลง
-          </button>
+    <div class="relative p-4 w-full max-w-lg h-full md:h-auto">
+      <!-- Modal content 200-->
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                    <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" 
+viewBox="0 0 24 24"
+xmlnx="http://www.w.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+d="M5 13l4 4L19 7">
+</path></svg>
+                </div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">การนัดหมายของคุณสำเร็จแล้ว</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500">สามารถดูรายละเอียดได้ที่</p>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button  @click="is200 = !is200"
+id="ok-btn"
+                        class="px-4 py-2 bg-green-500 text-white 
+                            text-base font-medium rounded-md w-full 
+                            shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+                       ตกลง
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
   </div>
-  <!-- modal successful -->
-
+  </div>
+  <!-- ----------------------------------------------------------------------- -->
   <!-- alert noti -->
   <div
     v-if="false"

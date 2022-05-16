@@ -10,12 +10,12 @@ const props = defineProps({
   },
 });
 
+
 let tmp = {
   eventNotes: "dummy notes",
   eventCategory: { eventCategoryName: "dummy event" },
 };
-const fromCheck400 = props.is400;
-const is400 = ref(fromCheck400);
+
 
 onBeforeMount(() => {
   if (props.eventList.length > 0) {
@@ -41,6 +41,7 @@ const datetime = `${currentdate.getFullYear()}-${numberFormat(
   .toLocaleTimeString("it-IT")
   .substring(0, 5)}`;
 
+const is400 = ref(false);
 const isDel = ref(false);
 const toggleDel = () => {
   isDel.value = !isDel.value;
@@ -49,7 +50,6 @@ const toggleDel = () => {
 const isEdit = ref(false);
 const toggleEdit = () => {
   isEdit.value = !isEdit.value;
-  is400.value = false;
 };
 
 let tmpdt = ref("");
@@ -199,9 +199,9 @@ const gen_color = (id) => {
       id="defaultModal"
       tabindex="-1"
       aria-hidden="true"
-      class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex backdrop bg-black/50"
+      class="overflow-x-hidden  overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex backdrop bg-black/50"
     >
-      <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+      <div class="relative p-4 w-full max-w-md h-full md:h-auto">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <!-- Modal header -->
@@ -340,6 +340,7 @@ const gen_color = (id) => {
               <p>ชื่อผู้นัดหมาย : {{ tmp.bookingName }}</p>
               <p>อีเมล : {{ tmp.bookingEmail }}</p>
               <p>คลินิก : {{ tmp.eventCategory.eventCategoryName }}</p>
+              <p>ระยะเวลา : {{ tmp.eventDuration }} นาที</p>
               <label
                 class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 m-3"
                 for=""

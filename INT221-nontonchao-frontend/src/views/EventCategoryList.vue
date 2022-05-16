@@ -17,6 +17,11 @@ const getEventCategoryList = async () => {
   }
 };
 
+const editEventCategory = (updatedEventCat) => {
+  console.log(`${updatedEventCat.id} edit แล้ว`)
+}
+
+
 onBeforeMount(async () => {
   await getEventCategoryList();
 });
@@ -24,7 +29,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-<CategoryList :cateList="eventCateList" /> 
+<CategoryList :cateList="eventCateList" @edit="editEventCategory" /> 
 </template>
 
 <style></style>
