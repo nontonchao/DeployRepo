@@ -17,6 +17,7 @@ const startTime = ref("");
 const msgNoti = ref("");
 const toSend = ref("");
 const is400 = ref(false);
+const is200 = ref(false);
 
 const addEventList = async () => {
   toSend.value = {
@@ -55,6 +56,7 @@ const addEventList = async () => {
   if (res.status == 200) {
     console.log("event added :)");
     toggleQue();
+    is200.value = true
   } else if (res.status == 400) {
     is400.value = true
     console.log("error while adding || error: " + (await res.text()));
@@ -73,7 +75,7 @@ const isFullfill = () => {
   if (
     name.value === "" ||
     email.value === "" || emailErr.value == 2 ||
-    startTime.value === "" || currDate.value >  startTime.value
+    startTime.value === "" || new Date().toLocaleString() > startTime.value
   ) {
     return true;
   } else {
@@ -397,7 +399,7 @@ const ValidateTime = (time) => {
 
   <!-- modal successful -->
   <div
-    v-show="isQue"
+    v-show="is200"
     id="popup-modal"
     tabindex="-1"
     aria-hidden="true"
@@ -405,7 +407,7 @@ const ValidateTime = (time) => {
   >
     <div class="relative p-4 w-full max-w-md h-full md:h-auto">
       <div class="relative bg-white rounded-lg shadow">
-        <div class="p-6 text-center">
+        <div class="p-6 text-center" @click="is200 = !is200">
           <svg
             class="h-6 w-6 text-green-600"
             fill="none"
@@ -425,6 +427,7 @@ const ValidateTime = (time) => {
           </h3>
           <a>ดูรายละเอียด...</a>
           <button
+            @click="is200 = !is200"
             data-modal-toggle="popup-modal"
             type="button"
             class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"

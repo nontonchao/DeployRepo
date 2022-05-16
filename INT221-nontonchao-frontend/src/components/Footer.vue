@@ -12,6 +12,7 @@
                 <a id="callHyperLink" target="_blank" class="text-white text-center text-lg w-full mb-4" href="https://github.com/nontonchao">
                     github Team : Nontonchao
                 </a>
+                <p class="mt-5 select-none">&copy; 2022 SIT KMUTT INT221-Integrated-Project</p>
             </div>
         </div>
     </div>
