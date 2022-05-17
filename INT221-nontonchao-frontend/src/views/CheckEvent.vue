@@ -26,8 +26,8 @@ const datetime = `${currentdate.getFullYear()}-${numberFormat(
 const eventCateList = ref({});
 
 const getEventCategoryList = async () => {
-  //const res = await fetch("http://localhost:8080/api/events-category", {
-  // const res = await fetch("http://10.4.56.118:8080/api/events-category", {
+  // const res = await fetch("http://localhost:8080/api/events-category", {
+    //const res = await fetch("http://10.4.56.118:8080/api/events-category", {
   const res = await fetch(`${import.meta.env.BASE_URL}/api/events-category`, {
     method: "GET",
   });
@@ -40,8 +40,8 @@ const getEventCategoryList = async () => {
 
 const getAllEventList = async (page) => {
   let ret = {};
-  //const res = await fetch(`http://localhost:8080/api/events?page=${page}`, {
-  // const res = await fetch(`http://10.4.56.118:8080/api/events?page=${page}`, {
+  // const res = await fetch(`http://localhost:8080/api/events?page=${page}`, {
+    //const res = await fetch(`http://10.4.56.118:8080/api/events?page=${page}`, {
   const res = await fetch(`${import.meta.env.BASE_URL}/api/events?page=${page}`, {
     method: "GET",
   });
@@ -57,15 +57,15 @@ const getAllEventList = async (page) => {
   return ret;
 };
 
-const editDateTime = async (updateEvent) => {
-  // const res = await fetch(`http://localhost:8080/api/events/edit/`, {
-  // const res = await fetch(`http://10.4.56.118:8080/api/events/edit/`, {
-  const res = await fetch(`${import.meta.env.BASE_URL}/api/events/edit/`, {
+const editEvent = async (updateEvent) => {
+  // const res = await fetch(`http://localhost:8080/api/events/${updateEvent.eventId}`, {
+    //const res = await fetch(`http://10.4.56.118:8080/api/events/${updateEvent.eventId}`, {
+  const res = await fetch(`${import.meta.env.BASE_URL}/api/events/${updateEvent.eventId}`, {
     method: "PUT",
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify(updateEvent),
+    body: JSON.stringify(updateEvent.toUpdate),
   });
   if (res.status == 200) {
     console.log("edited");
@@ -78,7 +78,7 @@ const editDateTime = async (updateEvent) => {
 
 const deleteEventFromId = async (id) => {
   // const res = await fetch(`http://localhost:8080/api/events/delete/${id}`, {
-  // const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${id}`, {
+    //const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${id}`, {
   const res = await fetch(`${import.meta.env.BASE_URL}/api/events/delete/${id}`, {
     method: "DELETE",
   });
@@ -217,15 +217,14 @@ const filterEvent = (search) => {
     </div>
   </div>
 
-  <AllEventList :eventList="filter_list" @delete="deleteEventFromId" @edit="editDateTime" />
+  <AllEventList :eventList="filter_list" @delete="deleteEventFromId" @edit="editEvent" />
 
   <div v-show="filter_list.length" class="content-center flex justify-center bg-main">
     <div class="bg-main p-4 flex items-center flex-wrap content-center leading-8">
       <nav aria-label="Page navigation">
         <ul class="inline-flex space-x-2">
           <li>
-            <button
-              @click="currPage -= 1;currPage < 0 ? getAllEventList(0): getAllEventList(currPage);"
+            <button @click="currPage -= 1; currPage < 0 ? getAllEventList(0) : getAllEventList(currPage);"
               class="flex items-center justify-center w-10 h-10 text-green-600 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-green-100">
               <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                 <path
@@ -237,14 +236,12 @@ const filterEvent = (search) => {
           <li v-for="i in tPage">
             <button
               class="w-10 h-10 text-black transition-colors duration-150 hover:bg-acqua rounded-full focus:shadow-outline"
-              :class="i-1 == currPage ? 'bg-white' : ''"
-              @click="getAllEventList(i - 1)">
+              :class="i - 1 == currPage ? 'bg-white' : ''" @click="getAllEventList(i - 1)">
               {{ i }}
             </button>
           </li>
           <li>
-            <button
-              @click="currPage += 1;currPage >= tPage ? getAllEventList(tPage-1) : getAllEventList(currPage);"
+            <button @click="currPage += 1; currPage >= tPage ? getAllEventList(tPage - 1) : getAllEventList(currPage);"
               class="flex items-center justify-center w-10 h-10 text-green-600 transition-colors duration-150  rounded-full focus:shadow-outline hover:bg-green-100">
               <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                 <path
