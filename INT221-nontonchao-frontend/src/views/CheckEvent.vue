@@ -13,7 +13,6 @@ const selectDate = ref("");
 const search = ref("");
 const selectedClinic = ref("ทั้งหมด");
 const status = ref("ทั้งหมด");
-const is400 = ref(false);
 const eventCateList = ref({});
 
 const numberFormat = function (number, width) {
@@ -28,37 +27,13 @@ const datetime = `${currentdate.getFullYear()}-${numberFormat(
   .substring(0, 5)}`;
 
 
-const editEvent = async (updateEvent) => {
-  // const res = await fetch(`http://localhost:8080/api/events/${updateEvent.eventId}`, {
-  // const res = await fetch(`http://10.4.56.118:8080/api/events/${updateEvent.eventId}`, {
-  const res = await fetch(`${import.meta.env.BASE_URL}/api/events/${updateEvent.eventId}`, {
-    method: "PUT",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(updateEvent.toUpdate),
-  });
-  if (res.status == 200) {
-    console.log("edited");
-  } else {
-    eventList.value = await getAllEventList(0);
-    is400.value = true;
-    filter_list.value = eventList.value;
-  }
+const editEvent = async (editEvent) => {
+  await eventStore.editEvent(editEvent);
+  console.log(eventStore.statusMessage);
 };
 
 const deleteEventFromId = async (id) => {
-  // const res = await fetch(`http://localhost:8080/api/events/delete/${id}`, {
-  // const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${id}`, {
-  const res = await fetch(`${import.meta.env.BASE_URL}/api/events/delete/${id}`, {
-    method: "DELETE",
-  });
-  if (res.status == 200) {
-    eventList.value = eventList.value.filter((event) => event.id !== id);
-    filter_list.value = filter_list.value.filter((event) => event.id !== id);
-  } else {
-    console.log("error while fetching || error :" + (await res.text()));
-  }
+  await eventStore.removeEvent(id);
 };
 
 onBeforeMount(async () => {

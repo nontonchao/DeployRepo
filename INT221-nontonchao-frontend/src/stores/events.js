@@ -3,8 +3,13 @@ import { ref } from "vue";
 
 export const useEvents = defineStore("events", () => {
     const events = ref([]);
+    // const statusCode = ref(0);
+    // const statusMessage = ref(0);
+    const addCode = ref(0);
+    const editCode = ref(0);
 
     const addEvent = async(event) => {
+        // const res = await fetch(`http://localhost:8080/api/events`, {
         // const res = await fetch(`http://10.4.56.118:8080/api/events`, {
         const res = await fetch(`${import.meta.env.BASE_URL}api/events`, {
             method: "POST",
@@ -13,12 +18,18 @@ export const useEvents = defineStore("events", () => {
             },
             body: JSON.stringify(event),
         });
-        if (res.status === 201) {
+        if (res.status == 200) {
+            addCode.value = res.status;
             await fetchEvents();
+        } else if (res.status == 400) {
+            addCode.value = res.status;
+        } else {
+            console.log("error while adding");
         }
     };
 
     const removeEvent = async(eventId) => {
+        // const res = await fetch(`http://localhost:8080/api/events/delete/${eventId}`, {
         // const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${eventId}`, {
         const res = await fetch(`${import.meta.env.BASE_URL}api/events/delete/${eventId}`, {
                 method: "DELETE",
@@ -30,24 +41,59 @@ export const useEvents = defineStore("events", () => {
             );
             events.value.splice(eventIndex, 1);
         } else {
-            console.log("error while delete || error :" + (await res.text()));
+            console.log("error while delete || error :" + statusMessage.value);
+        }
+    };
+
+    const editEvent = async(editEvent) => {
+        // const res = await fetch(`http://localhost:8080/api/events/${editEvent.eventId}`, {
+        // const res = await fetch(`http://10.4.56.118:8080/api/events/${editEvent.eventId}`, {
+        const res = await fetch(`${import.meta.env.BASE_URL}events/${editEvent.eventId}`, {
+                method: "PUT",
+                headers: {
+                    "content-type": "application/json",
+                },
+                body: JSON.stringify(editEvent.toUpdate),
+            }
+        );
+        if (res.status == 200) {
+            editCode.value = res.status;
+            await fetchEvents();
+        } else if (res.status == 400) {
+            editCode.value = res.status;
+        } else {
+            console.log("error while editing");
         }
     };
 
     const fetchEvents = async() => {
         try {
+            // const res = await fetch(`http://localhost:8080/api/events`, {
             // const res = await fetch(`http://10.4.56.118:8080/api/events`, {
             const res = await fetch(`${import.meta.env.BASE_URL}api/events`, {
                 method: "GET",
             });
             events.value = await res.json();
+            events.value.forEach((event) => {
+                if (event.eventNotes == null) {
+                    event.eventNotes = "";
+                }
+            });
             return events.value;
         } catch (err) {
             console.log(err);
         }
     };
 
-    return { events, fetchEvents, removeEvent, addEvent };
+    return {
+        events,
+        fetchEvents,
+        removeEvent,
+        addEvent,
+        editEvent,
+        addCode,
+        editCode,
+    };
 });
 
 if (

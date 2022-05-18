@@ -1,5 +1,6 @@
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { ref } from "vue";
+import { useEvents } from "../stores/events.js";
 
 const props = defineProps({
   cliniclist: {
@@ -9,6 +10,7 @@ const props = defineProps({
   },
 });
 
+const eventStore = useEvents();
 const name = ref("");
 const email = ref("");
 const clinicX = ref("");
@@ -33,8 +35,9 @@ const getCurrDate = () => {
 };
 
 const getClinic = (clinicName) => {
-   selectClinic.value = props.cliniclist.filter(
-    (x) => x.eventCategoryName == clinicName)[0];
+  selectClinic.value = props.cliniclist.filter(
+    (x) => x.eventCategoryName == clinicName
+  )[0];
 };
 
 const addEventList = async () => {
@@ -56,33 +59,17 @@ const addEventList = async () => {
       ),
     },
   };
-
-  // const res = await fetch("http://localhost:8080/api/events", {
-  // const res = await fetch(`http://10.4.56.118:8080/api/events`, {
-  const res = await fetch(`${import.meta.env.BASE_URL}/api/events`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(toSend.value),
-  });
-
-  if (res.status == 200) {
+  eventStore.addEvent(toSend.value);
+  if (eventStore.statusCode == 200) {
     console.log("event added :)");
     toggleQue();
-    is200.value = true;
-  } else if (res.status == 400) {
-    is400.value = true;
-    console.log("error while adding || error: " + (await res.text()));
-  } else {
-    console.log("error while adding || error: " + (await res.text()));
   }
 };
 
 const isQue = ref(false);
 const toggleQue = () => {
   isQue.value = !isQue.value;
-  is400.value = false;
+  eventStore.addCode = 0;
 };
 
 const isNotFullfill = () => {
@@ -123,11 +110,7 @@ const ValidateEmail = (mail) => {
 };
 
 const timeErr = ref(0);
-
-//better use watch
 const ValidateTime = (time) => {
-  console.log(`startime: ${startTime.value}`);
-  console.log(`currDate: ${getCurrDate()}`);
   return time == "" ? (timeErr.value = 0) : (timeErr.value = 1);
 };
 </script>
@@ -307,9 +290,9 @@ const ValidateTime = (time) => {
     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow">
-        <!-- Modal header 200 -->
+        <!-- Modal header normal -->
         <div
-          v-show="is400 == false"
+          v-show="eventStore.addCode == 0"
           class="flex justify-between items-start p-5 rounded-t border-b"
         >
           <h3 class="text-xl font-semibold text-gray-900 lg:text-2xl">
@@ -335,16 +318,65 @@ const ValidateTime = (time) => {
             </svg>
           </button>
         </div>
-        <!-- Modal header 400 -->
+        <!-- Modal body normal -->
+        <div v-show="eventStore.addCode == 0" class="p-6 space-y-6">
+          <h3 class="text-base leading-relaxed text-green-500">
+            <strong>{{ clinicX }}</strong>
+          </h3>
+          <p class="text-base leading-relaxed text-gray-500">
+            วันที่ : {{ startTime.substring(0, 10) }}
+          </p>
+          <p class="text-base leading-relaxed text-gray-500">
+            เวลา : {{ startTime.substring(11, 16) }}
+          </p>
+        </div>
+        <!-- Modal footer -->
         <div
-          v-show="is400 == true"
-          class="flex justify-between items-start p-5"
+          v-show="eventStore.addCode == 0"
+          class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200"
         >
+          <button
+            data-modal-toggle="defaultModal"
+            type="button"
+            @click="
+              toggleQue();
+              eventStore.addCode = 0;
+              addEventList();
+              resetModal();
+            "
+            class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          >
+            ยืนยันการนัดหมาย
+          </button>
+          <button
+            data-modal-toggle="defaultModal"
+            type="button"
+            @click="toggleQue()"
+            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
+          >
+            แก้ไข
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    v-show="eventStore.addCode == 400"
+    id="defaultModal"
+    tabindex="-1"
+    aria-hidden="true"
+    class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex backdrop bg-black/50"
+  >
+    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+      <div class="relative bg-white rounded-lg shadow">
+        <!-- Modal header 400 -->
+        <div class="flex justify-between items-start p-5">
           <h3 class="text-xl text-red-500 font-semibold lg:text-2xl">
             เกิดข้อผิดพลาด
           </h3>
           <button
-            @click="toggleQue()"
+            @click="eventStore.addCode = 0"
             type="button"
             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             data-modal-toggle="defaultModal"
@@ -363,20 +395,8 @@ const ValidateTime = (time) => {
             </svg>
           </button>
         </div>
-        <!-- Modal body 200 -->
-        <div v-show="is400 == false" class="p-6 space-y-6">
-          <h3 class="text-base leading-relaxed text-green-500">
-            <strong>{{ clinicX }}</strong>
-          </h3>
-          <p class="text-base leading-relaxed text-gray-500">
-            วันที่ : {{ startTime.substring(0, 10) }}
-          </p>
-          <p class="text-base leading-relaxed text-gray-500">
-            เวลา : {{ startTime.substring(11, 16) }}
-          </p>
-        </div>
         <!-- Modal body 400 -->
-        <div v-show="is400 == true" class="p-6 space-y-6 text-center">
+        <div class="p-6 space-y-6 text-center">
           <svg
             class="mx-auto mb-4 w-14 h-14 text-yellow-400"
             fill="none"
@@ -400,38 +420,13 @@ const ValidateTime = (time) => {
             >
           </h3>
         </div>
-        <!-- Modal footer -->
-        <div
-          v-show="is400 == false"
-          class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200"
-        >
-          <button
-            data-modal-toggle="defaultModal"
-            type="button"
-            @click="
-              addEventList();
-              resetModal();
-            "
-            class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          >
-            ยืนยันการนัดหมาย
-          </button>
-          <button
-            data-modal-toggle="defaultModal"
-            type="button"
-            @click="toggleQue()"
-            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
-          >
-            แก้ไข
-          </button>
-        </div>
       </div>
     </div>
   </div>
 
   <!-- modal successful -->
   <div
-    v-show="is200"
+    v-show="eventStore.addCode == 200"
     id="defaultModal"
     tabindex="-1"
     aria-hidden="true"
@@ -466,13 +461,15 @@ const ValidateTime = (time) => {
           </h3>
           <div class="mt-2 px-7 py-3">
             <p class="text-sm text-gray-500">สามารถดูรายละเอียดได้</p>
-               <router-link
+            <router-link
               class="text-base font-bold py-2 px-4 rounded-3xl underline decoration-blue-600 hover:text-blue-700 drop-shadow-2xl transform text-blue-500 delay-50 hover:-translate-y-1 duration-300"
-              :to="{ name: 'CheckEvent' }">ที่นี่</router-link>
+              :to="{ name: 'CheckEvent' }"
+              >ที่นี่</router-link
+            >
           </div>
           <div class="items-center px-4 py-3">
             <button
-              @click="is200 = !is200"
+              @click="eventStore.addCode = 0"
               id="ok-btn"
               class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
             >
@@ -484,6 +481,5 @@ const ValidateTime = (time) => {
     </div>
   </div>
   <!-- ----------------------------------------------------------------------- -->
- 
 </template>
 <style></style>
