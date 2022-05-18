@@ -16,5 +16,4 @@ onBeforeMount(async () => {
 <template>
   <CategoryList :cateList="eventCateList" />
 </template>
-<!-- @edit="editEventCategory" -->
 <style></style>
