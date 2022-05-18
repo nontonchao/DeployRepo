@@ -6,6 +6,7 @@ const toggleMenu = () => {
     isOpen.value = !isOpen.value
 }
 
+
 </script>
  
 <template>

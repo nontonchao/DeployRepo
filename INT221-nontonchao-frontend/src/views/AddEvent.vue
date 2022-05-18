@@ -1,24 +1,16 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import AddEventList from "../components/AddEventList.vue";
+import { useEvents } from '../stores/events.js';
+import { useEventCategory } from '../stores/eventCategory.js';
 
 const eventCateList = ref({});
-
-const getEventCategoryList = async () => {
-  // const res = await fetch("http://localhost:8080/api/events-category", {
-  const res = await fetch(`${import.meta.env.BASE_URL}/api/events-category`, {
-  // const res = await fetch(`http://10.4.56.118:8080/api/events-category`, {
-    method: "GET",
-  });
-  if (res.status == 200) {
-    eventCateList.value = await res.json();
-  } else {
-    console.log("error while fetching");
-  }
-};
+const eventStore = useEvents();
+const eventCateStore = useEventCategory();
 
 onBeforeMount(async () => {
-  await getEventCategoryList();
+  await eventStore.fetchEvents(0);
+  eventCateList.value = await eventCateStore.getEventCategoryList();
 });
 </script>
 

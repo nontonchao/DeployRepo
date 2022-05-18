@@ -58,8 +58,8 @@ const addEventList = async () => {
   };
 
   // const res = await fetch("http://localhost:8080/api/events", {
-    //const res = await fetch(`http://10.4.56.118:8080/api/events`, {
-  const res = await fetch(`${import.meta.env.BASE_URL}api/events`, {
+  // const res = await fetch(`http://10.4.56.118:8080/api/events`, {
+  const res = await fetch(`${import.meta.env.BASE_URL}/api/events`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -363,7 +363,6 @@ const ValidateTime = (time) => {
             </svg>
           </button>
         </div>
-
         <!-- Modal body 200 -->
         <div v-show="is400 == false" class="p-6 space-y-6">
           <h3 class="text-base leading-relaxed text-green-500">
@@ -401,7 +400,6 @@ const ValidateTime = (time) => {
             >
           </h3>
         </div>
-
         <!-- Modal footer -->
         <div
           v-show="is400 == false"

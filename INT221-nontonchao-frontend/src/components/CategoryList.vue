@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
+import { useEventCategory } from "../stores/eventCategory.js"
+
 // defineEmits(["edit"]);
 const props = defineProps({
   cateList: {
@@ -9,36 +11,11 @@ const props = defineProps({
   },
 });
 
+const EventCateStore = useEventCategory()
+
 const tmp = ref({
   eventCategoryDescription: "",
 });
-
-
-
-const is400 = ref(false);
-const is200 = ref(false);
-
-const editEventCategory = async (updatedEventCat) => {
-  // const res = await fetch(`http://localhost:8080/api/events-category/${updatedEventCat.id}`,{
-      //const res = await fetch("http://10.4.56.118:8080/api/events-category", {
-  const res = await fetch(`${import.meta.env.BASE_URL}api/events-category/${updatedEventCat.id}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(updatedEventCat),
-    }
-  );
-  if (res.status == 200) {
-    console.log(`${updatedEventCat.id} edit แล้ว`);
-    is200.value = true;
-  } else if (res.status == 400) {
-    is400.value = true;
-    console.log("error while editing || error: " + (await res.text()));
-  } else {
-    console.log("error while editing || error: " + (await res.text()));
-  }
-};
 
 const isEdit = ref(false);
 const toggleEdit = () => {
@@ -49,7 +26,7 @@ const toggleEdit = () => {
 <template>
   <div class="overflow-x-auto">
     <div
-      class="min-w-screen min-h-screen flex items-center justify-center bg-gray-100 font-sans overflow-hidden"
+      class="min-w-screen min-h-screen  flex items-center justify-center bg-gray-100 font-sans overflow-hidden"
     >
       <div class="w-full lg:w-5/6">
         <div class="bg-white shadow-md rounded my-6">
@@ -63,7 +40,7 @@ const toggleEdit = () => {
                 <th class="py-3 px-6 text-base text-center">
                   อาจารย์ที่ปรึกษา
                 </th>
-                <th class="py-3 px-6 text-base text-center">เพิ่มเติม</th>
+              
                 <th class="py-3 px-6 text-base text-center">แก้ไข</th>
               </tr>
             </thead>
@@ -99,35 +76,7 @@ const toggleEdit = () => {
                     />
                   </div>
                 </td>
-                <td class="py-3 px-6 text-center">
-                  <div class="flex item-center justify-center">
-                    <button>
-                      <div
-                        class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                          />
-                        </svg>
-                      </div>
-                    </button>
-                  </div>
-                </td>
+           
                 <td
                   @click="
                     tmp = cate;
@@ -165,7 +114,7 @@ const toggleEdit = () => {
     </div>
   </div>
 
-  <!-- Modal header -->
+  <!-- Modal Edit header -->
   <div
     v-show="isEdit"
     id="defaultModal"
@@ -175,7 +124,7 @@ const toggleEdit = () => {
   >
     <div class="relative p-4 w-full max-w-lg h-full md:h-auto">
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-        <!-- Modal header 200-->
+        <!-- Modal header -->
         <div
           class="flex justify-center items-center rounded-t dark:border-gray-600 content-center p-8"
         >
@@ -200,7 +149,7 @@ const toggleEdit = () => {
             </svg>
           </button>
         </div>
-        <!-- Modal body 200-->
+        <!-- Edit Modal body-->
         <div class="text-left leading-8 p-5 flex-auto justify-center pb-12">
           <div class="w-full md:w-full px-3 mb-6 md:mb-0">
             <label class="flex">
@@ -243,7 +192,7 @@ const toggleEdit = () => {
             </div>
           </div>
         </div>
-        <!-- Modal footer 200-->
+        <!-- Edit Modal footer -->
         <p class="p-4 text-sm text-red-600 rounded-b border-t">
           * คุณสามารถแก้ไขระยะเวลาการนัดหมายได้ไม่เกิน 480 นาที
         </p>
@@ -254,7 +203,7 @@ const toggleEdit = () => {
             data-modal-toggle="defaultModal"
             type="button"
             @click="
-              editEventCategory(tmp);
+              EventCateStore.editEventCategory(tmp);
               toggleEdit();
             "
             class="mb-2 md:mb-0 bg-green-500 border border-green-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-green-600"
@@ -268,7 +217,7 @@ const toggleEdit = () => {
 
   <!-- modal successful -->
   <div
-    v-show="is200"
+    v-show="EventCateStore.isEdit200"
     id="defaultModal"
     tabindex="-1"
     aria-hidden="true"
@@ -311,7 +260,7 @@ const toggleEdit = () => {
           </div>
           <div class="items-center px-4 py-3">
             <button
-              @click="is200 = !is200"
+              @click="EventCateStore.isEdit200 = !EventCateStore.isEdit200"
               id="ok-btn"
               class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
             >
@@ -324,7 +273,7 @@ const toggleEdit = () => {
   </div>
 
   <div
-    v-show="is400"
+    v-show="EventCateStore.isEdit400"
     id="defaultModal"
     tabindex="-1"
     aria-hidden="true"
@@ -339,7 +288,7 @@ const toggleEdit = () => {
             เกิดข้อผิดพลาด
           </h3>
           <button
-            @click="is400 = false"
+            @click="EventCateStore.isEdit400 = !EventCateStore.isEdit400"
             type="button"
             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             data-modal-toggle="defaultModal"

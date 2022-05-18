@@ -1,6 +1,11 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import AllEventList from "../components/AllEventList.vue";
+import { useEvents } from '../stores/events.js';
+import { useEventCategory } from '../stores/eventCategory.js';
+
+const eventCateStore = useEventCategory();
+const eventStore = useEvents();
 
 const eventList = ref({});
 const filter_list = ref({});
@@ -9,8 +14,7 @@ const search = ref("");
 const selectedClinic = ref("ทั้งหมด");
 const status = ref("ทั้งหมด");
 const is400 = ref(false);
-const tPage = ref(0);
-const currPage = ref(0);
+const eventCateList = ref({});
 
 const numberFormat = function (number, width) {
   return new Array(+width + 1 - (number + "").length).join("0") + number;
@@ -23,43 +27,10 @@ const datetime = `${currentdate.getFullYear()}-${numberFormat(
   .toLocaleTimeString("it-IT")
   .substring(0, 5)}`;
 
-const eventCateList = ref({});
-
-const getEventCategoryList = async () => {
-  // const res = await fetch("http://localhost:8080/api/events-category", {
-    //const res = await fetch("http://10.4.56.118:8080/api/events-category", {
-  const res = await fetch(`${import.meta.env.BASE_URL}/api/events-category`, {
-    method: "GET",
-  });
-  if (res.status == 200) {
-    eventCateList.value = await res.json();
-  } else {
-    console.log("error while fetching");
-  }
-};
-
-const getAllEventList = async (page) => {
-  let ret = {};
-  // const res = await fetch(`http://localhost:8080/api/events?page=${page}`, {
-    //const res = await fetch(`http://10.4.56.118:8080/api/events?page=${page}`, {
-  const res = await fetch(`${import.meta.env.BASE_URL}/api/events?page=${page}`, {
-    method: "GET",
-  });
-  if (res.status == 200) {
-    ret = await res.json();
-    tPage.value = ret.totalPages;
-    eventList.value = ret.content;
-    currPage.value = ret.number
-    filter_list.value = eventList.value;
-  } else {
-    console.log("error while fetching");
-  }
-  return ret;
-};
 
 const editEvent = async (updateEvent) => {
   // const res = await fetch(`http://localhost:8080/api/events/${updateEvent.eventId}`, {
-    //const res = await fetch(`http://10.4.56.118:8080/api/events/${updateEvent.eventId}`, {
+  // const res = await fetch(`http://10.4.56.118:8080/api/events/${updateEvent.eventId}`, {
   const res = await fetch(`${import.meta.env.BASE_URL}/api/events/${updateEvent.eventId}`, {
     method: "PUT",
     headers: {
@@ -78,7 +49,7 @@ const editEvent = async (updateEvent) => {
 
 const deleteEventFromId = async (id) => {
   // const res = await fetch(`http://localhost:8080/api/events/delete/${id}`, {
-    //const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${id}`, {
+  // const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${id}`, {
   const res = await fetch(`${import.meta.env.BASE_URL}/api/events/delete/${id}`, {
     method: "DELETE",
   });
@@ -91,8 +62,9 @@ const deleteEventFromId = async (id) => {
 };
 
 onBeforeMount(async () => {
-  await getAllEventList(0);
-  await getEventCategoryList();
+  eventList.value = await eventStore.fetchEvents(0);
+  filter_list.value = eventList.value;
+  eventCateList.value = await eventCateStore.getEventCategoryList()
 });
 
 const filterEvent = (search) => {
@@ -218,42 +190,6 @@ const filterEvent = (search) => {
   </div>
 
   <AllEventList :eventList="filter_list" @delete="deleteEventFromId" @edit="editEvent" />
-
-  <div v-show="filter_list.length" class="content-center flex justify-center bg-main">
-    <div class="bg-main p-4 flex items-center flex-wrap content-center leading-8">
-      <nav aria-label="Page navigation">
-        <ul class="inline-flex space-x-2">
-          <li>
-            <button @click="currPage -= 1; currPage < 0 ? getAllEventList(0) : getAllEventList(currPage);"
-              class="flex items-center justify-center w-10 h-10 text-green-600 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-green-100">
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                <path
-                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                  clip-rule="evenodd" fill-rule="evenodd"></path>
-              </svg>
-            </button>
-          </li>
-          <li v-for="i in tPage">
-            <button
-              class="w-10 h-10 text-black transition-colors duration-150 hover:bg-acqua rounded-full focus:shadow-outline"
-              :class="i - 1 == currPage ? 'bg-white' : ''" @click="getAllEventList(i - 1)">
-              {{ i }}
-            </button>
-          </li>
-          <li>
-            <button @click="currPage += 1; currPage >= tPage ? getAllEventList(tPage - 1) : getAllEventList(currPage);"
-              class="flex items-center justify-center w-10 h-10 text-green-600 transition-colors duration-150  rounded-full focus:shadow-outline hover:bg-green-100">
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                <path
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clip-rule="evenodd" fill-rule="evenodd"></path>
-              </svg>
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </div>
 </template>
 
 <style>
