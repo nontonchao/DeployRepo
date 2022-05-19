@@ -24,6 +24,7 @@ const tmp = ref({
 const isConfirm = ref(false);
 const toggleConfirm = () => {
   isConfirm.value = !isConfirm.value;
+  EventCateStore.resEditText = {}
   eventStore.addCode = 0;
   console.log(isConfirm.value);
 };
@@ -32,6 +33,7 @@ const isEdit = ref(false);
 const toggleEdit = () => {
   isEdit.value = !isEdit.value;
 };
+
 </script>
 
 <template>
@@ -100,7 +102,7 @@ const toggleEdit = () => {
                   <div class="flex item-center justify-center">
                     <button>
                       <div
-                        class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
+                        class="w-4 mr-2 transform hover:text-blue-600 hover:scale-200"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -141,7 +143,9 @@ const toggleEdit = () => {
         <div
           class="flex justify-center items-center rounded-t dark:border-gray-600 content-center p-8"
         >
-          <p>แก้ไขหมวดหมู่ (Clinic)</p>
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            แก้ไขหมวดหมู่ (คลินิก)
+          </h3>
           <button
             @click="toggleEdit()"
             type="button"
@@ -175,6 +179,7 @@ const toggleEdit = () => {
                 class="form-control block mx-4 w-3/5 px-2 py-1.5 text-sm font-normal text-gray-700 bg-transparent border-0 border-b-2 border-gray-100 appearance-none ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-700 focus:outline-none"
               />
             </label>
+
             <p class="py-3">
               อาจารย์ที่ปรึกษา : {{ tmp.eventCategoryName }} Advisor
             </p>
@@ -190,7 +195,7 @@ const toggleEdit = () => {
               <p>นาที</p>
             </div>
           </div>
-          <div class="w-full md:w-full px-3 mb-6 md:mb-0">
+          <div class="w-full md:w-full px-3 mb-6 md:mb-0 pt-2">
             <p>คำอธิบาย :</p>
             <textarea
               type="text"
@@ -204,9 +209,15 @@ const toggleEdit = () => {
           </div>
         </div>
         <!-- Edit Modal footer -->
-        <p class="p-4 text-sm text-red-600 rounded-b border-t">
-          * คุณสามารถแก้ไขระยะเวลาการนัดหมายได้ไม่เกิน 480 นาที
-        </p>
+        <div class="p-4 border-t-1 border-t">
+          <p class="text-sm text-red-600">
+            * คุณไม่สามารถแก้ไขชื่อหมวดหมู่ซ้ำกับชื่อที่มีอยู่แล้วได้
+          </p>
+          <p class="text-sm text-red-600">
+            * คุณสามารถแก้ไขระยะเวลาการนัดหมายได้ไม่เกิน 480 นาที
+          </p>
+        </div>
+
         <div
           class="flex items-center justify-end space-x-2 rounded-b border-gray-200 dark:border-gray-600 p-3"
         >
@@ -217,7 +228,7 @@ const toggleEdit = () => {
               toggleEdit();
               toggleConfirm();
             "
-            class="mb-2 md:mb-0 bg-green-500 border border-green-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-green-600"
+            class="mb-2 md:mb-0 bg-green-500 border border-green-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white hover:shadow-lg hover:bg-green-600 rounded-full m-1"
           >
             ยืนยันการแก้ไข
           </button>
@@ -254,7 +265,7 @@ const toggleEdit = () => {
               />
             </svg>
           </div>
-          <h3 class="text-lg leading-6 font-medium text-gray-900">
+          <h3 class="text-lg leading-6 pt-8 font-medium text-gray-900">
             คุณต้องการแก้ไขหรือไม่
           </h3>
           <div class="mt-2 px-7 py-3">
@@ -262,7 +273,7 @@ const toggleEdit = () => {
               หากแก้ไขแล้วคุณจะไม่สามารถย้อนกลับได้
             </p>
           </div>
-          <div class="items-center px-4 py-3 flex flex-row justify-between">
+          <div class="items-center px-4 py-3 flex flex-row justify-end">
             <button
               @click="
                 EventCateStore.editEventCategory({
@@ -274,7 +285,7 @@ const toggleEdit = () => {
                 toggleConfirm();
               "
               id="ok-btn"
-              class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md max-w-3xl shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+              class="px-4 py-2 bg-green-500 text-white text-base font-medium max-w-3xl shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 rounded-full m-1"
             >
               ยืนยัน
             </button>
@@ -284,7 +295,7 @@ const toggleEdit = () => {
                 toggleConfirm();
               "
               id="ok-btn"
-              class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md max-w-3xl shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              class="px-4 py-2 bg-gray-500 text-white text-base font-medium max-w-3xl shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-full m-1"
             >
               ยกเลิก
             </button>
@@ -326,7 +337,7 @@ const toggleEdit = () => {
               ></path>
             </svg>
           </div>
-          <h3 class="text-lg leading-6 font-medium text-gray-900">
+          <h3 class="text-lg leading-6 pt-8 font-medium text-gray-900">
             การแก้ไขของคุณสำเร็จแล้ว
           </h3>
           <div class="mt-2 px-7 py-3">
@@ -386,7 +397,7 @@ const toggleEdit = () => {
           </button>
         </div>
         <!-- Modal body 400 -->
-        <div class="p-6 space-y-6 text-center">
+        <div class="p-6 space-y-6 text-center leading-4">
           <svg
             class="mx-auto mb-4 w-14 h-14 text-yellow-400"
             fill="none"
@@ -401,12 +412,40 @@ const toggleEdit = () => {
               d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             ></path>
           </svg>
-          <h3 class="text-lg font-bold text-red-500">
-            ไม่สามารถแก้ไขระยะเวลานี้ได้
-          </h3>
-          <h2 class="text-sm font-normal text-gray-500">
-            คุณสามารถแก้ไขระยะเวลาการนัดหมายได้ไม่เกิน 480 นาที
-          </h2>
+          <div
+            v-if="
+              EventCateStore.resEditText.eventDuration ==
+              'must be less than or equal to 480'
+            "
+          >
+            <h3 class="text-lg font-bold text-red-500 leading-4 ">
+              ไม่สามารถแก้ไขระยะเวลานี้ได้
+            </h3>
+            <h2 class="text-sm font-normal text-gray-500">
+              คุณสามารถแก้ไขระยะเวลาการนัดหมายได้ไม่เกิน 480 นาที
+            </h2>
+          </div>
+          <div
+            v-else-if="
+              EventCateStore.resEditText.eventDuration ==
+              'must be greater than or equal to 1'
+            "
+          >
+            <h3 class="text-lg font-bold text-red-500 leading-4">
+              ไม่สามารถแก้ไขระยะเวลานี้ได้
+            </h3>
+            <h2 class="text-sm font-normal text-gray-500">
+              คุณสามารถแก้ไขระยะเวลาการนัดหมายได้ตั้งแต่ 1 นาทีขึ้นไป
+            </h2>
+          </div>
+          <div v-else>
+            <h3 class="text-lg font-bold text-red-500">
+              ไม่สามารถแก้ไขชื่อหมวดหมู่นี้ได้
+            </h3>
+            <h2 class="text-sm font-normal text-gray-500">
+              ชื่อหมวดหมู่นี้มีอยู่แล้ว กรุณาตรวจสอบและแก้ไขใหม่
+            </h2>
+          </div>
         </div>
       </div>
     </div>

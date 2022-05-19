@@ -12,8 +12,8 @@ const props = defineProps({
   status: {
     type: String,
     require: true,
-    default: 'ทั้งหมด'
-  }
+    default: "ทั้งหมด",
+  },
 });
 
 const eventStore = useEvents();
@@ -137,7 +137,7 @@ const gen_color = (id) => {
               </div>
             </div>
             <div class="bg-white rounded-b-3xl pt-8 max-w-xs">
-              <div class="flex justify-around ... text-sm pb-16">
+              <div class="flex justify-around text-sm pb-16">
                 <div class="text-left">
                   <p>หมายเลขนัดหมาย</p>
                   <p class="font-bold">{{ result.id }}</p>
@@ -150,7 +150,7 @@ const gen_color = (id) => {
                 </div>
               </div>
 
-              <div class="flex justify-around ... text-sm pb-8">
+              <div class="flex justify-around text-sm pb-8">
                 <div class="text-left">
                   <p>ตั้งแต่</p>
                   <p class="font-bold">
@@ -269,11 +269,11 @@ toggleDel();
     <!-- Modal Edit -->
     <div v-show="isEdit" id="defaultModal" tabindex="-1" aria-hidden="true"
       class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex backdrop bg-black/50">
-      <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+      <div class="relative p-4 w-full max-w-xl h-full md:h-auto">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow">
           <!-- Modal header 200 -->
-          <div v-show="is400 == false" class="flex justify-between items-start p-5 rounded-t border-b">
+          <div v-show="is400 == false" class="flex justify-between items-start p-6">
             <h3 class="text-xl font-semibold text-gray-900 lg:text-2xl dark:text-white">
               นัดหมายเลขที่ {{ tmp.id }}
             </h3>
@@ -288,7 +288,7 @@ toggleDel();
             </button>
           </div>
           <!-- Modal body 200 -->
-          <div v-show="is400 == false" class="p-6 space-y-6 max-w-md container mx-auto content-center leading-8">
+          <div v-show="is400 == false" class="pt-4 pb-8 space-y-6 max-w-md container mx-auto content-center leading-8">
             <div class="w-full md:w-full px-3 mb-6 md:mb-0">
               <p>ชื่อผู้นัดหมาย : {{ tmp.bookingName }}</p>
               <p>อีเมล : {{ tmp.bookingEmail }}</p>
@@ -303,41 +303,50 @@ toggleDel();
               <p class="text-red-600 text-sm font-bold pl-2" v-show="getCurrDate() > tmpdt">
                 * กรุณาเลือกช่วงเวลาในปัจจุบันหรืออนาคต
               </p>
-              <input type="datetime-local" v-model="tmpdt" required :min="getCurrDate()"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-              <div class="w-full md:w-full px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 m-3">รายละเอียด :
-                </label>
-                <p class="text-red-600 text-sm font-bold pl-2" v-if="tmp.eventNotes.length == 500">
-                  * รายละเอียดไม่ต้องเกิน 500 ตัวอักษร
-                </p>
-                <textarea type="text" v-model="tmp.eventNotes"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder="รายละเอียด" maxlength="500"></textarea>
-                <p class="text-gray-500 text-sm text-right pl-2">
-                  {{ tmp.eventNotes.length }}/500
-                </p>
-              </div>
+              <input type="datetime-local" :disabled="getCurrDate() > tmpdt" v-model="tmpdt" required :min="getCurrDate()"
+                class="block py-3.5 px-0 max-w-xs full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-100 appearance-none focus:outline-none focus:ring-0 focus:border-blue-700" />
+            </div>
+            <div class="w-full md:w-full px-3 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 m-3">รายละเอียด :
+              </label>
+              <p class="text-red-600 text-sm font-bold pl-2" v-if="tmp.eventNotes.length == 500">
+                * รายละเอียดไม่ต้องเกิน 500 ตัวอักษร
+              </p>
+              <textarea type="text" v-model="tmp.eventNotes"
+                :disabled="getCurrDate() > tmpdt"
+                class="block py-3.5 px-0 md:w-full h-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-100 appearance-none focus:outline-none focus:ring-0 focus:border-blue-700"
+                placeholder="รายละเอียด" maxlength="500"></textarea>
+              <p class="text-gray-500 text-sm text-right pl-2">
+                {{ tmp.eventNotes.length }}/500
+              </p>
             </div>
           </div>
 
           <!-- Modal footer -->
-          <div
-            class="flex items-center justify-end p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+          <div class="flex items-center justify-end p-6 space-x-2 rounded-b border-gray-200 dark:border-gray-600">
             <button data-modal-toggle="defaultModal" type="button" @click="
   toggleConfirm();
 toggleEdit();
-            " :disabled="getCurrDate() > tmpdt"
-              class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm text-center font-bold py-2 px-4 rounded-full m-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            " :disabled="getCurrDate() > tmpdt" :class="
+              getCurrDate() > tmpdt
+                ? 'hidden '
+                : '' +
+                'bg-green-500 text-white  shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 text-sm text-center font-bold py-2 px-4 rounded-full m-1'
+            ">
               ยืนยันการแก้ไข
             </button>
             <button
-              class="text-white bg-red-400 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm text-center font-bold py-2 px-4 rounded-full m-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              class="text-white bg-red-400 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm text-center font-bold py-2 px-4 rounded-full m-1"
               @click="
   toggleDel();
 toggleEdit();
               ">
-              ยกเลิกนัด
+              <span v-if="getCurrDate() > tmpdt">
+                ลบนัดหมาย
+              </span>
+              <span v-else>
+                ยกเลิกนัด
+              </span>
             </button>
           </div>
         </div>
@@ -358,7 +367,7 @@ toggleEdit();
                 d="M 500 0C 224 0 0 224 0 500C 0 776 224 1000 500 1000C 776 1000 1000 776 1000 500C 1000 224 776 0 500 0C 500 0 500 0 500 0 M 501 191C 626 191 690 275 690 375C 690 475 639 483 595 513C 573 525 558 553 559 575C 559 591 554 602 541 601C 541 601 460 601 460 601C 446 601 436 581 436 570C 436 503 441 488 476 454C 512 421 566 408 567 373C 566 344 549 308 495 306C 463 303 445 314 411 361C 400 373 384 382 372 373C 372 373 318 333 318 333C 309 323 303 307 312 293C 362 218 401 191 501 191C 501 191 501 191 501 191M 500 625C 541 625 575 659 575 700C 576 742 540 776 500 775C 457 775 426 739 425 700C 425 659 459 625 500 625C 500 625 500 625 500 625" />
             </svg>
           </div>
-          <h3 class="text-lg leading-6 font-medium text-gray-900">
+          <h3 class="text-lg pt-8 leading-6 font-medium text-gray-900">
             คุณต้องการแก้ไขหรือไม่
           </h3>
           <div class="mt-2 px-7 py-3">
@@ -366,7 +375,7 @@ toggleEdit();
               หากแก้ไขแล้วคุณจะไม่สามารถย้อนกลับได้
             </p>
           </div>
-          <div class="items-center px-4 py-3 flex flex-row justify-between">
+          <div class="items-center px-4 py-3 flex flex-row justify-end">
             <button @click="
   $emit('edit', {
     eventId: tmp.id,
@@ -377,14 +386,14 @@ toggleEdit();
   });
 toggleConfirm();
             " id="ok-btn"
-              class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md max-w-3xl shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+              class="px-4 py-2 bg-green-500 text-white text-base font-medium max-w-3xl shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 text-center rounded-full m-1">
               ยืนยัน
             </button>
             <button @click="
   toggleConfirm();
 toggleEdit();
             " id="ok-btn"
-              class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md max-w-3xl shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">
+              class="px-4 py-2 bg-gray-500 text-white text-base font-medium max-w-3xl shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 text-center rounded-full m-1">
               ยกเลิก
             </button>
           </div>
@@ -406,7 +415,7 @@ toggleEdit();
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
           </div>
-          <h3 class="text-lg leading-6 font-medium text-gray-900">
+          <h3 class="text-lg leading-6 pt-8 font-medium text-gray-900">
             การแก้ไขนัดหมายของคุณสำเร็จแล้ว
           </h3>
           <div class="mt-2 px-7 py-3">
