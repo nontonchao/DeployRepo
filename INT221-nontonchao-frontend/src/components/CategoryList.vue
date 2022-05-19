@@ -15,6 +15,9 @@ const props = defineProps({
 const EventCateStore = useEventCategory();
 const eventStore = useEvents();
 
+const nameChange = ref("");
+const durationChange = ref();
+
 const tmp = ref({
   eventCategoryDescription: "",
 });
@@ -88,6 +91,8 @@ const toggleEdit = () => {
                 <td
                   @click="
                     tmp = cate;
+                    nameChange = tmp.eventCategoryName;
+                    durationChange = tmp.eventDuration;
                     toggleEdit();
                   "
                   class="py-3 px-6 text-center"
@@ -164,8 +169,10 @@ const toggleEdit = () => {
               <p>ชื่อหมวดหมู่ :</p>
               <input
                 type="text"
-                v-model="tmp.eventCategoryName"
-                class="form-control block mx-4 w-3/5 px-2 py-1.5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                v-model="nameChange"
+                minlength="1"
+                maxlength="100"
+                class="form-control block mx-4 w-3/5 px-2 py-1.5 text-sm font-normal text-gray-700 bg-transparent border-0 border-b-2 border-gray-100 appearance-none ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-700 focus:outline-none"
               />
             </label>
             <p class="py-3">
@@ -177,27 +184,23 @@ const toggleEdit = () => {
                 type="number"
                 min="1"
                 max="480"
-                v-model="tmp.eventDuration"
-                class="form-control block mx-4 w-1/5 px-2 py-1.5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                v-model="durationChange"
+                class="form-control block mx-4 w-1/6 px-2 py-1.5 text-sm font-normal text-gray-700 bg-transparent border-0 border-b-2 border-gray-100 appearance-none ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-700 focus:outline-none"
               />
               <p>นาที</p>
             </div>
-
-            <div class="w-full md:w-full px-3 mb-6 md:mb-0">
-              <label
-                class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 m-3"
-                >คำอธิบาย :
-              </label>
-              <textarea
-                type="text"
-                v-model="tmp.eventCategoryDescription"
-                class="shadow appearance-none border rounded w-full py-5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="รายละเอียด"
-              ></textarea>
-              <p class="text-gray-500 text-sm text-right pl-2">
-                {{ tmp.eventCategoryDescription.length }}/500
-              </p>
-            </div>
+          </div>
+          <div class="w-full md:w-full px-3 mb-6 md:mb-0">
+            <p>คำอธิบาย :</p>
+            <textarea
+              type="text"
+              v-model="tmp.eventCategoryDescription"
+              class="block py-3.5 px-0 md:w-full h-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-100 appearance-none focus:outline-none focus:ring-0 focus:border-blue-700"
+              placeholder="รายละเอียด"
+            ></textarea>
+            <p class="text-gray-500 text-sm text-right pl-2">
+              {{ tmp.eventCategoryDescription.length }}/500
+            </p>
           </div>
         </div>
         <!-- Edit Modal footer -->
@@ -262,7 +265,12 @@ const toggleEdit = () => {
           <div class="items-center px-4 py-3 flex flex-row justify-between">
             <button
               @click="
-                EventCateStore.editEventCategory(tmp);
+                EventCateStore.editEventCategory({
+                  id: tmp.id,
+                  eventCategoryName: nameChange,
+                  eventDuration: durationChange,
+                  eventCategoryDescription: tmp.eventCategoryDescription,
+                });
                 toggleConfirm();
               "
               id="ok-btn"
@@ -326,7 +334,11 @@ const toggleEdit = () => {
           </div>
           <div class="items-center px-4 py-3">
             <button
-              @click="EventCateStore.isEdit200 = !EventCateStore.isEdit200"
+              @click="
+                tmp.eventCategoryName = nameChange;
+                tmp.eventDuration = durationChange;
+                EventCateStore.isEdit200 = !EventCateStore.isEdit200;
+              "
               id="ok-btn"
               class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
             >
@@ -337,7 +349,7 @@ const toggleEdit = () => {
       </div>
     </div>
   </div>
-
+  <!-- 400 begin -->
   <div
     v-show="EventCateStore.isEdit400"
     id="defaultModal"

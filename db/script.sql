@@ -22,7 +22,7 @@ USE `OASIP` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `OASIP`.`event_category` (
 	`eventCategory_id` INT NOT NULL,
-	`eventCategoryName` VARCHAR(45) NOT NULL UNIQUE,
+	`eventCategoryName` VARCHAR(100) NOT NULL UNIQUE,
 	`eventCategoryDescription` VARCHAR(500) NULL,
 	`eventDuration` INT NOT NULL,
 PRIMARY KEY (`eventCategory_id`))
