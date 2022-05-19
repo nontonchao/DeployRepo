@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useEventCategory } from "../stores/eventCategory.js";
+import { useEvents } from "../stores/events.js";
 
 // defineEmits(["edit"]);
 const props = defineProps({
@@ -12,6 +13,7 @@ const props = defineProps({
 });
 
 const EventCateStore = useEventCategory();
+const eventStore = useEvents();
 
 const tmp = ref({
   eventCategoryDescription: "",

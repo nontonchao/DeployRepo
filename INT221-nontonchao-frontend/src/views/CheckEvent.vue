@@ -14,6 +14,7 @@ const search = ref("");
 const selectedClinic = ref("ทั้งหมด");
 const status = ref("ทั้งหมด");
 const eventCateList = ref({});
+const fStatus = ref("ทั้งหมด");
 
 const numberFormat = function (number, width) {
   return new Array(+width + 1 - (number + "").length).join("0") + number;
@@ -28,34 +29,43 @@ const datetime = `${currentdate.getFullYear()}-${numberFormat(
 
 
 const editEvent = async (editEvent) => {
-  await eventStore.editEvent(editEvent);
-  console.log(eventStore.statusMessage);
+  await eventStore.editEvent(editEvent, filter_list.value);
 };
 
 const deleteEventFromId = async (id) => {
-  await eventStore.removeEvent(id);
+  await eventStore.removeEvent(id, filter_list.value);
 };
 
 onBeforeMount(async () => {
-  eventList.value = await eventStore.fetchEvents(0);
+  eventList.value = await eventStore.fetchEvents();
   filter_list.value = eventList.value;
   eventCateList.value = await eventCateStore.getEventCategoryList()
 });
 
-const filterEvent = (search) => {
+
+const filterEvent = async (search) => {
+  eventList.value = await eventStore.fetchEvents();
+  if (status.value != 'ทั้งหมด') {
+    selectDate.value = "";
+  }
   filter_list.value = eventList.value.filter(
     (x) =>
       (x.bookingName.includes(search) || x.bookingEmail == search) &&
       x.eventCategory.eventCategoryName.includes(
         selectedClinic.value == "ทั้งหมด" ? "" : selectedClinic.value
       ) &&
-      (status.value == "ทั้งหมด"
-        ? x
-        : status.value == "กำลังจะมาถึง"
-          ? x.eventStartTime >= datetime
-          : x.eventStartTime < datetime)
+      (status.value == "ทั้งหมด" && selectDate.value == ""
+        ? x : status.value == "ทั้งหมด" && selectDate.value != "" ? x.eventStartTime.split('T')[0] == selectDate.value :
+          status.value == "กำลังจะมาถึง"
+            ? x.eventStartTime >= datetime
+            : x.eventStartTime < datetime
+      )
+
+
   );
+  fStatus.value = status.value;
 };
+
 </script>
 
 <template>
@@ -85,7 +95,10 @@ const filterEvent = (search) => {
         <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">วันที่</label>
         <input type="date" v-model="selectDate" :disabled="status != 'ทั้งหมด'" required
           class="shadow appearance-none border rounded w-auto py-2 px-3 text-gray-700 leading-tight focus:shadow-outline transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" />
+        <button @click="selectDate = ''" class=" flex items-center  appearance-none border rounded-md w-auto py-2 px-3">
+          CLEAR DATE</button>
       </div>
+
       <div class="w-auto">
         <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">คลินิก
         </label>
@@ -126,7 +139,7 @@ const filterEvent = (search) => {
     </div>
     <!-- filter Nav -->
   </div>
-  <div v-show="is400" id="defaultModal" tabindex="-1" aria-hidden="true"
+  <div v-show="eventStore.editCode == 400" id="defaultModal" tabindex="-1" aria-hidden="true"
     class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex backdrop bg-black/50 transform">
     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
       <!-- Modal content -->
@@ -136,7 +149,7 @@ const filterEvent = (search) => {
           <h3 class="text-xl font-semibold text-red-500 lg:text-2xl">
             เกิดข้อผิดพลาด
           </h3>
-          <button @click="is400 = false" type="button"
+          <button @click="eventStore.editCode = 0" type="button"
             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             data-modal-toggle="defaultModal">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -164,7 +177,7 @@ const filterEvent = (search) => {
     </div>
   </div>
 
-  <AllEventList :eventList="filter_list" @delete="deleteEventFromId" @edit="editEvent" />
+  <AllEventList :status="fStatus" :eventList="filter_list" @delete="deleteEventFromId" @edit="editEvent" />
 </template>
 
 <style>

@@ -8,7 +8,7 @@ export const useEvents = defineStore("events", () => {
     const addCode = ref(0);
     const editCode = ref(0);
 
-    const addEvent = async(event) => {
+    const addEvent = async (event) => {
         // const res = await fetch(`http://localhost:8080/api/events`, {
         // const res = await fetch(`http://10.4.56.118:8080/api/events`, {
         const res = await fetch(`${import.meta.env.BASE_URL}api/events`, {
@@ -28,37 +28,39 @@ export const useEvents = defineStore("events", () => {
         }
     };
 
-    const removeEvent = async(eventId) => {
+    const removeEvent = async (eventId, obj) => {
         // const res = await fetch(`http://localhost:8080/api/events/delete/${eventId}`, {
         // const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${eventId}`, {
         const res = await fetch(`${import.meta.env.BASE_URL}api/events/delete/${eventId}`, {
-                method: "DELETE",
-            }
+            method: "DELETE",
+        }
         );
         if (res.status === 200) {
-            const eventIndex = events.value.findIndex(
-                (event) => event.id === eventId
-            );
-            events.value.splice(eventIndex, 1);
+            const eventIndex2 = obj.findIndex((event) => event.id === eventId);
+            obj.splice(eventIndex2, 1);
+            return obj;
         } else {
             console.log("error while delete || error :" + statusMessage.value);
         }
     };
 
-    const editEvent = async(editEvent) => {
+    const editEvent = async (editEvent, obj) => {
         // const res = await fetch(`http://localhost:8080/api/events/${editEvent.eventId}`, {
         // const res = await fetch(`http://10.4.56.118:8080/api/events/${editEvent.eventId}`, {
-        const res = await fetch(`${import.meta.env.BASE_URL}events/${editEvent.eventId}`, {
-                method: "PUT",
-                headers: {
-                    "content-type": "application/json",
-                },
-                body: JSON.stringify(editEvent.toUpdate),
-            }
+        const res = await fetch(`${import.meta.env.BASE_URL}api/events/${editEvent.eventId}`, {
+            method: "PUT",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(editEvent.toUpdate),
+        }
         );
         if (res.status == 200) {
             editCode.value = res.status;
-            await fetchEvents();
+            const eventIndex = obj.findIndex((event) => event.id === editEvent.eventId);
+            obj[eventIndex].eventStartTime = editEvent.toUpdate.eventStartTime;
+            obj[eventIndex].eventNotes = editEvent.toUpdate.eventNotes;
+            return obj;
         } else if (res.status == 400) {
             editCode.value = res.status;
         } else {
@@ -66,7 +68,7 @@ export const useEvents = defineStore("events", () => {
         }
     };
 
-    const fetchEvents = async() => {
+    const fetchEvents = async () => {
         try {
             // const res = await fetch(`http://localhost:8080/api/events`, {
             // const res = await fetch(`http://10.4.56.118:8080/api/events`, {
