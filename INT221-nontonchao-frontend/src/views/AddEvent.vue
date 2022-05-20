@@ -10,14 +10,13 @@ const eventCateStore = useEventCategory();
 
 onBeforeMount(async () => {
   await eventStore.fetchEvents(0);
-  eventCateList.value = eventCateStore.eventCategoryList;
 });
 </script>
 
 <template>
   <div>
     <h1 class="pt-10 text-center text-4xl font-bold">จองนัดหมาย</h1>
-    <AddEventList :cliniclist="eventCateList" />
+    <AddEventList :cliniclist="eventCateStore.eventCategoryList" />
 
   </div>
 </template>

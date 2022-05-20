@@ -2,11 +2,11 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import { ref } from "vue";
 
 export const useEventCategory = defineStore("eventCategory", () => {
-    const eventCategoryList = ref({});
+    const eventCategoryList = ref([]);
     const isEdit200 = ref(false);
     const isEdit400 = ref(false);
-
     const resEditText = ref({});
+    
     const getEventCategoryList = async() => {
         // const res = await fetch("http://localhost:8080/api/events-category", {
         // const res = await fetch("http://10.4.56.118:8080/api/events-category", {
@@ -48,8 +48,7 @@ export const useEventCategory = defineStore("eventCategory", () => {
     getEventCategoryList();
 
     const isUnique = (editCate) => {
-        return eventCategoryList.value.filter(cate => cate.id !== editCate.id)
-        .some(cate => cate.eventCategoryName === editCate.eventCategoryName)
+        return eventCategoryList.value.filter(cate => cate.id !== editCate.id).some(cate => cate.eventCategoryName === editCate.eventCategoryName)
     }
 
     return {

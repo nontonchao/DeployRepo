@@ -14,7 +14,7 @@ const selectDate = ref("");
 const search = ref("");
 const selectedClinic = ref("ทั้งหมด");
 const status = ref("ทั้งหมด");
-const eventCateList = ref({});
+const eventCateList = ref([]);
 const fStatus = ref("ทั้งหมด");
 
 const editEvent = async (editEvent) => {
