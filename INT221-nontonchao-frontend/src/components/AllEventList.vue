@@ -117,7 +117,7 @@ const gen_color = (id) => {
         class="w-full mx-auto px-6 mb-8 md:mb-10 md:flex md:justify-around leading-8 pb-12 flex-wrap justify-center grid lg:grid-cols-4 gap-8">
         <div v-for="(result, index) in eventList" :key="index">
           <div :class="
-            'shadow-lg w-full w-max-w-xs h-auto pt-8  rounded-t-3xl text-center my-10 p-15 leading-8 rounded-lg rounded-b-3xl transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ' +
+            'shadow-lg w-full w-max-w-xs h-auto pt-8  rounded-t-3xl text-center my-10 p-15 leading-8 rounded-lg rounded-b-3xl transition ease-in-out  hover:-translate-y-1 hover:scale-110 duration-300 ' +
             gen_color(result.eventCategory.id)
           ">
             <div class="">
@@ -303,17 +303,17 @@ toggleDel();
               <p class="text-red-600 text-sm font-bold pl-2" v-show="getCurrDate() > tmpdt">
                 * กรุณาเลือกช่วงเวลาในปัจจุบันหรืออนาคต
               </p>
-              <input type="datetime-local" :disabled="getCurrDate() > tmpdt" v-model="tmpdt" required :min="getCurrDate()"
+              <input type="datetime-local" :disabled="getCurrDate() > tmpdt" v-model="tmpdt" required
+                :min="getCurrDate()"
                 class="block py-3.5 px-0 max-w-xs full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-100 appearance-none focus:outline-none focus:ring-0 focus:border-blue-700" />
             </div>
             <div class="w-full md:w-full px-3 mb-6 md:mb-0">
               <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 m-3">รายละเอียด :
               </label>
               <p class="text-red-600 text-sm font-bold pl-2" v-if="tmp.eventNotes.length == 500">
-                * รายละเอียดไม่ต้องเกิน 500 ตัวอักษร
+                * รายละเอียดต้องไม่เกิน 500 ตัวอักษร
               </p>
-              <textarea type="text" v-model="tmp.eventNotes"
-                :disabled="getCurrDate() > tmpdt"
+              <textarea type="text" v-model="tmp.eventNotes" :disabled="getCurrDate() > tmpdt"
                 class="block py-3.5 px-0 md:w-full h-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-100 appearance-none focus:outline-none focus:ring-0 focus:border-blue-700"
                 placeholder="รายละเอียด" maxlength="500"></textarea>
               <p class="text-gray-500 text-sm text-right pl-2">

@@ -3,6 +3,7 @@ import { ref, onBeforeMount } from "vue";
 import AllEventList from "../components/AllEventList.vue";
 import { useEvents } from "../stores/events.js";
 import { useEventCategory } from "../stores/eventCategory.js";
+import Footer from '../components/Footer.vue';
 
 const eventCateStore = useEventCategory();
 const eventStore = useEvents();
@@ -16,17 +17,6 @@ const status = ref("ทั้งหมด");
 const eventCateList = ref({});
 const fStatus = ref("ทั้งหมด");
 
-const numberFormat = function (number, width) {
-  return new Array(+width + 1 - (number + "").length).join("0") + number;
-};
-const currentdate = new Date();
-const datetime = `${currentdate.getFullYear()}-${numberFormat(
-  new Date(currentdate.toString()).getMonth() + 1,
-  2
-)}-${numberFormat(new Date(currentdate.toString()).getDate(), 2)}T${currentdate
-  .toLocaleTimeString("it-IT")
-  .substring(0, 5)}`;
-
 const editEvent = async (editEvent) => {
   await eventStore.editEvent(editEvent, filter_list.value);
 };
@@ -38,7 +28,7 @@ const deleteEventFromId = async (id) => {
 onBeforeMount(async () => {
   eventList.value = await eventStore.fetchEvents();
   filter_list.value = eventList.value;
-  eventCateList.value = await eventCateStore.getEventCategoryList();
+  eventCateList.value = eventCateStore.eventCategoryList;
 });
 
 const filterEvent = async (search) => {
@@ -57,8 +47,8 @@ const filterEvent = async (search) => {
         : status.value == "ทั้งหมด" && selectDate.value != ""
           ? new Date(x.eventStartTime).toDateString() == new Date(selectDate.value).toDateString()
           : status.value == "กำลังจะมาถึง"
-            ? x.eventStartTime >= datetime
-            : x.eventStartTime < datetime)
+            ? new Date(x.eventStartTime) >= new Date()
+            : new Date(x.eventStartTime) < new Date())
   );
   fStatus.value = status.value;
 };
@@ -185,6 +175,7 @@ const filterEvent = async (search) => {
   </div>
 
   <AllEventList :status="fStatus" :eventList="filter_list" @delete="deleteEventFromId" @edit="editEvent" />
+  <Footer />
 </template>
 
 <style>

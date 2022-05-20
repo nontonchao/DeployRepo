@@ -15,6 +15,7 @@ const props = defineProps({
 const EventCateStore = useEventCategory();
 const eventStore = useEvents();
 
+let testList = props.cateList;
 const nameChange = ref("");
 const durationChange = ref();
 
@@ -24,15 +25,15 @@ const tmp = ref({
 const isConfirm = ref(false);
 const toggleConfirm = () => {
   isConfirm.value = !isConfirm.value;
-  EventCateStore.resEditText = {}
+  EventCateStore.resEditText = {};
   eventStore.addCode = 0;
-  console.log(isConfirm.value);
 };
 
 const isEdit = ref(false);
 const toggleEdit = () => {
   isEdit.value = !isEdit.value;
 };
+
 
 </script>
 
@@ -95,6 +96,7 @@ const toggleEdit = () => {
                     tmp = cate;
                     nameChange = tmp.eventCategoryName;
                     durationChange = tmp.eventDuration;
+                    indexOfCate;
                     toggleEdit();
                   "
                   class="py-3 px-6 text-center"
@@ -169,7 +171,16 @@ const toggleEdit = () => {
         <!-- Edit Modal body-->
         <div class="text-left leading-8 p-5 flex-auto justify-center pb-12">
           <div class="w-full md:w-full px-3 mb-6 md:mb-0">
+            <p v-show="EventCateStore.isUnique({
+                  id: tmp.id,
+                  eventCategoryName: nameChange.trim(),
+                  eventDuration: durationChange,
+                  eventCategoryDescription: tmp.eventCategoryDescription,
+                })"
+                class="text-red-600"
+                >not unique</p>
             <label class="flex">
+              
               <p>ชื่อหมวดหมู่ :</p>
               <input
                 type="text"
@@ -197,10 +208,17 @@ const toggleEdit = () => {
           </div>
           <div class="w-full md:w-full px-3 mb-6 md:mb-0 pt-2">
             <p>คำอธิบาย :</p>
+            <p
+              class="text-red-600 text-sm font-bold pl-2"
+              v-if="tmp.eventCategoryDescription.length == 500"
+            >
+              * คำอธิบายต้องไม่เกิน 500 ตัวอักษร
+            </p>
             <textarea
               type="text"
               v-model="tmp.eventCategoryDescription"
               class="block py-3.5 px-0 md:w-full h-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-100 appearance-none focus:outline-none focus:ring-0 focus:border-blue-700"
+              maxlength="500"
               placeholder="รายละเอียด"
             ></textarea>
             <p class="text-gray-500 text-sm text-right pl-2">
@@ -278,7 +296,7 @@ const toggleEdit = () => {
               @click="
                 EventCateStore.editEventCategory({
                   id: tmp.id,
-                  eventCategoryName: nameChange,
+                  eventCategoryName: nameChange.trim(),
                   eventDuration: durationChange,
                   eventCategoryDescription: tmp.eventCategoryDescription,
                 });
@@ -346,7 +364,7 @@ const toggleEdit = () => {
           <div class="items-center px-4 py-3">
             <button
               @click="
-                tmp.eventCategoryName = nameChange;
+                tmp.eventCategoryName = nameChange.trim();
                 tmp.eventDuration = durationChange;
                 EventCateStore.isEdit200 = !EventCateStore.isEdit200;
               "
@@ -418,7 +436,7 @@ const toggleEdit = () => {
               'must be less than or equal to 480'
             "
           >
-            <h3 class="text-lg font-bold text-red-500 leading-4 ">
+            <h3 class="text-lg font-bold text-red-500 leading-4">
               ไม่สามารถแก้ไขระยะเวลานี้ได้
             </h3>
             <h2 class="text-sm font-normal text-gray-500">

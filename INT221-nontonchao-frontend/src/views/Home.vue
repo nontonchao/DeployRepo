@@ -28,6 +28,11 @@ const features = [
     title: "RealTime",
     desc: "อัพเดทข้อมูลเรียลไทม์ตลอด หลีกเลี่ยงปัญหาการจองซ้อนทับกัน",
   },
+    {
+    imgPath: "/sy1/icon/edit-cate-icon.jpg",
+    title: "แก้ไขหมวดหมู่",
+    desc: "สามารถแก้ไขชื่อหมวดหมู่ และระยะเวลาในการนัดหมายได้ตามที่ต้องการ",
+  },
 ];
 </script>
 <template>
@@ -37,22 +42,22 @@ const features = [
     >
       <div class="mb-4 lg:mb-20 lg:p-24 sm:p-10 lg:pt-48 sm:pt-14">
         <h1
-          class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6"
+          class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6 "
         >
           <strong>Online Appointment </strong>
         </h1>
         <h1
-          class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6"
+          class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6 "
         >
           <strong> Scheduling System for </strong>
         </h1>
         <h1
-          class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6"
+          class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6 "
         >
           <strong> Integrated Project Clinics</strong>
         </h1>
         <h1
-          class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6"
+          class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6 "
         >
           <strong> (OASIP-SY1)</strong>
         </h1>
@@ -62,7 +67,7 @@ const features = [
           <div class="pb-8 pr-4">
             <router-link :to="{ name: 'AddEvent' }">
               <button
-                class="bg-white border-4 border-main text-black rounded-full font-bold flex p-3 hover:text-white drop-shadow-2xl transform transition ease-in-out delay-150 hover:-translate-y-1 hover:bg-main duration-300"
+                class="bg-main border-4 border-main text-black rounded-full font-bold flex p-3 hover:text-white drop-shadow-2xl transform transition ease-in-out delay-150 hover:-translate-y-1 hover:bg-main duration-300"
               >
                 จองนัดหมาย
               </button>
@@ -70,7 +75,7 @@ const features = [
           </div>
           <router-link :to="{ name: 'CheckEvent' }">
             <button
-              class="bg-white border-4 border-green-700 text-black rounded-full font-bold flex p-3 hover:text-white drop-shadow-2xl transform transition ease-in-out delay-150 hover:-translate-y-1 hover:bg-green-700 duration-300"
+              class="bg-white border-4 border-main text-black rounded-full font-bold flex p-3 hover:text-white drop-shadow-2xl transform transition ease-in-out delay-150 hover:-translate-y-1 hover:bg-main duration-300"
             >
               ตรวจสอบนัดหมาย
             </button>

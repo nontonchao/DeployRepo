@@ -2,6 +2,7 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import { ref } from "vue";
 
 export const useEventCategory = defineStore("eventCategory", () => {
+    const eventCategoryList = ref({});
     const isEdit200 = ref(false);
     const isEdit400 = ref(false);
 
@@ -13,8 +14,7 @@ export const useEventCategory = defineStore("eventCategory", () => {
             method: "GET",
         });
         if (res.status == 200) {
-            const eventCategoryList = await res.json();
-            return eventCategoryList;
+            eventCategoryList.value = await res.json();
         } else {
             console.log("error while fetching");
         }
@@ -44,12 +44,22 @@ export const useEventCategory = defineStore("eventCategory", () => {
             console.log("error while editing || error: " + (await res.text()));
         }
     };
+
+    getEventCategoryList();
+
+    const isUnique = (editCate) => {
+        return eventCategoryList.value.filter(cate => cate.id !== editCate.id)
+        .some(cate => cate.eventCategoryName === editCate.eventCategoryName)
+    }
+
     return {
         getEventCategoryList,
         editEventCategory,
         isEdit200,
         isEdit400,
         resEditText,
+        eventCategoryList,
+        isUnique,
     };
 });
 

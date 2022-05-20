@@ -1,20 +1,19 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import CategoryList from "../components/CategoryList.vue";
-import { useEventCategory } from "../stores/eventCategory.js"
+import { useEventCategory } from "../stores/eventCategory.js";
+import Footer from "../components/Footer.vue";
 
-const eventCateStore = useEventCategory()
+const eventCateStore = useEventCategory();
 const eventCateList = ref({});
 
 onBeforeMount(async () => {
-  eventCateList.value = await eventCateStore.getEventCategoryList();
+  eventCateList.value = eventCateStore.eventCategoryList;
 });
-
-
 </script>
 
 <template>
   <CategoryList :cateList="eventCateList" />
+  <Footer />
 </template>
-<!-- @edit="editEventCategory" -->
 <style></style>
