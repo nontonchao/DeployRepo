@@ -33,8 +33,6 @@ const isEdit = ref(false);
 const toggleEdit = () => {
   isEdit.value = !isEdit.value;
 };
-
-
 </script>
 
 <template>
@@ -170,17 +168,8 @@ const toggleEdit = () => {
         </div>
         <!-- Edit Modal body-->
         <div class="text-left leading-8 p-5 flex-auto justify-center pb-12">
-          <div class="w-full md:w-full px-3 mb-6 md:mb-0">
-            <p v-show="EventCateStore.isUnique({
-                  id: tmp.id,
-                  eventCategoryName: nameChange.trim(),
-                  eventDuration: durationChange,
-                  eventCategoryDescription: tmp.eventCategoryDescription,
-                })"
-                class="text-red-600"
-                >not unique</p>
+          <div class="w-full md:w-full px-3 mb-6 md:mb-0">            
             <label class="flex">
-              
               <p>ชื่อหมวดหมู่ :</p>
               <input
                 type="text"
@@ -190,7 +179,19 @@ const toggleEdit = () => {
                 class="form-control block mx-4 w-3/5 px-2 py-1.5 text-sm font-normal text-gray-700 bg-transparent border-0 border-b-2 border-gray-100 appearance-none ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-700 focus:outline-none"
               />
             </label>
-
+            <p
+              v-show="
+                EventCateStore.isUnique({
+                  id: tmp.id,
+                  eventCategoryName: nameChange.trim(),
+                  eventDuration: durationChange,
+                  eventCategoryDescription: tmp.eventCategoryDescription,
+                })
+              "
+              class="text-red-600 text-sm font-bold"
+            >
+             *ชื่อหมวดหมู่นี้มีอยู่แล้ว 
+            </p>
             <p class="py-3">
               อาจารย์ที่ปรึกษา : {{ tmp.eventCategoryName }} Advisor
             </p>
@@ -204,7 +205,19 @@ const toggleEdit = () => {
                 class="form-control block mx-4 w-1/6 px-2 py-1.5 text-sm font-normal text-gray-700 bg-transparent border-0 border-b-2 border-gray-100 appearance-none ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-700 focus:outline-none"
               />
               <p>นาที</p>
-            </div>
+              </div>
+               <p
+              v-show="durationChange > 480"
+              class="text-red-600 text-sm font-bold"
+            >
+             *ระยะเวลานัดหมายต้องไม่เกิน 480 นาที 
+            </p>
+             <p
+              v-show="durationChange < 1 "
+              class="text-red-600 text-sm font-bold"
+            >
+             *ระยะเวลานัดหมายไม่ถูกต้อง กรุณาตรวจสอบใหม่
+            </p>
           </div>
           <div class="w-full md:w-full px-3 mb-6 md:mb-0 pt-2">
             <p>คำอธิบาย :</p>

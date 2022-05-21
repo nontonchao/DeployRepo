@@ -48,7 +48,7 @@ const features = [
         </h1>
         <h1
           class="text-left text-2xl lg:text-5xl font-bold text-gray tracking-1px pb-6 "
-        >
+        > 
           <strong> Scheduling System for </strong>
         </h1>
         <h1

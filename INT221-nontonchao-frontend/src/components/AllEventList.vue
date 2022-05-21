@@ -43,7 +43,6 @@ const isConfirm = ref(false);
 const toggleConfirm = () => {
   isConfirm.value = !isConfirm.value;
   eventStore.addCode = 0;
-  console.log(isConfirm.value);
 };
 
 const getCurrDate = () => {
@@ -55,6 +54,7 @@ const getCurrDate = () => {
     .toLocaleTimeString("it-IT")
     .substring(0, 5)}`;
 };
+
 const timeErr = ref(0);
 const ValidateTime = (time) => {
   return time == "" ? (timeErr.value = 0) : (timeErr.value = 1);
@@ -106,7 +106,10 @@ const gen_color = (id) => {
         No Past Events
       </h1>
       <h1 v-else-if="props.status == 'กำลังจะมาถึง'" class="p-16 text-5xl text-center text-yellow-300">
-        No Ongoing / Upcoming Events
+        No Upcoming Events
+      </h1>
+      <h1 v-else-if="props.status == 'กำลังดำเนินอยู่'" class="p-16 text-5xl text-center text-yellow-300">
+        No Ongoing Events
       </h1>
       <h1 v-else class="p-16 text-5xl text-center text-yellow-300">
         No Scheduled Events

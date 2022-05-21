@@ -31,11 +31,18 @@ onBeforeMount(async () => {
   eventCateList.value = eventCateStore.eventCategoryList;
 });
 
+
+const endtime = (startTime, add) => {
+  return new Date(new Date(startTime).setMinutes(new Date(startTime).getMinutes(), add * 60))
+}
+
 const filterEvent = async (search) => {
   eventList.value = await eventStore.fetchEvents();
+  const currentDateTime = new Date();
   if (status.value != "ทั้งหมด") {
     selectDate.value = "";
   }
+
   filter_list.value = eventList.value.filter(
     (x) =>
       (x.bookingName.includes(search) || x.bookingEmail == search) &&
@@ -47,8 +54,9 @@ const filterEvent = async (search) => {
         : status.value == "ทั้งหมด" && selectDate.value != ""
           ? new Date(x.eventStartTime).toDateString() == new Date(selectDate.value).toDateString()
           : status.value == "กำลังจะมาถึง"
-            ? new Date(x.eventStartTime) >= new Date()
-            : new Date(x.eventStartTime) < new Date())
+            ? (new Date(x.eventStartTime) > currentDateTime) : status.value == "กำลังดำเนินอยู่" ?
+              (new Date(x.eventStartTime).getDate() == currentDateTime.getDate() && currentDateTime < endtime(x.eventStartTime, x.eventDuration))
+              : endtime(x.eventStartTime, x.eventDuration) < currentDateTime)
   );
   fStatus.value = status.value;
 };
@@ -68,6 +76,7 @@ const filterEvent = async (search) => {
             class="shadow appearance-none border rounded w-full max-w-xs py-2 px-3 text-gray-700 leading-tight transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
             <option>ทั้งหมด</option>
             <option>กำลังจะมาถึง</option>
+            <option>กำลังดำเนินอยู่</option>
             <option>ที่ผ่านมา</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">

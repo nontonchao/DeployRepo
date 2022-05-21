@@ -4,12 +4,13 @@ import AddEventList from "../components/AddEventList.vue";
 import { useEvents } from "../stores/events.js";
 import { useEventCategory } from "../stores/eventCategory.js";
 
-const eventCateList = ref({});
+// const eventCateList = ref({});
 const eventStore = useEvents();
 const eventCateStore = useEventCategory();
 
 onBeforeMount(async () => {
   await eventStore.fetchEvents(0);
+  // eventCateList.value = eventCateStore.eventCategoryList;
 });
 </script>
 

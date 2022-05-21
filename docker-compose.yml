@@ -20,8 +20,6 @@ services:
    - type: bind
      source: ./db/my.cnf
      target: /etc/my.cnf
-  ports:
-   - "3306:3306"
   environment:
    MYSQL_ROOT_PASSWORD: "1111"
   networks:
