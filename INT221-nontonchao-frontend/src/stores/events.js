@@ -3,15 +3,10 @@ import { ref } from "vue";
 
 export const useEvents = defineStore("events", () => {
     const events = ref([]);
-    // const statusCode = ref(0);
-    // const statusMessage = ref(0);
     const addCode = ref(0);
     const editCode = ref(0);
-
     const addEvent = async (event) => {
-        // const res = await fetch(`http://localhost:8080/api/events`, {
-        // const res = await fetch(`http://10.4.56.118:8080/api/events`, {
-        const res = await fetch(`${import.meta.env.BASE_URL}api/events`, {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}events`, {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -29,14 +24,12 @@ export const useEvents = defineStore("events", () => {
     };
 
     const removeEvent = async (eventId, obj) => {
-        // const res = await fetch(`http://localhost:8080/api/events/delete/${eventId}`, {
-        // const res = await fetch(`http://10.4.56.118:8080/api/events/delete/${eventId}`, {
-        const res = await fetch(`${import.meta.env.BASE_URL}api/events/delete/${eventId}`, {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}events/delete/${eventId}`, {
             method: "DELETE",
         });
         if (res.status === 200) {
-            const eventIndex2 = obj.findIndex((event) => event.id === eventId);
-            obj.splice(eventIndex2, 1);
+            const eventIndex = obj.findIndex((event) => event.id === eventId);
+            obj.splice(eventIndex, 1);
             return obj;
         } else {
             console.log("error while delete || error :" + statusMessage.value);
@@ -44,9 +37,7 @@ export const useEvents = defineStore("events", () => {
     };
 
     const editEvent = async (editEvent, obj) => {
-        // const res = await fetch(`http://localhost:8080/api/events/${editEvent.eventId}`, {
-        // const res = await fetch(`http://10.4.56.118:8080/api/events/${editEvent.eventId}`, {
-        const res = await fetch(`${import.meta.env.BASE_URL}api/events/${editEvent.eventId}`, {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}events/${editEvent.eventId}`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json",
@@ -55,7 +46,9 @@ export const useEvents = defineStore("events", () => {
         });
         if (res.status == 200) {
             editCode.value = res.status;
-            const eventIndex = obj.findIndex((event) => event.id === editEvent.eventId);
+            const eventIndex = obj.findIndex(
+                (event) => event.id === editEvent.eventId
+            );
             obj[eventIndex].eventStartTime = editEvent.toUpdate.eventStartTime;
             obj[eventIndex].eventNotes = editEvent.toUpdate.eventNotes;
             return obj;
@@ -66,11 +59,9 @@ export const useEvents = defineStore("events", () => {
         }
     };
 
-    const fetchEvents = async () => {
+    const fetchEvents = async() => {
         try {
-            // const res = await fetch(`http://localhost:8080/api/events`, {
-            // const res = await fetch(`http://10.4.56.118:8080/api/events`, {
-            const res = await fetch(`${import.meta.env.BASE_URL}api/events`, {
+            const res = await fetch(`${import.meta.env.VITE_BASE_URL}events`, {
                 method: "GET",
             });
             events.value = await res.json();
@@ -84,7 +75,6 @@ export const useEvents = defineStore("events", () => {
             console.log(err);
         }
     };
-
     return {
         events,
         fetchEvents,

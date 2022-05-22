@@ -46,7 +46,7 @@ const filterEvent = async (search) => {
   filter_list.value = eventList.value.filter(
     (x) =>
       (x.bookingName.includes(search) || x.bookingEmail == search) &&
-      x.eventCategory.eventCategoryName.includes(
+      x.eventCategoryName.includes(
         selectedClinic.value == "ทั้งหมด" ? "" : selectedClinic.value
       ) &&
       (status.value == "ทั้งหมด" && selectDate.value == ""

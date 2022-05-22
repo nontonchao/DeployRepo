@@ -20,7 +20,7 @@ const eventStore = useEvents();
 
 let tmp = {
   eventNotes: "dummy notes",
-  eventCategory: { eventCategoryName: "dummy event" },
+  eventCategoryName: "dummy event"
 };
 
 onBeforeMount(() => {
@@ -43,6 +43,7 @@ const isConfirm = ref(false);
 const toggleConfirm = () => {
   isConfirm.value = !isConfirm.value;
   eventStore.addCode = 0;
+  console.log(isConfirm.value);
 };
 
 const getCurrDate = () => {
@@ -59,7 +60,6 @@ const timeErr = ref(0);
 const ValidateTime = (time) => {
   return time == "" ? (timeErr.value = 0) : (timeErr.value = 1);
 };
-const is200 = ref(false);
 
 const is400 = ref(false);
 const isDel = ref(false);
@@ -78,8 +78,7 @@ let tmpdt = ref("");
 function showTime(DateTime, add) {
   let ret = new Date(DateTime);
   ret.setMinutes(ret.getMinutes() + add);
-  let out = ret.toLocaleTimeString();
-  return out;
+  return ret.toLocaleTimeString();
 }
 
 const gen_color = (id) => {
@@ -96,6 +95,7 @@ const gen_color = (id) => {
       return "bg-gray-300 hover:bg-gray-400";
   }
 };
+
 </script>
 
 <template>
@@ -121,11 +121,11 @@ const gen_color = (id) => {
         <div v-for="(result, index) in eventList" :key="index">
           <div :class="
             'shadow-lg w-full w-max-w-xs h-auto pt-8  rounded-t-3xl text-center my-10 p-15 leading-8 rounded-lg rounded-b-3xl transition ease-in-out  hover:-translate-y-1 hover:scale-110 duration-300 ' +
-            gen_color(result.eventCategory.id)
+            gen_color(result.eventCategoryId)
           ">
             <div class="">
               <p class="font-bold py-8 text-xl text-center">
-                {{ result.eventCategory.eventCategoryName }}
+                {{ result.eventCategoryName }}
               </p>
               <div class="flex justify-around">
                 <div class="md:flex-shrink-0 flex justify-start pl-12 pb-5">
@@ -183,7 +183,7 @@ const gen_color = (id) => {
               <div>
                 <button :class="
                   'w-full rounded-lg rounded-b-3xl ' +
-                  gen_color(result.eventCategory.id)
+                  gen_color(result.eventCategoryId)
                 " @click="
   tmp = result;
 tmpdt = `${new Date(
@@ -248,7 +248,7 @@ toggleEdit();
               <strong> คุณต้องการยกเลิกนัด </strong>
             </h2>
             <p class="text-sm text-gray-500 px-8">
-              {{ tmp.eventCategory.eventCategoryName }}<br />
+              {{ tmp.eventCategoryName }}<br />
               ของคุณ {{ tmp.bookingName }} ใช่หรือไม่ ?
             </p>
             <p class="text-sm text-gray-400 px-8">
@@ -295,7 +295,7 @@ toggleDel();
             <div class="w-full md:w-full px-3 mb-6 md:mb-0">
               <p>ชื่อผู้นัดหมาย : {{ tmp.bookingName }}</p>
               <p>อีเมล : {{ tmp.bookingEmail }}</p>
-              <p>คลินิก : {{ tmp.eventCategory.eventCategoryName }}</p>
+              <p>คลินิก : {{ tmp.eventCategoryName }}</p>
               <p>ระยะเวลา : {{ tmp.eventDuration }} นาที</p>
               <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 m-3" for="">
                 วันที่นัดหมาย :

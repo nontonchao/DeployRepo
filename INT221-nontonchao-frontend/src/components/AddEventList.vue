@@ -263,11 +263,11 @@ const ValidateTime = (time) => {
       ></textarea>
       <p class="text-gray-500 text-sm text-right pl-2">{{ note.length }}/500</p>
     </div>
-    <div class="w-full m-5 md:w-full px-3 mb-8 md:mb-0">
+    <div class="w-full m-5 md:w-full px-3 mb-8 md:mb-0 ">
       <button
         @click="isNotFullfill() ? '' : toggleQue()"
         :disabled="isNotFullfill()"
-        class="bg-white border-2 border-main text-black rounded-3xl font-bold flex p-2 hover:text-white drop-shadow-xl hover: hover:bg-main"
+        class="bg-white border-2 border-main text-black rounded-3xl font-bold flex p-2 hover:text-white drop-shadow-xl hover: hover:bg-main "
         type="button"
       >
         นัดหมาย
