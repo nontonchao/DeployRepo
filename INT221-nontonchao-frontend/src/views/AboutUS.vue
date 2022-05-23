@@ -6,7 +6,7 @@ const members = [
     {
         name: 'Siam Yamsaengsung (Khun)',
         imagePath: '/sy1/members/PO.jpg',
-        desc: 'The best our advisor in this world.',
+        desc: 'Our advisor.',
         git: 'https://github.com/siam-yam',
         fb: 'https://www.facebook.com/siamyam',
         ig: ''
