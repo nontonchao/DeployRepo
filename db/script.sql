@@ -55,7 +55,7 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 CREATE USER 'dev'@'%' IDENTIFIED WITH mysql_native_password BY '0000';
-GRANT ALL PRIVILEGES ON *.* TO 'dev'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'dev'@backend;
 flush PRIVILEGES;
 use OASIP;
 insert into event_category values (1,'Project Management Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย project management clinic ในวิชา INT221 integrated project I ให้นักศึกษาเตรียมเอกสารที่เกี่ยวข้องเพื่อแสดงระหว่างขอคำปรึกษา','30');
