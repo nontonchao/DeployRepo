@@ -41,7 +41,7 @@ export const useEventCategory = defineStore("eventCategory", () => {
 
     getEventCategoryList();
 
-    const isUnique = (editCate) => {
+    const isNotUnique = (editCate) => {
         return eventCategoryList.value
             .filter((cate) => cate.id !== editCate.id)
             .some((cate) => cate.eventCategoryName === editCate.eventCategoryName);
@@ -54,7 +54,7 @@ export const useEventCategory = defineStore("eventCategory", () => {
         isEdit400,
         resEditText,
         eventCategoryList,
-        isUnique,
+        isNotUnique,
     };
 });
 

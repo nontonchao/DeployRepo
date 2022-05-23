@@ -5,11 +5,6 @@ import { useEventCategory } from "../stores/eventCategory.js";
 import Footer from "../components/Footer.vue";
 
 const eventCateStore = useEventCategory();
-// const eventCateList = ref({});
-
-// onBeforeMount(async () => {
-//   eventCateList.value = eventCateStore.eventCategoryList;
-// });
 </script>
 
 <template>

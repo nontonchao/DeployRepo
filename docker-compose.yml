@@ -30,8 +30,6 @@ services:
   image: oasip-be-img
   build: ./INT221-nontonchao-backend/.
   restart: on-failure
-  ports:
-   - "8080:8080"
   depends_on:
    - database
   networks:

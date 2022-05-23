@@ -194,6 +194,7 @@ const ValidateTime = (time) => {
           maxlength="100"
         />
       </div>
+      <p class="text-gray-500 text-sm text-right pl-2">{{ name.length }}/100</p>
       <div class="w-full md:w-full px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 m-3"
@@ -217,11 +218,14 @@ const ValidateTime = (time) => {
           type="email"
           v-model="email"
           required
+          minlength="1"
+          maxlength="100"
           @keyup="ValidateEmail(email)"
           class="appearance-none block w-full bg-gray-50 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-main"
           placeholder="อีเมล"
         />
       </div>
+      <p class="text-gray-500 text-sm text-right pl-2">{{ email.length }}/100</p>
       <div class="w-full md:w-full px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 m-3"
