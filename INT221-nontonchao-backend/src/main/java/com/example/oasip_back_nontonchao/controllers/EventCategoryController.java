@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/events-category")
 public class EventCategoryController {
 
@@ -27,14 +28,8 @@ public class EventCategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity editEventCategory(@Valid @RequestBody EventCategory update) {
-        List<EventCategory> toCheck = service.getEventCategoryByName(update.getEventCategoryName().stripLeading().stripTrailing(), update.getId());
-        if (toCheck.stream().count() == 0) {
-            service.addEventCategory(update);
-            return ResponseEntity.ok("EventCategory Edited! || eventCategory id: " + update.getId());
-        } else {
-            return new ResponseEntity("eventCategoryName should be unique", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity editEventCategory(@Valid @RequestBody EventCategory update, @PathVariable Integer id) {
+        return service.editEventCategory(update, id);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
