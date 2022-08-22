@@ -1,30 +1,17 @@
 <script setup>
 import { onBeforeMount } from "vue";
-import AddEventList from "../components/AddEventList.vue";
-import { useEvents } from "../stores/events.js";
+import EventAdd from '../components/eventAdd.vue';
 import { useEventCategory } from "../stores/eventCategory.js";
 
-import Footer from "../components/Footer.vue";
-
-const eventStore = useEvents();
 const eventCateStore = useEventCategory();
-
-onBeforeMount(async () => {
-  await eventStore.fetchEvents();
-});
 
 </script>
 
 <template>
   <div>
-    <div class="pb-12">
-      <h1 class="pt-10 text-center text-4xl font-bold">จองนัดหมาย</h1>
-      <AddEventList :cliniclist="eventCateStore.eventCategoryList" />
-    </div>
-
-    <Footer />
+    <EventAdd :clinic_list="eventCateStore.eventCategoryList" />
   </div>
 </template>
 
-<style>
+<style scoped>
 </style>
