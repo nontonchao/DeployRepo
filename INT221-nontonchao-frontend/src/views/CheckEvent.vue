@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount, onMounted, onUpdated } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { useEvents } from "../stores/events.js";
 import { useEventCategory } from "../stores/eventCategory.js";
@@ -90,14 +90,6 @@ onBeforeMount(async () => {
   eventCateList.value = eventCateStore.eventCategoryList;
   eventNum();
 });
-
-onMounted(async () => {
-  eventList.value = await eventStore.fetchEvents();
-  filter_list.value = eventList.value;
-  eventCateList.value = eventCateStore.eventCategoryList;
-  eventNum();
-})
-
 </script>
 
 <template>
@@ -123,12 +115,16 @@ onMounted(async () => {
                   />
                 </li>
                 <li class="nav-item mx-2">
-                  <input type="date" class="form-control  form-control-sm" v-model="selectDate" />
+                  <input
+                    type="date"
+                    class="form-control form-control-sm"
+                    v-model="selectDate"
+                  />
                 </li>
                 <li class="nav-item mx-2">
                   <select
                     v-model="selectedClinic"
-                    class="form-select form-select-sm "
+                    class="form-select form-select-sm"
                   >
                     <option selected>ทั้งหมด</option>
                     <option
@@ -154,7 +150,6 @@ onMounted(async () => {
                       d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
                     />
                   </svg>
-                  
                 </li>
               </ul>
             </div>
@@ -204,12 +199,12 @@ onMounted(async () => {
                 "
                 style="cursor: pointer"
               >
-                <div class="col">
+                <div class="col ">
                   <div class="p-3">
                     <h4 class="display-5 fw-bold text-white mb-0">
                       {{ eAll }}
                     </h4>
-                    <p class="mb-0 text-white">นัดหมายทั้งหมด</p>
+                    <p class="mb-0 text-white ">นัดหมายทั้งหมด</p>
                   </div>
                 </div>
               </div>
@@ -349,4 +344,5 @@ onMounted(async () => {
   background-color: darkgray;
   cursor: pointer;
 }
+
 </style>

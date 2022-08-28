@@ -16,9 +16,11 @@ const props = defineProps({
   },
 });
 let toEdit = props.eventz;
+
 const numberFormat = function (number, width) {
   return new Array(+width + 1 - (number + "").length).join("0") + number;
 };
+
 const getCurrDate = () => {
   const today = new Date();
   return `${today.getFullYear()}-${numberFormat(
@@ -26,22 +28,43 @@ const getCurrDate = () => {
     2
   )}-${numberFormat(new Date(today.toString()).getDate(), 2)}`;
 };
-console.log();
-var d = new Date(getCurrDate());
+
+var d = new Date();
 d.setHours(0, 0, 0, 0);
+var d_tmp = ref(new Date());
+
 const getTime = (time) => {
-  return (
-    String(time.getHours()).padStart(2, "0") +
-    ":" +
-    String(time.getMinutes()).padStart(2, "0")
-  );
+  return time;
 };
+
 function addMinutes(date, minutes) {
   return new Date(date.getTime() + minutes * 60000);
 }
+
+var d = new Date();
+d.setHours(0, 0, 0, 0);
+const slot = ref([]);
+
+const checkTimeSlot = async (date, eventCategoryId) => {
+  slot.value.length = 0;
+  const slot_t = await useEvent.getTime(date, eventCategoryId);
+  slot_t.forEach((x) => {
+    slot.value.push(new Date(x.eventStartTime).toString());
+  });
+};
+
 const timeTable = ref([]);
+
 const generateTimeSlot = (eventDuration) => {
+  console.log(eventDuration);
   timeTable.value.length = 0;
+  d = new Date(
+    startTime.value.split("-")[0] +
+      "-" +
+      startTime.value.split("-")[1] +
+      "-" +
+      startTime.value.split("-")[2]
+  );
   d.setHours(0, 0, 0, 0);
   for (let i = 0; i < 1440 / (eventDuration + 5); i++) {
     timeTable.value.push(
@@ -50,6 +73,7 @@ const generateTimeSlot = (eventDuration) => {
     d = addMinutes(d, 5);
   }
 };
+
 const activeClick = (id) => {
   if (id === activeIndex.value) {
     return "btn btn-outline-danger btn-sm m-2 active";
@@ -57,24 +81,16 @@ const activeClick = (id) => {
     return "btn btn-outline-danger btn-sm m-2";
   }
 };
-generateTimeSlot(toEdit.eventDuration);
+
 const editEvent = async () => {
   toEdit = {
-    eventStartTime:
-      new Date(startTime.value)
-        .toISOString()
-        .replace(".000Z", "Z")
-        .split("T")[0] +
-      "T" +
-      time.value +
-      ":00Z",
+    eventStartTime: d_tmp.value,
     eventNotes: eNotes.value,
   };
   await useEvent.editEvent(props.eventz.id, toEdit);
   1;
 };
 </script>
-
 <template>
   <div>
     <section class="py-4 py-xl-5" style="background: #ffffff">
@@ -153,9 +169,13 @@ const editEvent = async () => {
               <input
                 type="date"
                 class="form-control"
-                :min="getCurrDate()"
                 v-model="startTime"
                 required
+                :min="getCurrDate()"
+                @change="
+                  checkTimeSlot(startTime, toEdit.eventCategory.id);
+                  generateTimeSlot(toEdit.eventDuration);
+                "
               />
             </div>
             <div>
@@ -172,12 +192,24 @@ const editEvent = async () => {
                       time = timeTable[index].split('-')[0].trim();
                       activeIndex = index;
                       activeClick(index);
+                      d_tmp = new Date(x.substring(0, 50)).toISOString();
                     "
                     :class="activeClick(index)"
+                    :disabled="
+                      slot.includes(x.substring(0, 50)) ||
+                      new Date(x.substring(0, 50)) < new Date()
+                    "
                     :activeIndex="index"
-                    class="btn-sm"
+                    class="'btn-sm'"
                   >
-                    {{ x }}
+                    {{ x.split(" ")[4].substring(0, 5) }} -
+                    {{ x.split(" ")[13].substring(0, 5) }}
+                    <small v-if="slot.includes(x.substring(0, 50))"
+                      >เวลานี้ถูกจองแล้ว</small
+                    >
+                    <small v-if="new Date(x.substring(0, 50)) < new Date()"
+                      >หมดเวลาจอง</small
+                    >
                   </button>
                 </div>
               </div>
@@ -217,7 +249,6 @@ const editEvent = async () => {
             data-bs-target="#myModal"
             style="--bs-btn-border-radius: 1rem"
             :disabled="!(time != 0 && startTime != 0)"
-            @click="editEvent()"
           >
             ยืนยัน
           </button>
@@ -225,10 +256,11 @@ const editEvent = async () => {
       </div>
     </section>
 
-    <!-- 400 Modal edit HTML -->
+    <!-- modal -->
     <div id="myModal" class="modal fade">
       <div class="modal-dialog modal-confirm modal-lx modal-dialog-centered">
-        <div class="modal-content" v-show="useEvents.resStatus == 400">
+        <!-- con Modal edit HTML -->
+        <div class="modal-content">
           <div class="modal-header flex-column">
             <button
               type="button"
@@ -241,65 +273,48 @@ const editEvent = async () => {
                 xmlns="http://www.w3.org/2000/svg"
                 width="70"
                 height="70"
-                fill="currentColor"
-                class="bi bi-exclamation"
+                fill="#6E6E73"
+                class="bi bi-check-lg"
                 viewBox="0 0 16 16"
               >
                 <path
-                  d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.553.553 0 0 1-1.1 0L7.1 4.995z"
+                  d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
                 />
               </svg>
             </div>
 
-            <h4 class="modal-title w-100">คุณอีเมลนี้ถูกใช้ไปแล้ว !</h4>
+            <h4 class="modal-title w-100">คุณต้องการแก้ไขของคุณ ?</h4>
           </div>
           <div class="modal-body">
             <p>
-              หากคุณต้องการจะแก้ไขข้อมูล OASIP ID กรุณาใช้ชื่อและอีเมลให้ถูกต้อง
+              หากคุณแก้ไขเวลาการนัดหมายของคุณแล้ว
+              คุณจะสามารถเข้าถึงบริการได้ตามเวลาที่นัดหมาย
             </p>
           </div>
-        </div>
-      </div>
-    </div>
-    <!-- 400 Modal edit HTML -->
-
-    <!-- 401 Modal edit HTML -->
-    <div id="myModal" class="modal fade">
-      <div class="modal-dialog modal-confirm modal-lx modal-dialog-centered">
-        <div class="modal-content" v-show="useEvents.resStatus == 401">
-          <div class="modal-header flex-column">
+          <div class="modal-footer justify-content-center">
+            <button
+              data-bs-dismiss="modal"
+              type="button"
+              class="btn btn-primary rounded-pill"
+              data-dismiss="modal"
+              @click="
+                editEvent();
+                router.push(`/Eventinfo/${props.eventz.id}`);
+              "
+            >
+              ยืนยัน
+            </button>
             <button
               type="button"
-              class="btn-close"
               data-bs-dismiss="modal"
-              aria-hidden="true"
-            ></button>
-            <div class="icon-box">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="70"
-                height="70"
-                fill="currentColor"
-                class="bi bi-exclamation"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.553.553 0 0 1-1.1 0L7.1 4.995z"
-                />
-              </svg>
-            </div>
-
-            <h4 class="modal-title w-100">คุณชื่อนี้ถูกใช้ไปแล้ว !</h4>
-          </div>
-          <div class="modal-body">
-            <p>
-              หากคุณต้องการจะแก้ไขข้อมูล OASIP ID กรุณาใช้ชื่อและอีเมลให้ถูกต้อง
-            </p>
+              class="btn btn-danger rounded-pill"
+            >
+              ยกเลิก
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <!-- 401 Modal edit HTML -->
   </div>
 </template>
 
@@ -307,13 +322,16 @@ const editEvent = async () => {
 .list-group {
   max-height: 300px;
 }
+
 body {
   font-family: "Varela Round", sans-serif;
 }
+
 .modal-confirm {
   color: #636363;
   width: 500px;
 }
+
 .modal-confirm .modal-content {
   padding: 20px;
   border-radius: 5px;
@@ -321,23 +339,28 @@ body {
   text-align: center;
   font-size: 14px;
 }
+
 .modal-confirm .modal-header {
   border-bottom: none;
   position: relative;
 }
+
 .modal-confirm h4 {
   text-align: center;
   font-size: 26px;
   margin: 30px 500px -20px;
 }
+
 .modal-confirm .close {
   position: absolute;
   top: -5px;
   right: -2px;
 }
+
 .modal-confirm .modal-body {
   color: #999;
 }
+
 .modal-confirm .modal-footer {
   border: none;
   text-align: center;
@@ -345,9 +368,11 @@ body {
   font-size: 13px;
   padding: 10px 15px 25px;
 }
+
 .modal-confirm .modal-footer a {
   color: #999;
 }
+
 .modal-confirm .icon-box {
   width: 80px;
   height: 80px;
@@ -357,12 +382,14 @@ body {
   text-align: center;
   border: 4px solid rgb(250, 231, 62);
 }
+
 .modal-confirm .icon-box i {
   color: #f15e5e;
   font-size: 46px;
   display: inline-block;
   margin-top: 13px;
 }
+
 .modal-confirm .btn,
 .modal-confirm .btn:active {
   color: #fff;
@@ -377,16 +404,20 @@ body {
   border-radius: 3px;
   margin: 0 5px;
 }
+
 .modal-confirm .btn-secondary {
   background: #f5f5f7;
 }
+
 .modal-confirm .btn-secondary:hover,
 .modal-confirm .btn-secondary:focus {
   background: #a8a8a8;
 }
+
 .modal-confirm .btn-danger {
   background: #f15e5e;
 }
+
 .modal-confirm .btn-danger:hover,
 .modal-confirm .btn-danger:focus {
   background: #ee3535;
