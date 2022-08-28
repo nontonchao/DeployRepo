@@ -3,6 +3,7 @@ import { ref } from "vue";
 
 export const useUsers = defineStore("users", () => {
   const users = ref([]);
+  const resStatus = ref(0)
   const fetchUsers = async () => {
     const res = await fetch(`${import.meta.env.VITE_BASE_URL}users`, {
       method: "GET",
@@ -62,12 +63,50 @@ export const useUsers = defineStore("users", () => {
     return false;
   };
 
+  const deleteUser = async (id) => {
+    const res = await fetch(
+      `${import.meta.env.VITE_BASE_URL}users/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (res.status === 200) {
+      // alert("event removed");
+    } else {
+      alert("error while delete || error :" + statusMessage.value);
+    }
+  };
+
+  const editUser = async (id, toEditUser) => {
+    const res = await fetch(
+      `${import.meta.env.VITE_BASE_URL}users/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(toEditUser),
+      }
+    );
+    if (res.status == 200) {
+      alert("user edited");
+    } else if (res.status == 400) {
+    } else {
+      alert("error while editing");
+    }
+    resStatus.value = res.status
+  };
+
+
   return {
     fetchUsers,
     userRegister,
     getUserById,
     validateName,
     validateEmail,
+    deleteUser,
+    editUser,
+    resStatus,
   };
 });
 

@@ -10,12 +10,15 @@ const firstname = ref("");
 const lastname = ref("");
 const email_ = ref("");
 const role_ = ref("นักศึกษา");
+const passwordX = ref("");
+const ConfirmPassword = ref("");
 
 const register = async () => {
   await userStore.userRegister({
     name: firstname.value.trim() + " " + lastname.value.trim(),
     email: email_.value.trim(),
     role: role_.value == "นักศึกษา" ? "student" : "lecturer",
+    password: passwordX.value,
   });
 };
 
@@ -44,6 +47,22 @@ const clearForm = () => {
   email_.value = "";
   role_.value = "นักศึกษา";
   emailStatus.value = 2;
+};
+
+const validatePass = () => {
+  if (
+    passwordX.value.length != 0 &&
+    ConfirmPassword.value.length != 0 &&
+    passwordX.value.length >= 8 &&
+    passwordX.value.length <= 14 &&
+    ConfirmPassword.value.length >= 8 &&
+    ConfirmPassword.value.length <= 14 &&
+    passwordX.value.length == ConfirmPassword.value.length &&
+    passwordX.value == ConfirmPassword.value
+  ) {
+    return true;
+  }
+  return false;
 };
 </script>
 
@@ -175,30 +194,56 @@ const clearForm = () => {
                           placeholder="อีเมล"
                           @change="validateEmail(email_)"
                         />
-                        <small class="text-danger" v-if="emailStatus == 0"
-                          >*โปรดใส่ Email ที่ถูกต้อง</small
+                        <p
+                          class="text-danger text-end fs-6"
+                          v-if="emailStatus == 0"
                         >
+                          *กรุณาใส่อีเมลให้ถูกต้อง
+                        </p>
                       </div>
 
                       <hr />
+
                       <div class="mt-5 mb-3">
                         <input
                           class="form-control"
-                          type="text"
+                          v-model="passwordX"
+                          type="password"
                           id="password"
                           name="password"
-                          placeholder="รหัสผ่าน"
+                          minlength="8"
+                          maxlength="14"
+                          required
+                          placeholder="รหัสผ่านต้องมีความยาว 8-14 ตัวอักษร"
+                          @change="validatePass()"
                         />
                       </div>
+
                       <div class="mb-5">
                         <input
                           class="form-control"
-                          type="text"
+                          v-model="ConfirmPassword"
+                          type="password"
                           id="Cpassword"
                           name="Cpassword"
+                          minlength="8"
+                          maxlength="14"
+                          required
                           placeholder="ยืนยันรหัสผ่าน"
+                          @change="validatePass()"
                         />
+                        <p
+                          v-show="
+                            !passwordX == 0 &&
+                            !ConfirmPassword == 0 &&
+                            !validatePass()
+                          "
+                          class="text-danger text-end fs-6"
+                        >
+                          *รหัสผ่านไม่ถูกต้อง
+                        </p>
                       </div>
+
                       <div class="text-center">
                         <button
                           class="btn btn-danger btn-sm mx-4"
@@ -211,7 +256,8 @@ const clearForm = () => {
                               firstname != 0 &&
                               lastname != 0 &&
                               email_ != 0 &&
-                              validateEmail(email_)
+                              validateEmail(email_) &&
+                              validatePass()
                             )
                           "
                         >
@@ -266,20 +312,30 @@ const clearForm = () => {
         <div class="modal-footer justify-content-center">
           <button
             data-bs-dismiss="modal"
-            @click="register();router.push(`/login`)"
+            @click="
+              register();
+              router.push(`/login`);
+            "
             type="button"
             class="btn btn-primary rounded-pill"
             data-dismiss="modal"
           >
             ยืนยัน
           </button>
-          <button type="button" data-bs-dismiss="modal" class="btn btn-danger  rounded-pill">
+          <button
+            type="button"
+            data-bs-dismiss="modal"
+            class="btn btn-danger rounded-pill"
+          >
             ยกเลิก
           </button>
         </div>
       </div>
     </div>
   </div>
+
+
+  
 </template>
 
 <style scoped>
@@ -340,7 +396,7 @@ body {
   border-radius: 50%;
   z-index: 9;
   text-align: center;
-  border: 4px solid #68CC45;
+  border: 4px solid #68cc45;
 }
 
 .modal-confirm .icon-box i {

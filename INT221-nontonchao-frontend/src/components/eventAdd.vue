@@ -1,7 +1,7 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import { useEvents } from "../stores/events.js";
-import { useUsers } from "../stores/users";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   clinic_list: {
@@ -13,23 +13,38 @@ const props = defineProps({
 
 var d = new Date();
 d.setHours(0, 0, 0, 0);
+var d_tmp = ref(new Date());
 
 const getTime = (time) => {
-  return (
-    String(time.getHours()).padStart(2, "0") +
-    ":" +
-    String(time.getMinutes()).padStart(2, "0")
-  );
+  return time;
 };
 
 function addMinutes(date, minutes) {
   return new Date(date.getTime() + minutes * 60000);
 }
 
+const slot = ref([]);
+const ecId = ref(0);
+
+const checkTimeSlot = async (date, eventCategoryId) => {
+  slot.value.length = 0;
+  const slot_t = await eventStore.getTime(date, eventCategoryId);
+  slot_t.forEach((x) => {
+    slot.value.push(new Date(x.eventStartTime).toString());
+  });
+};
+
 const timeTable = ref([]);
 
 const generateTimeSlot = (eventDuration) => {
   timeTable.value.length = 0;
+  d = new Date(
+    startTime.value.split("-")[0] +
+      "-" +
+      startTime.value.split("-")[1] +
+      "-" +
+      startTime.value.split("-")[2]
+  );
   d.setHours(0, 0, 0, 0);
   for (let i = 0; i < 1440 / (eventDuration + 5); i++) {
     timeTable.value.push(
@@ -48,28 +63,33 @@ const activeClick = (id) => {
 };
 
 const eventStore = useEvents();
-const userStore = useUsers();
+const router = useRouter();
+
 const name = ref("");
 const firstname = ref("");
 const lastname = ref("");
 const email = ref("");
 const clinicX = ref("");
 const note = ref("");
-const startTime = ref("");
+
 const time = ref("");
 const toSend = ref("");
 const selectClinic = ref({});
 const activeIndex = ref();
+const duration = ref();
+
+const numberFormat = function (number, width) {
+  return new Array(+width + 1 - (number + "").length).join("0") + number;
+};
 
 const getCurrDate = () => {
   const today = new Date();
   return `${today.getFullYear()}-${numberFormat(
     new Date(today.toString()).getMonth() + 1,
     2
-  )}-${numberFormat(new Date(today.toString()).getDate(), 2)}T${today
-    .toLocaleTimeString("it-IT")
-    .substring(0, 5)}`;
+  )}-${numberFormat(new Date(today.toString()).getDate(), 2)}`;
 };
+const startTime = ref(getCurrDate());
 
 const getClinic = (clinicName) => {
   selectClinic.value = props.clinic_list.filter(
@@ -82,14 +102,15 @@ const addEvent = async () => {
     // bookingName: name.value,
     bookingName: firstname.value.trim() + " " + lastname.value.trim(),
     bookingEmail: email.value.trim(),
-    eventStartTime:
-      new Date(startTime.value)
-        .toISOString()
-        .replace(".000Z", "Z")
-        .split("T")[0] +
-      "T" +
-      time.value +
-      ":00.000+07:00",
+    // eventStartTime:
+    //   new Date(startTime.value)
+    //     .toISOString()
+    //     .replace(".000Z", "Z")
+    //     .split("T")[0] +
+    //   "T" +
+    //   time.value +
+    //   ":00.000+07:00",
+    eventStartTime: d_tmp.value,
     eventDuration: JSON.stringify(
       props.clinic_list.filter((x) => x.eventCategoryName === clinicX.value)[0]
         .eventDuration
@@ -107,10 +128,6 @@ const addEvent = async () => {
   if (eventStore.statusCode == 200) {
     console.log("event added :)");
   }
-};
-
-const numberFormat = function (number, width) {
-  return new Array(+width + 1 - (number + "").length).join("0") + number;
 };
 
 const emailErr = ref(0);
@@ -158,7 +175,10 @@ const ValidateEmail = (mail) => {
                 v-model="clinicX"
                 @change="
                   getClinic(clinicX);
+                  ecId = cateList.id;
+                  duration = cateList.eventDuration;
                   generateTimeSlot(cateList.eventDuration);
+                  checkTimeSlot(startTime, ecId);
                 "
                 class="form-check-input"
                 type="radio"
@@ -237,8 +257,8 @@ const ValidateEmail = (mail) => {
                     placeholder="อีเมล"
                     v-model="email"
                   />
-                  <p class="fs-6 text-danger text-right" v-if="emailErr == 2">
-                    กรุณาใส่อีเมลให้ถูกต้อง
+                  <p class="text-danger text-end fs-6" v-if="emailErr == 2">
+                    *กรุณาใส่อีเมลให้ถูกต้อง
                   </p>
                 </div>
               </div>
@@ -260,11 +280,18 @@ const ValidateEmail = (mail) => {
                 v-model="startTime"
                 required
                 :min="getCurrDate()"
+                @change="
+                  checkTimeSlot(startTime, ecId);
+                  generateTimeSlot(duration);
+                "
               />
             </div>
             <div>
               <!-- 1440 = นาทีใน 1 วัน ต้องเอา duration ของ category นั้นๆมา + 5 นาทีแล้วหาร จะได้สลอตเวลามา -->
-              <div class="container text-center" v-show="startTime.length > 0">
+              <div
+                class="container text-center"
+                v-show="startTime.length > 0 && getCurrDate() <= startTime"
+              >
                 <div class="panel-body my-5 text-center">
                   <div class="row row-cols-5 list-group list-group-item">
                     <button
@@ -275,12 +302,24 @@ const ValidateEmail = (mail) => {
                         time = timeTable[index].split('-')[0].trim();
                         activeIndex = index;
                         activeClick(index);
+                        d_tmp = new Date(x.substring(0, 50)).toISOString();
                       "
                       :class="activeClick(index)"
+                      :disabled="
+                        slot.includes(x.substring(0, 50)) ||
+                        new Date(x.substring(0, 50)) < new Date()
+                      "
                       :activeIndex="index"
-                      class="btn-sm"
+                      class="'btn-sm'"
                     >
-                      {{ x }}
+                      {{ x.split(" ")[4].substring(0, 5) }} -
+                      {{ x.split(" ")[13].substring(0, 5) }}
+                      <small v-if="slot.includes(x.substring(0, 50))"
+                        >เวลานี้ถูกจองแล้ว</small
+                      >
+                      <small v-if="new Date(x.substring(0, 50)) < new Date()"
+                        >หมดเวลาจอง</small
+                      >
                     </button>
                   </div>
                 </div>
@@ -307,11 +346,71 @@ const ValidateEmail = (mail) => {
           <button
             class="btn btn-danger btn-sm"
             type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#myModal"
             style="--bs-btn-border-radius: 1rem"
-            @click="addEvent()"
+            :disabled="!(time != 0 && startTime != 0)"
           >
             ยืนยันการจอง
           </button>
+        </div>
+      </div>
+
+      <!-- Modal HTML -->
+      <div id="myModal" class="modal fade">
+        <div class="modal-dialog modal-confirm modal-lx modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header flex-column">
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-hidden="true"
+              ></button>
+              <div class="icon-box">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="70"
+                  height="70"
+                  fill="#6E6E73"
+                  class="bi bi-check-lg"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
+                  />
+                </svg>
+              </div>
+
+              <h4 class="modal-title w-100">คุณต้องการสร้างนัดหมายของคุณ ?</h4>
+            </div>
+            <div class="modal-body">
+              <p>
+                คุณต้องการที่จะนัดหมายเพื่อขอคำปรึกษาคลินิก....เวลา....ใช่หรือไม่
+              </p>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button
+                type="button"
+                data-bs-dismiss="modal"
+                class="btn btn-primary rounded-pill"
+                data-dismiss="modal"
+                @click="
+                  addEvent();
+                  router.push(`/check-event`);
+                "
+              >
+                ยืนยัน
+              </button>
+              <button
+                type="button"
+                data-bs-dismiss="modal"
+                class="btn btn-danger rounded-pill"
+              >
+                ยกเลิก
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -321,5 +420,101 @@ const ValidateEmail = (mail) => {
 <style scoped>
 .list-group {
   max-height: 300px;
+}
+
+.modal-confirm {
+  color: #636363;
+  width: 500px;
+}
+
+.modal-confirm .modal-content {
+  padding: 20px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+}
+
+.modal-confirm .modal-header {
+  border-bottom: none;
+  position: relative;
+}
+
+.modal-confirm h4 {
+  text-align: center;
+  font-size: 26px;
+  margin: 30px 500px -20px;
+}
+
+.modal-confirm .close {
+  position: absolute;
+  top: -5px;
+  right: -2px;
+}
+
+.modal-confirm .modal-body {
+  color: #999;
+}
+
+.modal-confirm .modal-footer {
+  border: none;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 13px;
+  padding: 10px 15px 25px;
+}
+
+.modal-confirm .modal-footer a {
+  color: #999;
+}
+
+.modal-confirm .icon-box {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 50%;
+  z-index: 9;
+  text-align: center;
+  border: 4px solid #68cc45;
+}
+
+.modal-confirm .icon-box i {
+  color: #f15e5e;
+  font-size: 46px;
+  display: inline-block;
+  margin-top: 13px;
+}
+
+.modal-confirm .btn,
+.modal-confirm .btn:active {
+  color: #fff;
+  border-radius: 4px;
+  background: #0071e3;
+  text-decoration: none;
+  transition: all 0.4s;
+  line-height: normal;
+  min-width: 120px;
+  border: none;
+  min-height: 40px;
+  border-radius: 3px;
+  margin: 0 5px;
+}
+
+.modal-confirm .btn-secondary {
+  background: #f5f5f7;
+}
+
+.modal-confirm .btn-secondary:hover,
+.modal-confirm .btn-secondary:focus {
+  background: #a8a8a8;
+}
+
+.modal-confirm .btn-danger {
+  background: #f15e5e;
+}
+
+.modal-confirm .btn-danger:hover,
+.modal-confirm .btn-danger:focus {
+  background: #ee3535;
 }
 </style>

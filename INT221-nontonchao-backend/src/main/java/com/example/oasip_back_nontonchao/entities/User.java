@@ -42,9 +42,14 @@ public class User {
     @Column(name = "role", nullable = false)
     private String role;
 
-    @Column(name = "onCreated", nullable = false)
+    @Column(name = "onCreated", nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Instant onCreated;
 
-    @Column(name = "onUpdated", nullable = false)
+    @Column(name = "onUpdated", nullable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Instant onUpdated;
+
+    @NotNull(message = "password shouldn't be null or blank")
+    @NotBlank(message = "password shouldn't be null or blank")
+    @Column(name = "password", nullable = false , length=96)
+    private String password;
 }

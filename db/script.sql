@@ -16,16 +16,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `oasip`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `oasip` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
-USE `oasip`;
-
---
 -- Table structure for table `event`
 --
+DROP DATABASE IF EXISTS `oasip`;
+CREATE DATABASE `oasip`;
+USE `oasip`;
 
 DROP TABLE IF EXISTS `event`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -95,10 +90,11 @@ CREATE TABLE `users` (
   `role` enum('admin','lecturer','student') NOT NULL,
   `onCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `onUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `password` varchar(90) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,7 +103,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (6,'Chokjaroen','2asd@gmail.com','student','2022-08-16 12:42:19','2022-08-16 14:32:04'),(8,'Nitipoom','ebxz@gmail.com','admin','2022-08-16 12:52:20','2022-08-16 16:09:58'),(9,'testja','dqwd@kmutt.ac.th','student','2022-08-16 13:33:47','2022-08-16 13:33:47'),(22,'Nyz','dddw@gmail.com','admin','2022-08-16 14:51:57','2022-08-16 14:51:57'),(23,'Amorn','ZAZAZA@gmail.com','admin','2022-08-16 14:55:31','2022-08-16 14:55:31'),(24,'AmornXJ','ZAZAZAX@gmail.com','admin','2022-08-16 15:19:14','2022-08-16 15:19:14'),(28,'Nyzdw','ddddw@gmail.com','admin','2022-08-16 15:57:29','2022-08-16 15:57:29'),(29,'Nyzdwe','dddddw@gmail.com','admin','2022-08-16 15:57:58','2022-08-16 15:57:58'),(30,'Nyzcccdwe','g@cg.com','admin','2022-08-16 16:13:03','2022-08-16 16:14:43');
+INSERT INTO `users` VALUES (1,'Chokjaroen Tancharoenrat','chokjaroen@kmutt.ac.th','student','2022-08-25 08:43:56','2022-08-25 08:43:56','$argon2id$v=19$m=65536,t=22,p=1$Cb+PXEe5e3M$8WUM0lWzH0eqMXTCxAcAk/aa5Lq0WnpQgZWfTROc/Mo'),(2,'Nitipoom Suttachai','nitipoom@kmutt.ac.th','student','2022-08-25 08:44:20','2022-08-25 08:44:20','$argon2id$v=19$m=65536,t=22,p=1$g6lemJgSrB8$A12qxgkDfU77M4PnRe9fk2vXnON6XrxpSKF/25corqo'),(3,'Natthakan Thaweewatthanaprayun','natthakan@kmutt.ac.th','student','2022-08-25 08:44:34','2022-08-25 08:44:34','$argon2id$v=19$m=65536,t=22,p=1$cZjJyVnYHLM$j2oybFSjRprKfGwAHifoTGqnKX1JcFaNmcN4/dxAgLo');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -123,4 +119,4 @@ flush PRIVILEGES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-16 23:24:37
+-- Dump completed on 2022-08-25 15:55:49

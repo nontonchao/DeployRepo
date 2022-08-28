@@ -2,14 +2,12 @@
 import { ref } from "vue";
 import { useEvents } from "../stores/events.js";
 import { useRouter } from "vue-router";
-
 const router = useRouter();
 const useEvent = useEvents();
 const startTime = ref("");
 const time = ref("");
 const activeIndex = ref("");
 const eNotes = ref(props.eventz.eventNotes);
-
 const props = defineProps({
   eventz: {
     type: Object,
@@ -17,12 +15,20 @@ const props = defineProps({
     default: {},
   },
 });
-
 let toEdit = props.eventz;
-
-var d = new Date();
+const numberFormat = function (number, width) {
+  return new Array(+width + 1 - (number + "").length).join("0") + number;
+};
+const getCurrDate = () => {
+  const today = new Date();
+  return `${today.getFullYear()}-${numberFormat(
+    new Date(today.toString()).getMonth() + 1,
+    2
+  )}-${numberFormat(new Date(today.toString()).getDate(), 2)}`;
+};
+console.log();
+var d = new Date(getCurrDate());
 d.setHours(0, 0, 0, 0);
-
 const getTime = (time) => {
   return (
     String(time.getHours()).padStart(2, "0") +
@@ -30,13 +36,10 @@ const getTime = (time) => {
     String(time.getMinutes()).padStart(2, "0")
   );
 };
-
 function addMinutes(date, minutes) {
   return new Date(date.getTime() + minutes * 60000);
 }
-
 const timeTable = ref([]);
-
 const generateTimeSlot = (eventDuration) => {
   timeTable.value.length = 0;
   d.setHours(0, 0, 0, 0);
@@ -47,7 +50,6 @@ const generateTimeSlot = (eventDuration) => {
     d = addMinutes(d, 5);
   }
 };
-
 const activeClick = (id) => {
   if (id === activeIndex.value) {
     return "btn btn-outline-danger btn-sm m-2 active";
@@ -55,9 +57,7 @@ const activeClick = (id) => {
     return "btn btn-outline-danger btn-sm m-2";
   }
 };
-
 generateTimeSlot(toEdit.eventDuration);
-
 const editEvent = async () => {
   toEdit = {
     eventStartTime:
@@ -150,10 +150,19 @@ const editEvent = async () => {
         <div class="row gy-4 gy-md-0">
           <div class="col-md-6">
             <div class="m-5">
-              <input type="date" class="form-control" v-model="startTime" />
+              <input
+                type="date"
+                class="form-control"
+                :min="getCurrDate()"
+                v-model="startTime"
+                required
+              />
             </div>
             <div>
-              <div class="container text-center" v-show="startTime.length > 0">
+              <div
+                class="container text-center"
+                v-show="startTime.length > 0 && getCurrDate() <= startTime"
+              >
                 <div class="row row-cols-5 list-group list-group-item">
                   <button
                     type="button"
@@ -204,7 +213,10 @@ const editEvent = async () => {
           <button
             class="btn btn-primary btn-sm mx-4"
             type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#myModal"
             style="--bs-btn-border-radius: 1rem"
+            :disabled="!(time != 0 && startTime != 0)"
             @click="editEvent()"
           >
             ยืนยัน
@@ -212,11 +224,171 @@ const editEvent = async () => {
         </div>
       </div>
     </section>
+
+    <!-- 400 Modal edit HTML -->
+    <div id="myModal" class="modal fade">
+      <div class="modal-dialog modal-confirm modal-lx modal-dialog-centered">
+        <div class="modal-content" v-show="useEvents.resStatus == 400">
+          <div class="modal-header flex-column">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-hidden="true"
+            ></button>
+            <div class="icon-box">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="70"
+                height="70"
+                fill="currentColor"
+                class="bi bi-exclamation"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.553.553 0 0 1-1.1 0L7.1 4.995z"
+                />
+              </svg>
+            </div>
+
+            <h4 class="modal-title w-100">คุณอีเมลนี้ถูกใช้ไปแล้ว !</h4>
+          </div>
+          <div class="modal-body">
+            <p>
+              หากคุณต้องการจะแก้ไขข้อมูล OASIP ID กรุณาใช้ชื่อและอีเมลให้ถูกต้อง
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 400 Modal edit HTML -->
+
+    <!-- 401 Modal edit HTML -->
+    <div id="myModal" class="modal fade">
+      <div class="modal-dialog modal-confirm modal-lx modal-dialog-centered">
+        <div class="modal-content" v-show="useEvents.resStatus == 401">
+          <div class="modal-header flex-column">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-hidden="true"
+            ></button>
+            <div class="icon-box">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="70"
+                height="70"
+                fill="currentColor"
+                class="bi bi-exclamation"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.553.553 0 0 1-1.1 0L7.1 4.995z"
+                />
+              </svg>
+            </div>
+
+            <h4 class="modal-title w-100">คุณชื่อนี้ถูกใช้ไปแล้ว !</h4>
+          </div>
+          <div class="modal-body">
+            <p>
+              หากคุณต้องการจะแก้ไขข้อมูล OASIP ID กรุณาใช้ชื่อและอีเมลให้ถูกต้อง
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 401 Modal edit HTML -->
   </div>
 </template>
 
 <style scoped>
 .list-group {
   max-height: 300px;
+}
+body {
+  font-family: "Varela Round", sans-serif;
+}
+.modal-confirm {
+  color: #636363;
+  width: 500px;
+}
+.modal-confirm .modal-content {
+  padding: 20px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+}
+.modal-confirm .modal-header {
+  border-bottom: none;
+  position: relative;
+}
+.modal-confirm h4 {
+  text-align: center;
+  font-size: 26px;
+  margin: 30px 500px -20px;
+}
+.modal-confirm .close {
+  position: absolute;
+  top: -5px;
+  right: -2px;
+}
+.modal-confirm .modal-body {
+  color: #999;
+}
+.modal-confirm .modal-footer {
+  border: none;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 13px;
+  padding: 10px 15px 25px;
+}
+.modal-confirm .modal-footer a {
+  color: #999;
+}
+.modal-confirm .icon-box {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 50%;
+  z-index: 9;
+  text-align: center;
+  border: 4px solid rgb(250, 231, 62);
+}
+.modal-confirm .icon-box i {
+  color: #f15e5e;
+  font-size: 46px;
+  display: inline-block;
+  margin-top: 13px;
+}
+.modal-confirm .btn,
+.modal-confirm .btn:active {
+  color: #fff;
+  border-radius: 4px;
+  background: #0071e3;
+  text-decoration: none;
+  transition: all 0.4s;
+  line-height: normal;
+  min-width: 120px;
+  border: none;
+  min-height: 40px;
+  border-radius: 3px;
+  margin: 0 5px;
+}
+.modal-confirm .btn-secondary {
+  background: #f5f5f7;
+}
+.modal-confirm .btn-secondary:hover,
+.modal-confirm .btn-secondary:focus {
+  background: #a8a8a8;
+}
+.modal-confirm .btn-danger {
+  background: #f15e5e;
+}
+.modal-confirm .btn-danger:hover,
+.modal-confirm .btn-danger:focus {
+  background: #ee3535;
 }
 </style>
