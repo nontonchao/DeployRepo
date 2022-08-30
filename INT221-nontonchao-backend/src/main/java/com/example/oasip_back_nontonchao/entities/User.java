@@ -51,5 +51,6 @@ public class User {
     @NotNull(message = "password shouldn't be null or blank")
     @NotBlank(message = "password shouldn't be null or blank")
     @Column(name = "password", nullable = false , length=96)
+    @Length(min = 8, max = 14, message = "password length should be between 8-14")
     private String password;
 }
