@@ -35,22 +35,15 @@ public class User {
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @Pattern(regexp = "admin|student|lecturer", message = "role only admin,student,lecturer")
     @NotNull(message = "role shouldn't be null or blank")
     @NotBlank(message = "role shouldn't be null or blank")
     @Lob
     @Column(name = "role", nullable = false)
     private String role;
 
-    @Column(name = "onCreated", nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "onCreated", nullable = false)
     private Instant onCreated;
 
-    @Column(name = "onUpdated", nullable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "onUpdated", nullable = false)
     private Instant onUpdated;
-
-    @NotNull(message = "password shouldn't be null or blank")
-    @NotBlank(message = "password shouldn't be null or blank")
-    @Column(name = "password", nullable = false , length=96)
-    @Length(min = 8, max = 14, message = "password length should be between 8-14")
-    private String password;
 }

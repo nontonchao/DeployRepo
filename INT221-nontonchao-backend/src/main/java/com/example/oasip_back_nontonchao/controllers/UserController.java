@@ -1,6 +1,5 @@
 package com.example.oasip_back_nontonchao.controllers;
 
-import com.example.oasip_back_nontonchao.dtos.UserGet;
 import com.example.oasip_back_nontonchao.dtos.UserUpdate;
 import com.example.oasip_back_nontonchao.entities.User;
 import com.example.oasip_back_nontonchao.services.UserService;
@@ -24,7 +23,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("")
-    public List<UserGet> getUsers() {
+    public List<User> getUsers() {
         return userService.getAllUsers();
     }
 
@@ -39,13 +38,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserGet getUser(@PathVariable Integer id) {
-        return userService.findUserByIdDTO(id);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Integer id) {
-        userService.deleteUser(id);
+    public User getUser(@PathVariable Integer id) {
+        return userService.findUserById(id);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

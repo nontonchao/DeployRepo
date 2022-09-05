@@ -5,5 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class OasipBackNontonchaoApplication {
-    public static void main(String[] args) {SpringApplication.run(OasipBackNontonchaoApplication.class, args);}
+    public static void main(String[] args) {
+        SpringApplication.run(OasipBackNontonchaoApplication.class, args);
+    }
 }

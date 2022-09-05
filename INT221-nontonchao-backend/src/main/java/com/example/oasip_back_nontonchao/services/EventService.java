@@ -64,11 +64,6 @@ public class EventService {
         return new ResponseEntity("eventStartTime is overlapped!", HttpStatus.BAD_REQUEST);
     }
 
-    public List<EventGet> getEventDateDTO(String date, Integer eventCategoryId) {
-        System.out.println(date);
-        return listMapper.mapList(repository.findAllByEventStartTime(date, eventCategoryId), EventGet.class, modelMapper);
-    }
-
     public List<EventGet> getEventDTO() {
         return listMapper.mapList(repository.findAll(Sort.by(Sort.Direction.DESC, "eventStartTime")), EventGet.class, modelMapper);
     }
@@ -79,7 +74,7 @@ public class EventService {
         }
     }
 
-    public EventGet findEventById(Integer id) {
+    public Event findEventById(Integer id) {
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event id '" + id + "' does not exist!"));
     }
 
