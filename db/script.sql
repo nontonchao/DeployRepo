@@ -90,7 +90,7 @@ CREATE TABLE `users` (
   `role` enum('admin','lecturer','student') NOT NULL,
   `onCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `onUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `password` varchar(90) NOT NULL,
+  `password` varchar(100) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   UNIQUE KEY `email_UNIQUE` (`email`)

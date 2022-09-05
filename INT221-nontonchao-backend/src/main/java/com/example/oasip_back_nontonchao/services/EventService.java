@@ -79,7 +79,7 @@ public class EventService {
         }
     }
 
-    public Event findEventById(Integer id) {
+    public EventGet findEventById(Integer id) {
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event id '" + id + "' does not exist!"));
     }
 

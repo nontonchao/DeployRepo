@@ -2,17 +2,17 @@
 import { ref } from "vue";
 import { useUsers } from "../stores/users.js";
 import { useRouter } from "vue-router";
-
 const userStore = useUsers();
 const router = useRouter();
-
 const firstname = ref("");
 const lastname = ref("");
 const email_ = ref("");
 const role_ = ref("นักศึกษา");
 const passwordX = ref("");
 const ConfirmPassword = ref("");
-
+const emailCheck = async () => {
+  await userStore.emailCheck(email_.value);
+};
 const register = async () => {
   await userStore.userRegister({
     name: firstname.value.trim() + " " + lastname.value.trim(),
@@ -22,7 +22,6 @@ const register = async () => {
   });
   console.log(await `status ${userStore.resStatus}`);
 };
-
 const emailStatus = ref();
 const validateEmail = (email) => {
   if (
@@ -39,7 +38,6 @@ const validateEmail = (email) => {
     return false;
   }
 };
-
 const clearForm = () => {
   firstname.value = "";
   lastname.value = "";
@@ -47,7 +45,6 @@ const clearForm = () => {
   role_.value = "นักศึกษา";
   emailStatus.value = 3;
 };
-
 const validatePass = () => {
   if (
     passwordX.value.length != 0 &&
@@ -103,38 +100,29 @@ const validatePass = () => {
             </div>
           </div>
         </nav>
-
-        <!-- modal noti -->
-        <!-- <section class="border bottom-dark" style="background: #0071e3">
-          <nav class="navbar navbar-light" style="margin: 2px">
-            <div class="px-5 container align-items-center">
-              <h6 class="fw-bold px-5" style="color: #ffffff">
-                สร้าง OASIP ID ของคุณเรียบร้อยแล้ว
-              </h6>
-              <ul class="navbar-nav ms-auto">
-                <button
-                  type="button"
-                  class="btn-close px-5"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </ul>
-            </div>
-          </nav>
-        </section> -->
-        <!-- modal noti -->
       </section>
       <section class="container py-4 py-xl-5">
         <div class="row mb-5 p-4 p-lg-5">
-          <div class="col-md-8 col-xl-6 text-center mx-auto pt-3">
-            <h2 class="fw-bold">สร้าง OASIP ID ของคุณ</h2>
-            <p class="w-lg-50">
-              OASIP ID
-              คือบัญชีเดียวเท่านั้นที่คุณต้องการสำหรับการใช้บริการทุกอย่างจาก
-              OASIP<br />
+          <div>
+            <div class="col-md-8 col-xl-6 text-center mx-auto pt-3">
+              <h2 class="fw-bold">สร้าง OASIP ID ของคุณ</h2>
+              <p class="w-lg-50">
+                OASIP ID
+                คือบัญชีเดียวเท่านั้นที่คุณต้องการสำหรับการใช้บริการทุกอย่างจาก
+                OASIP<br />
+              </p>
+            </div>
+          </div>
+          <div class="col-md-8 col-xl-6 mx-auto pt-3">
+            <p class="text-left">
+              คุณสามารถสร้าง OASIP ID ของคุณตามขั้นตอนดังนี้<br />
+              1.ใส่ข้อมูลส่วนตัวข้อคุณ<br />
+              2.ทำการตรวจสอบอีเมล<br />
+              3.ตั้งรหัสผ่านเพื่อความปลอดภัยของคุณ<br />
+              4.ยินดีด้วยการสร้าง OASIP ID ของคุณสำเร็จแล้ว!
             </p>
           </div>
-          <div class="position-relative py-4 py-xl-5">
+          <div class="position-relative py-4 py-xl-1">
             <div class="container position-relative">
               <div class="row d-flex justify-content-center">
                 <div class="col-md-8 col-lg-6 col-xl-5 col-xxl-7">
@@ -180,20 +168,49 @@ const validatePass = () => {
                           </div>
                         </div>
                       </div>
-                      <div class="mb-5">
-                        <input
-                          v-model="email_"
-                          class="form-control"
-                          required
-                          type="email"
-                          id="email-2"
-                          name="email"
-                          minlength="1"
-                          maxlength="50"
-                          placeholder="อีเมล"
-                          @change="validateEmail(email_)"
-                          @keyup="userStore.isEmailNotUnique(email_)"
-                        />
+                      <div class="row mb-3">
+                        <div class="col-md-11">
+                          <input
+                            v-model="email_"
+                            class="form-control"
+                            required
+                            type="email"
+                            id="email-2"
+                            name="email"
+                            minlength="1"
+                            maxlength="50"
+                            placeholder="อีเมล"
+                            @change="validateEmail(email_)"
+                            @keyup="userStore.isEmailNotUnique(email_)"
+                            :disabled="
+                              userStore.resStatus == 200 &&
+                              email_ != 0 &&
+                              validateEmail(email_)
+                            "
+                          />
+                        </div>
+                        <div class="col">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            fill="currentColor"
+                            class="bi bi-check2-circle color:"
+                            viewBox="0 0 16 16"
+                            style="cursor: pointer"
+                            @click="emailCheck()"
+                            data-bs-toggle="modal"
+                            data-bs-target="#myModal400"
+                          >
+                            <path
+                              d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"
+                            />
+                            <path
+                              d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"
+                            />
+                          </svg>
+                        </div>
+
                         <p
                           class="text-danger text-end fs-6"
                           v-if="emailStatus == 0"
@@ -202,73 +219,83 @@ const validatePass = () => {
                         </p>
                         <p
                           class="text-danger text-end fs-6"
-                          v-if="userStore.isEmailNotUnique(email_)"
+                          v-if="userStore.resStatus == 400"
                         >
                           *อีเมลนี้ถูกใช้ไปแล้ว
                         </p>
                       </div>
 
                       <hr />
+                      <div
+                        v-show="
+                          firstname != 0 &&
+                          lastname != 0 &&
+                          userStore.resStatus == 200 &&
+                          email_ != 0 &&
+                          validateEmail(email_)
+                        "
+                      >
+                        <div class="mt-5 mb-3">
+                          <input
+                            class="form-control"
+                            v-model="passwordX"
+                            type="password"
+                            id="password"
+                            name="password"
+                            minlength="8"
+                            maxlength="14"
+                            required
+                            placeholder="รหัสผ่านต้องมีความยาว 8-14 ตัวอักษร"
+                            @change="validatePass()"
+                          />
+                        </div>
 
-                      <div class="mt-5 mb-3">
-                        <input
-                          class="form-control"
-                          v-model="passwordX"
-                          type="password"
-                          id="password"
-                          name="password"
-                          minlength="8"
-                          maxlength="14"
-                          required
-                          placeholder="รหัสผ่านต้องมีความยาว 8-14 ตัวอักษร"
-                          @change="validatePass()"
-                        />
-                      </div>
+                        <div class="mb-5">
+                          <input
+                            class="form-control"
+                            v-model="ConfirmPassword"
+                            type="password"
+                            id="Cpassword"
+                            name="Cpassword"
+                            minlength="8"
+                            maxlength="14"
+                            required
+                            placeholder="ยืนยันรหัสผ่าน"
+                            @change="validatePass()"
+                          />
+                          <p
+                            v-show="
+                              !passwordX == 0 &&
+                              !ConfirmPassword == 0 &&
+                              !validatePass()
+                            "
+                            class="text-danger text-end fs-6"
+                          >
+                            *รหัสผ่านไม่ถูกต้อง
+                          </p>
+                        </div>
 
-                      <div class="mb-5">
-                        <input
-                          class="form-control"
-                          v-model="ConfirmPassword"
-                          type="password"
-                          id="Cpassword"
-                          name="Cpassword"
-                          minlength="8"
-                          maxlength="14"
-                          required
-                          placeholder="ยืนยันรหัสผ่าน"
-                          @change="validatePass()"
-                        />
-                        <p
-                          v-show="
-                            !passwordX == 0 &&
-                            !ConfirmPassword == 0 &&
-                            !validatePass()
-                          "
-                          class="text-danger text-end fs-6"
-                        >
-                          *รหัสผ่านไม่ถูกต้อง
-                        </p>
-                      </div>
-
-                      <div class="text-center">
-                        <button
-                          class="btn btn-danger btn-sm mx-4"
-                          type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target="#myModal"
-                          style="--bs-btn-border-radius: 1rem"
-                          :disabled="
-                            !(
-                              firstname != 0 &&
-                              lastname != 0 &&
-                              email_ != 0 &&
-                              validateEmail(email_) &&
-                              validatePass()&& !userStore.isEmailNotUnique(email_)
-                            )
-                          "
-                        >
-                          สร้าง ID
-                        </button>
+                        <div class="text-center">
+                          <button
+                            class="btn btn-danger btn-sm mx-4"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#myModal"
+                            style="--bs-btn-border-radius: 1rem"
+                            :disabled="
+                              !(
+                                firstname != 0 &&
+                                lastname != 0 &&
+                                email_ != 0 &&
+                                validateEmail(email_) &&
+                                validatePass() &&
+                                !userStore.isEmailNotUnique(email_)
+                              )
+                            "
+                          >
+                            สร้าง ID
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -341,8 +368,13 @@ const validatePass = () => {
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div id="myModal400" class="modal fade">
+    <div class="modal-dialog modal-confirm modal-lx modal-dialog-centered">
       <!-- 400 Modal edit HTML -->
-      <!-- <div class="modal-content" v-show="userStore.resStatus == 400">
+      <div class="modal-content" v-show="userStore.resStatus == 400">
         <div class="modal-header flex-column">
           <button
             type="button"
@@ -369,8 +401,70 @@ const validatePass = () => {
         <div class="modal-body">
           <p>กรุณาตรวจสอบอีเมลของคุณให้ถูกต้อง เนื่องจากอีเมลนี้ถูกใช้ไปแล้ว</p>
         </div>
-      </div> -->
-      <!-- 400 Modal edit HTML -->
+      </div>
+
+      <div class="modal-content" v-show="email_ == 0 || !validateEmail(email_)">
+        <div class="modal-header flex-column">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-hidden="true"
+          ></button>
+          <div class="icon-box">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="70"
+              height="70"
+              fill="currentColor"
+              class="bi bi-emoji-frown-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm-2.715 5.933a.5.5 0 0 1-.183-.683A4.498 4.498 0 0 1 8 9.5a4.5 4.5 0 0 1 3.898 2.25.5.5 0 0 1-.866.5A3.498 3.498 0 0 0 8 10.5a3.498 3.498 0 0 0-3.032 1.75.5.5 0 0 1-.683.183zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"
+              />
+            </svg>
+          </div>
+          <h4 class="modal-title w-100">อีเมลนี้ไม่ถูกต้อง !</h4>
+        </div>
+        <div class="modal-body">
+          <p>กรุณาตรวจสอบอีเมลของคุณให้ถูกต้อง เนื่องจากอีเมลนี้ไม่ถูกต้อง</p>
+        </div>
+      </div>
+
+      <div
+        class="modal-content"
+        v-show="
+          !email_ == 0 && validateEmail(email_) && userStore.resStatus == 200
+        "
+      >
+        <div class="modal-header flex-column">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-hidden="true"
+          ></button>
+          <div class="icon-box">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="70"
+              height="70"
+              fill="currentColor"
+              class="bi bi-emoji-sunglasses-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM2.31 5.243A1 1 0 0 1 3.28 4H6a1 1 0 0 1 1 1v.116A4.22 4.22 0 0 1 8 5c.35 0 .69.04 1 .116V5a1 1 0 0 1 1-1h2.72a1 1 0 0 1 .97 1.243l-.311 1.242A2 2 0 0 1 11.439 8H11a2 2 0 0 1-1.994-1.839A2.99 2.99 0 0 0 8 6c-.393 0-.74.064-1.006.161A2 2 0 0 1 5 8h-.438a2 2 0 0 1-1.94-1.515L2.31 5.243zM4.969 9.75A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .866-.5z"
+              />
+            </svg>
+          </div>
+          <h4 class="modal-title w-100">อีเมลถูกต้อง !</h4>
+        </div>
+        <div class="modal-body">
+          <p>คุณสามารถสร้าง OASIP ID ด้วยอีเมลนี้ได้</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -379,12 +473,16 @@ const validatePass = () => {
 body {
   font-family: "Varela Round", sans-serif;
 }
-
+svg {
+  fill: #636363;
+}
+svg:hover {
+  fill: red;
+}
 .modal-confirm {
   color: #636363;
   width: 500px;
 }
-
 .modal-confirm .modal-content {
   padding: 20px;
   border-radius: 5px;
@@ -392,28 +490,23 @@ body {
   text-align: center;
   font-size: 14px;
 }
-
 .modal-confirm .modal-header {
   border-bottom: none;
   position: relative;
 }
-
 .modal-confirm h4 {
   text-align: center;
   font-size: 26px;
   margin: 30px 500px -20px;
 }
-
 .modal-confirm .close {
   position: absolute;
   top: -5px;
   right: -2px;
 }
-
 .modal-confirm .modal-body {
   color: #999;
 }
-
 .modal-confirm .modal-footer {
   border: none;
   text-align: center;
@@ -421,11 +514,9 @@ body {
   font-size: 13px;
   padding: 10px 15px 25px;
 }
-
 .modal-confirm .modal-footer a {
   color: #999;
 }
-
 .modal-confirm .icon-box {
   width: 80px;
   height: 80px;
@@ -434,14 +525,12 @@ body {
   z-index: 9;
   text-align: center;
 }
-
 .modal-confirm .icon-box i {
   color: #f15e5e;
   font-size: 46px;
   display: inline-block;
   margin-top: 13px;
 }
-
 .modal-confirm .btn,
 .modal-confirm .btn:active {
   color: #fff;
@@ -456,25 +545,20 @@ body {
   border-radius: 3px;
   margin: 0 5px;
 }
-
 .modal-confirm .btn-secondary {
   background: #f5f5f7;
 }
-
 .modal-confirm .btn-secondary:hover,
 .modal-confirm .btn-secondary:focus {
   background: #a8a8a8;
 }
-
 .modal-confirm .btn-danger {
   background: #f15e5e;
 }
-
 .modal-confirm .btn-danger:hover,
 .modal-confirm .btn-danger:focus {
   background: #ee3535;
 }
-
 .trigger-btn {
   display: inline-block;
   margin: 100px auto;
