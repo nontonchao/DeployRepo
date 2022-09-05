@@ -6,8 +6,11 @@ services:
   restart: always
   volumes:
    - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf
+   - /etc/ssl/oasipcert/intproj21.crt:/etc/ssl/oasipcert/intproj21.crt
+   - /etc/ssl/oasipcert/privatekey.key:/etc/ssl/oasipcert/privatekey.key
   ports:
    - "80:80"
+   - "443:443"
   networks:
    - oasip-nw
 

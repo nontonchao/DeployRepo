@@ -2,9 +2,13 @@ package com.example.oasip_back_nontonchao.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.data.jpa.repository.Temporal;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -35,15 +39,24 @@ public class User {
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
+    @Pattern(regexp = "admin|student|lecturer", message = "role only admin,student,lecturer")
     @NotNull(message = "role shouldn't be null or blank")
     @NotBlank(message = "role shouldn't be null or blank")
     @Lob
     @Column(name = "role", nullable = false)
     private String role;
 
-    @Column(name = "onCreated", nullable = false)
+    @Column(name = "onCreated", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private Instant onCreated;
 
-    @Column(name = "onUpdated", nullable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "onUpdated", nullable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Instant onUpdated;
+
+    @NotNull(message = "password shouldn't be null or blank")
+    @NotBlank(message = "password shouldn't be null or blank")
+    @Length(max = 14, min = 8, message = "password length should be between 8-14")
+    @Column(name = "password", nullable = false, length = 90)
+    private String password;
 }

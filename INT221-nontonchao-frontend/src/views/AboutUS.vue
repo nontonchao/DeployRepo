@@ -4,7 +4,7 @@ const members = [
   {
     nname: "Khun",
     name: "Siam Yamsaengsung ",
-    imagePath: "/members/PO.jpg",
+    imagePath: "/sy1/members/PO.jpg",
     desc: "The best our advisor in this world.",
     git: "https://github.com/siam-yam",
     fb: "https://www.facebook.com/siamyam",
@@ -13,7 +13,7 @@ const members = [
   {
     nname: "Ny",
     name: "Chokjaroen Tanjaroenrat ",
-    imagePath: "/members/dev024.jpg",
+    imagePath: "/sy1/members/dev024.jpg",
     desc: "63130500024",
     git: "https://github.com/itsmeny",
     fb: "https://www.facebook.com/cjrtp",
@@ -22,7 +22,7 @@ const members = [
   {
     nname: "Mint",
     name: "Nattakan Thaweewatthanaprayun ",
-    imagePath: "/members/dev031.jpg",
+    imagePath: "/sy1/members/dev031.jpg",
     desc: `63130500031`,
     git: "https://github.com/dknxsmph",
     fb: "https://www.facebook.com/dknsxmph",
@@ -31,7 +31,7 @@ const members = [
   {
     nname: "Poom",
     name: "Nitipoom Suttachai ",
-    imagePath: "/members/dev071.jpg",
+    imagePath: "/sy1/members/dev071.jpg",
     desc: `63130500071`,
     git: "https://github.com/Nitipoom1456",
     fb: "https://www.facebook.com/Nitipoom.Sutachai",
