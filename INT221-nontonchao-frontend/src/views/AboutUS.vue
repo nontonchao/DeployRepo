@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from "vue";
 
 const members = [
   {
@@ -64,7 +65,7 @@ const members = [
           <p class="w-lg-50">พร้อมที่จะนอนแล้ว<br /></p>
         </div>
       </div>
-      <section class="position-relative py-4 py-xl-1">
+      <section class="position-relative py-4 py-xl-1" v-show="!toggleEdit">
         <div class="container py-4 py-xl-3">
           <div class="row gy-4 row-cols-2 row-cols-md-4">
             <div class="col" v-for="(member, index) in members" :key="index">
@@ -131,7 +132,7 @@ const members = [
     </div>
   </div>
 
-  <!-- <div id="confirmEditCate" class="modal fade">
+  <div id="confirmEditCate" class="modal fade">
     <div class="modal-dialog modal-confirm modal-lx modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header flex-column">
@@ -181,7 +182,7 @@ const members = [
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 </template>
 
 <style scoped>

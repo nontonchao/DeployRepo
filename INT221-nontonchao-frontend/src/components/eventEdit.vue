@@ -125,7 +125,7 @@ const editEvent = async () => {
               {{ eventz.eventCategory.eventCategoryName }}
               <label class="form-check-label">
                 <small class="text-muted"
-                  >({{ eventz.eventDuration }} นาที)</small
+                  >({{ eventz.eventCategory.eventDuration }} นาที)</small
                 >
               </label>
             </div>
@@ -173,7 +173,7 @@ const editEvent = async () => {
                 required
                 :min="getCurrDate()"
                 @change="
-                  checkTimeSlot(startTime, toEdit.eventCategoryId);
+                  checkTimeSlot(startTime, toEdit.eventCategory.id);
                   generateTimeSlot(toEdit.eventDuration);
                 "
               />

@@ -93,7 +93,6 @@ onBeforeMount(async () => {
   filter_list.value = eventList.value;
   eventCateList.value = eventCateStore.eventCategoryList;
   eventNum();
-  console.log(eventStore.events)
 });
 
 onMounted(async () => {
