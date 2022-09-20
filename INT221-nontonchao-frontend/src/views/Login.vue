@@ -1,29 +1,23 @@
 <script setup>
 import { ref } from "vue";
 import { useLogin } from "../stores/login.js";
+import { useRouter } from "vue-router";
 
 const loginStore = useLogin();
 
 const email = ref("");
 const password = ref("");
 const name = ref("");
-
-const parseJwt = (token) => {
-  var base64Url = token.split('.')[1];
-  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
-  return JSON.parse(jsonPayload);
-}
+const router = useRouter();
 
 const login = async () => {
   await loginStore.login(email.value, password.value);
-  localStorage.setItem("access_token", loginStore.token_obj.token);
-  name.value = (parseJwt(loginStore.token_obj.token)).name;
-  localStorage.setItem("name", name.value)
+  if (loginStore.resStatus !== 401) {
+    localStorage.setItem("access_token", loginStore.token_obj.token);
+    name.value = (loginStore.parseJwt(loginStore.token_obj.token)).name;
+    localStorage.setItem("name", name.value)
+  }
 };
-
 
 const emailErr = ref(0);
 const ValidateEmail = (mail) => {
@@ -145,7 +139,7 @@ const ValidateEmail = (mail) => {
         <div class="modal-content" v-show="loginStore.resStatus == 200">
           <div class="modal-header flex-column">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"
-              @click="loginStore.resStatus = 0"></button>
+              @click="loginStore.resStatus = 0;router.push(`/`)"></button>
             <div class="icon-box">
               <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor"
                 class="bi bi-emoji-sunglasses" viewBox="0 0 16 16">

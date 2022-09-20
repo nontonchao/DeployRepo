@@ -1,7 +1,15 @@
 <script setup>
-const hello = () => {
-    alert("Hello");
-};
+import { onBeforeMount, ref } from "vue";
+import { useLogin } from "../stores/login.js";
+import { useRouter } from "vue-router";
+
+const loginStore = useLogin();
+const router = useRouter();
+
+onBeforeMount(async () => {
+    loginStore.isLogin();
+});
+
 </script>
 
 <template>
@@ -50,12 +58,13 @@ const hello = () => {
                                 }">เกี่ยวกับเรา</router-link>
                             </a>
                         </li>
-                        <li class="nav-item">
-                              <a class="nav-link" href="javascript:;">
-                              <router-link class="routerLink" :to="{
+                        <li class="nav-item" v-show="loginStore.isAdmin">
+                            <a class="nav-link" href="javascript:;">
+                                <router-link class="routerLink" :to="{
                                     name: 'ShowUser',
-                                }">show user
-                            </router-link></a>
+                                }">ผู้ใช้ทั้งหมด (สำหรับแอดมิน)
+                                </router-link>
+                            </a>
                         </li>
                         <!-- <li class="nav-item">
                             <a class="nav-link" href="javascript:;">
@@ -68,10 +77,16 @@ const hello = () => {
                             <router-link class="routerLink" :to="{
                                 name: 'Login',
                             }">
-                                <button class="btn btn-danger btn-sm" type="button"
+                                <button @click="loginStore.logout();router.push(`/login`);location.reload();"
+                                    v-if="loginStore.isLogin() == true" class="btn btn-danger btn-sm" type="button"
+                                    style="--bs-btn-border-radius: 1rem">
+                                    ออกจากระบบ
+                                </button>
+                                <button v-else class="btn btn-danger btn-sm" type="button"
                                     style="--bs-btn-border-radius: 1rem">
                                     ลงชื่อเข้าใช้
                                 </button>
+
                             </router-link>
                         </li>
                     </ul>

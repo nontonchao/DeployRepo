@@ -101,11 +101,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-LOCK TABLES `users` WRITE;
+-- LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Chokjaroen Tancharoenrat','chokjaroen@kmutt.ac.th','student','2022-08-25 08:43:56','2022-08-25 08:43:56','$argon2id$v=19$m=65536,t=22,p=1$Cb+PXEe5e3M$8WUM0lWzH0eqMXTCxAcAk/aa5Lq0WnpQgZWfTROc/Mo'),(2,'Nitipoom Suttachai','nitipoom@kmutt.ac.th','student','2022-08-25 08:44:20','2022-08-25 08:44:20','$argon2id$v=19$m=65536,t=22,p=1$g6lemJgSrB8$A12qxgkDfU77M4PnRe9fk2vXnON6XrxpSKF/25corqo'),(3,'Natthakan Thaweewatthanaprayun','natthakan@kmutt.ac.th','student','2022-08-25 08:44:34','2022-08-25 08:44:34','$argon2id$v=19$m=65536,t=22,p=1$cZjJyVnYHLM$j2oybFSjRprKfGwAHifoTGqnKX1JcFaNmcN4/dxAgLo');
+-- INSERT INTO `users` VALUES (1,'Chokjaroen Tancharoenrat','chokjaroen@kmutt.ac.th','student','2022-08-25 08:43:56','2022-08-25 08:43:56','$argon2id$v=19$m=65536,t=22,p=1$Cb+PXEe5e3M$8WUM0lWzH0eqMXTCxAcAk/aa5Lq0WnpQgZWfTROc/Mo'),(2,'Nitipoom Suttachai','nitipoom@kmutt.ac.th','student','2022-08-25 08:44:20','2022-08-25 08:44:20','$argon2id$v=19$m=65536,t=22,p=1$g6lemJgSrB8$A12qxgkDfU77M4PnRe9fk2vXnON6XrxpSKF/25corqo'),(3,'Natthakan Thaweewatthanaprayun','natthakan@kmutt.ac.th','student','2022-08-25 08:44:34','2022-08-25 08:44:34','$argon2id$v=19$m=65536,t=22,p=1$cZjJyVnYHLM$j2oybFSjRprKfGwAHifoTGqnKX1JcFaNmcN4/dxAgLo');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
+-- UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 CREATE USER 'dev'@'%' IDENTIFIED WITH mysql_native_password BY '0000';
 GRANT ALL PRIVILEGES ON *.* TO 'dev'@'%';
