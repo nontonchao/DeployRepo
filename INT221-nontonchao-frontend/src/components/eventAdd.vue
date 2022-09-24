@@ -2,6 +2,9 @@
 import { onBeforeMount, ref } from "vue";
 import { useEvents } from "../stores/events.js";
 import { useRouter } from "vue-router";
+import { useLogin } from "../stores/login.js";
+
+const loginStore = useLogin();
 
 const props = defineProps({
   clinic_list: {
@@ -140,6 +143,15 @@ const ValidateEmail = (mail) => {
     ? (emailErr.value = 1)
     : (emailErr.value = 2);
 };
+
+onBeforeMount(() => {
+  if (loginStore.isLoggedIn == true) {
+    firstname.value = loginStore.name.split(" ")[0];
+    lastname.value = loginStore.name.split(" ")[1];
+    email.value = loginStore.email;
+    ValidateEmail(email.value);
+  }
+});
 </script>
 
 <template>
@@ -223,6 +235,7 @@ const ValidateEmail = (mail) => {
                     maxlength="100"
                     required
                     v-model="firstname"
+                    :disabled="loginStore.isLoggedIn"
                   />
                   <div class="text-wrap">
                     <p
@@ -233,7 +246,6 @@ const ValidateEmail = (mail) => {
                     </p>
                   </div>
                 </div>
-
                 <div class="col">
                   <input
                     type="text"
@@ -242,6 +254,7 @@ const ValidateEmail = (mail) => {
                     placeholder="นามสกุล"
                     maxlength="50"
                     v-model="lastname"
+                    :disabled="loginStore.isLoggedIn"
                   />
                 </div>
               </div>
@@ -253,6 +266,7 @@ const ValidateEmail = (mail) => {
                     minlength="1"
                     maxlength="100"
                     @keyup="ValidateEmail(email)"
+                    :disabled="loginStore.isLoggedIn"
                     class="form-control mt-3"
                     placeholder="อีเมล"
                     v-model="email"
@@ -302,22 +316,32 @@ const ValidateEmail = (mail) => {
                         time = timeTable[index].split('-')[0].trim();
                         activeIndex = index;
                         activeClick(index);
-                        d_tmp = new Date(x.substring(0, 50)).toISOString();
+                        d_tmp = new Date(x.split('-')[0].trim()).toISOString();
                       "
                       :class="activeClick(index)"
                       :disabled="
-                        slot.includes(x.substring(0, 50)) ||
-                        new Date(x.substring(0, 50)) < new Date()
+                        slot.includes(x.split('-')[0].trim()) ||
+                        new Date(x.split('-')[0]) < new Date()
                       "
                       :activeIndex="index"
                       class="'btn-sm'"
                     >
-                      {{ x.split(" ")[4].substring(0, 5) }} -
-                      {{ x.split(" ")[13].substring(0, 5) }}
-                      <small v-if="slot.includes(x.substring(0, 50))"
+                      {{
+                        new Date(x.split("-")[0])
+                          .toLocaleTimeString("it-IT")
+                          .substring(0, 5)
+                      }}
+                      -
+                      {{
+                        new Date(x.split("-")[1])
+                          .toLocaleTimeString("it-IT")
+                          .substring(0, 5)
+                      }}
+                      <small v-if="slot.includes(x.split('-')[0].trim())"
                         >เวลานี้ถูกจองแล้ว</small
                       >
-                      <small v-if="new Date(x.substring(0, 50)) < new Date()"
+                      <small
+                        v-if="new Date(x.split('-')[0].trim()) < new Date()"
                         >หมดเวลาจอง</small
                       >
                     </button>
@@ -349,8 +373,7 @@ const ValidateEmail = (mail) => {
             data-bs-toggle="modal"
             data-bs-target="#myModal"
             style="--bs-btn-border-radius: 1rem"
-            :disabled="!(time != 0 && startTime != 0)"
-          >
+            :disabled="!(time != 0 && startTime != 0) "          >
             ยืนยันการจอง
           </button>
         </div>
@@ -383,32 +406,32 @@ const ValidateEmail = (mail) => {
               </div>
 
               <h4 class="modal-title w-100">คุณต้องการสร้างนัดหมายของคุณ ?</h4>
-            </div>
-            <div class="modal-body">
-              <p>
-                คุณต้องการที่จะนัดหมายเพื่อขอคำปรึกษาคลินิก....เวลา....ใช่หรือไม่
-              </p>
-            </div>
-            <div class="modal-footer justify-content-center">
-              <button
-                type="button"
-                data-bs-dismiss="modal"
-                class="btn btn-primary rounded-pill"
-                data-dismiss="modal"
-                @click="
-                  addEvent();
-                  router.push(`/check-event`);
-                "
-              >
-                ยืนยัน
-              </button>
-              <button
-                type="button"
-                data-bs-dismiss="modal"
-                class="btn btn-danger rounded-pill"
-              >
-                ยกเลิก
-              </button>
+              <div class="modal-body">
+                <p>
+                  คุณต้องการที่จะนัดหมายเพื่อขอคำปรึกษาคลินิก....เวลา....ใช่หรือไม่
+                </p>
+              </div>
+              <div class="modal-footer justify-content-center">
+                <button
+                  type="button"
+                  data-bs-dismiss="modal"
+                  class="btn btn-primary rounded-pill"
+                  data-dismiss="modal"
+                  @click="
+                    addEvent();
+                    router.push(`/check-event`);
+                  "
+                >
+                  ยืนยัน
+                </button>
+                <button
+                  type="button"
+                  data-bs-dismiss="modal"
+                  class="btn btn-danger rounded-pill"
+                >
+                  ยกเลิก
+                </button>
+              </div>
             </div>
           </div>
         </div>

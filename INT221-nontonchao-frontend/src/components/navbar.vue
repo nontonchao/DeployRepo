@@ -7,7 +7,7 @@ const loginStore = useLogin();
 const router = useRouter();
 
 onBeforeMount(async () => {
-    loginStore.isLogin();
+    loginStore.isLoggedIn;
 });
 
 </script>
@@ -77,8 +77,8 @@ onBeforeMount(async () => {
                             <router-link class="routerLink" :to="{
                                 name: 'Login',
                             }">
-                                <button @click="loginStore.logout();router.push(`/login`);location.reload();"
-                                    v-if="loginStore.isLogin() == true" class="btn btn-danger btn-sm" type="button"
+                                <button @click="loginStore.logout();location.reload();router.push(`/login`)"
+                                    v-if="loginStore.isLogin() == true || loginStore.isLoggedIn == true" class="btn btn-danger btn-sm" type="button"
                                     style="--bs-btn-border-radius: 1rem">
                                     ออกจากระบบ
                                 </button>
@@ -92,7 +92,9 @@ onBeforeMount(async () => {
                     </ul>
                 </div>
             </div>
+            
         </nav>
+
     </div>
 </template>
 
