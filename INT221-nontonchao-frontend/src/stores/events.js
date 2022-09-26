@@ -18,7 +18,7 @@ export const useEvents = defineStore("events", () => {
       await fetchEvents();
     } else if (res.status == 400) {
       statusCode.value = res.status
-      alert("error while adding 400");
+      // alert("error while adding 400");
     } else {
       statusCode.value = res.status
       alert("error while adding");
@@ -48,10 +48,8 @@ export const useEvents = defineStore("events", () => {
     );
     if (res.status === 200) {
       statusCode.value = res.status
-      alert("event removed");
     } else {
       statusCode.value = res.status
-      alert("error while delete || error :" + statusMessage.value);
     }
   };
 
@@ -115,6 +113,7 @@ export const useEvents = defineStore("events", () => {
     addEvent,
     editEvent,
     getTime,
+    statusCode,
   };
 });
 
