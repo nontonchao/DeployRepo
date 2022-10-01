@@ -13,7 +13,9 @@ export const useLogin = defineStore("login", () => {
   const isLoggedIn = ref(false);
   const name = ref("");
   const email = ref("");
+  const role = ref("");
   const resToken = ref()
+
   const parseJwt = (token) => {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -30,6 +32,7 @@ export const useLogin = defineStore("login", () => {
     isLoggedIn.value = false;
     name.value = "";
     email.value = "";
+    role.value = "";
     router.push(`/login`)
     //location.reload();
   };
@@ -42,6 +45,7 @@ export const useLogin = defineStore("login", () => {
       };
       name.value = (parseJwt(localStorage.getItem("access_token")).name);
       email.value = (parseJwt(localStorage.getItem("access_token")).sub);
+      role.value = (parseJwt(localStorage.getItem("access_token")).role);
       isLoggedIn.value = true;
       return true;
     } else {
@@ -50,32 +54,30 @@ export const useLogin = defineStore("login", () => {
   }
 
   const refresh = async () => {
-    const res = await fetch(
-      `${import.meta.env.VITE_BASE_URL
-      }login/refresh`
-      , {
-        method: 'GET',
-        headers: {
-          "Authorization": "Bearer " + localStorage.getItem("access_token"),
-          "isRefreshToken": true
-        },
-      });
+    if (new Date(parseJwt(localStorage.getItem("access_token")).exp * 1000) < new Date()) { // check if access token is expire or not
+      console.log('this token is expired')
+      const res = await fetch(
+        `${import.meta.env.VITE_BASE_URL
+        }login/refresh`
+        , {
+          method: 'GET',
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("refresh_token"),
+            "isRefreshToken": true
+          },
+        });
 
-    let response = await res.text();
+      let response = await res.text();
 
-    if (response === "cannot refresh this token") {
-      resToken.value = 401
-      console.log(`RES TOKEN${resToken.value}`)
-      logout();
-      
-    } else if (response === "this token still valid") {
-
-    } else {
-      // set new refreshed token
-      localStorage.setItem("access_token", (JSON.parse(response).token));
-
+      if (response === "refresh_token expired try login again!") {
+        resToken.value = 401
+        logout();
+      }
+      else {
+        // set new refreshed token
+        localStorage.setItem("access_token", (JSON.parse(response).token));
+      }
     }
-
   }
 
   const login = async (email, password) => {
@@ -114,6 +116,7 @@ export const useLogin = defineStore("login", () => {
     isLoggedIn,
     name,
     email,
+    role,
     isAdmin,
     resStatus,
     resToken,

@@ -1,8 +1,6 @@
 package com.example.oasip_back_nontonchao.controllers;
 
 import com.example.oasip_back_nontonchao.entities.JwtRequest;
-import com.example.oasip_back_nontonchao.entities.JwtResponse;
-import com.example.oasip_back_nontonchao.entities.User;
 import com.example.oasip_back_nontonchao.repositories.UserRepository;
 import com.example.oasip_back_nontonchao.services.JwtUserDetailsService;
 import com.example.oasip_back_nontonchao.utils.JwtTokenUtil;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,30 +37,29 @@ public class MatchController {
 
     @PostMapping("")
     public ResponseEntity check(@RequestBody JwtRequest authenticationRequest) throws Exception {
-
         authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
-
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getEmail());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
         final String name = userRepository.findUserByEmail(authenticationRequest.getEmail()).getName();
         final String token = jwtTokenUtil.generateToken(userDetails, name);
-
-        return ResponseEntity.ok(new JwtResponse(token));
+        String refresh_token = jwtTokenUtil.generateRefreshToken(userDetails, name);
+        HashMap<String, String> res = new HashMap<String, String>();
+        res.put("token", token);
+        res.put("refresh_token", refresh_token);
+        res.put("name", name);
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/refresh")
     public ResponseEntity<?> refreshtoken(HttpServletRequest request) throws Exception {
         DefaultClaims claims = (io.jsonwebtoken.impl.DefaultClaims) request.getAttribute("claims");
-        try {
-            if (claims.getExpiration().toInstant().toEpochMilli() + 86400000 <= Instant.now().toEpochMilli()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("cannot refresh this token");
-            }
-        } catch (NullPointerException e) {
-            return ResponseEntity.status(HttpStatus.OK).body("this token still valid");
+        if (!(claims == null)) {
+            Map<String, Object> expectedMap = getMapFromIoJsonwebtokenClaims(claims);
+            HashMap<String, String> res = new HashMap<String, String>();
+            String token = jwtTokenUtil.doGenerateRefreshToken(expectedMap, expectedMap.get("sub").toString());
+            res.put("token", token);
+            return ResponseEntity.ok(res);
         }
-        Map<String, Object> expectedMap = getMapFromIoJsonwebtokenClaims(claims);
-        String token = jwtTokenUtil.doGenerateToken(expectedMap, expectedMap.get("sub").toString());
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("This is not refresh");
     }
 
     public Map<String, Object> getMapFromIoJsonwebtokenClaims(DefaultClaims claims) {
