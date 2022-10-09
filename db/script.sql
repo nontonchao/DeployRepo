@@ -15,12 +15,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Table structure for table `event`
---
 DROP DATABASE IF EXISTS `oasip`;
 CREATE DATABASE `oasip`;
 USE `oasip`;
+
+--
+-- Table structure for table `event`
+--
 
 DROP TABLE IF EXISTS `event`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -36,7 +37,7 @@ CREATE TABLE `event` (
   PRIMARY KEY (`event_id`),
   KEY `fk_event_event_category_idx` (`eventCategory`),
   CONSTRAINT `fk_event_event_category` FOREIGN KEY (`eventCategory`) REFERENCES `event_category` (`eventCategory_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +46,9 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,'Somchai Jaidee (OR-7)','somchai.jai@mail.kmutt.ac.th','2022-05-23 06:30:00',30,'',2),(2,'Somsri Rakdee (SJ-3)','somsri.rak@mail.kmutt.ac.th','2022-04-27 06:30:00',30,'ขอปรึกษาปัญหาเพื่อนไม่ช่วยงาน',1),(3,'สมเกียรติ ขยันเรียน กลุ่ม TT-4','somkiat.kay@kmutt.ac.th','2022-05-23 09:30:00',15,'',3);
+INSERT INTO `event` VALUES (1,'Somchai Jaidee (OR-7)','somchai.jai@mail.kmutt.ac.th','2022-05-23 06:30:00',30,'',2),
+(2,'Somsri Rakdee (SJ-3)','somsri.rak@mail.kmutt.ac.th','2022-04-27 06:30:00',30,'ขอปรึกษาปัญหาเพื่อนไม่ช่วยงาน',1),
+(3,'สมเกียรติ ขยันเรียน กลุ่ม TT-4','somkiat.kay@kmutt.ac.th','2022-05-23 09:30:00',15,'',3);
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,6 +80,35 @@ INSERT INTO `event_category` VALUES (1,'Project Management Clinic','ตารา
 UNLOCK TABLES;
 
 --
+-- Table structure for table `event_category_owner`
+--
+
+DROP TABLE IF EXISTS `event_category_owner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `event_category_owner` (
+  `eventCategoryOwnerId` int NOT NULL AUTO_INCREMENT,
+  `eventCategory_Id` int NOT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`eventCategoryOwnerId`),
+  KEY `category_idx` (`eventCategory_Id`),
+  KEY `user_idx` (`user_id`),
+  CONSTRAINT `category` FOREIGN KEY (`eventCategory_Id`) REFERENCES `event_category` (`eventCategory_id`),
+  CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_category_owner`
+--
+
+LOCK TABLES `event_category_owner` WRITE;
+/*!40000 ALTER TABLE `event_category_owner` DISABLE KEYS */;
+INSERT INTO `event_category_owner` VALUES (1,1,2),(2,2,2),(3,3,6),(4,4,4),(5,5,2),(6,2,5),(7,5,3);
+/*!40000 ALTER TABLE `event_category_owner` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -94,22 +126,27 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `users`
 --
 
--- LOCK TABLES `users` WRITE;
+LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
--- INSERT INTO `users` VALUES (1,'Chokjaroen Tancharoenrat','chokjaroen@kmutt.ac.th','student','2022-08-25 08:43:56','2022-08-25 08:43:56','$argon2id$v=19$m=65536,t=22,p=1$Cb+PXEe5e3M$8WUM0lWzH0eqMXTCxAcAk/aa5Lq0WnpQgZWfTROc/Mo'),(2,'Nitipoom Suttachai','nitipoom@kmutt.ac.th','student','2022-08-25 08:44:20','2022-08-25 08:44:20','$argon2id$v=19$m=65536,t=22,p=1$g6lemJgSrB8$A12qxgkDfU77M4PnRe9fk2vXnON6XrxpSKF/25corqo'),(3,'Natthakan Thaweewatthanaprayun','natthakan@kmutt.ac.th','student','2022-08-25 08:44:34','2022-08-25 08:44:34','$argon2id$v=19$m=65536,t=22,p=1$cZjJyVnYHLM$j2oybFSjRprKfGwAHifoTGqnKX1JcFaNmcN4/dxAgLo');
+INSERT INTO `users` VALUES (1,'OASIP ADMIN','oasip.admin@kmutt.ac.th','admin','2022-08-01 00:00:00+07:00','2022-08-01 00:00:00+07:00','$argon2id$v=19$m=4096,t=3,p=1$sYXzbUOqBoHY1NfhJ8cjnw$H6+adWySiFPgcUogJK3hEhcF6Y4fusy7tcXYEL+f0cQ'),
+(7,'Somchai Jaidee','somchai.jai@kmutt.ac.th','lecturer','2022-08-08 16:00:00+07:00','2022-08-08 16:00:00+07:00','$argon2id$v=19$m=4096,t=3,p=1$dmsOy7LPTjmooPu+P2oTZA$NZFTFd3f0K1Sp19aaUwyn3jgiy15yFcXhp8E4/1yXoI'),
+(8,'Komkrid Rakdee','komkrid.rak@mail.kmutt.ac.th','student','2022-08-08 16:00:00+07:00','2022-08-08 16:00:00+07:00','$argon2id$v=19$m=4096,t=3,p=1$i6znt0o+PWIbqyanPKpkLg$yLVOclVOV+z4RrMsnpyp87KUS/tZPid8KNNne8DARKI'),
+(9,'สมเกียรติ ขยันเรียน','somkiat.kay@kmutt.ac.th','student','2022-08-16 09:00:00+07:00','2022-08-16 09:00:00+07:00','$argon2id$v=19$m=4096,t=3,p=1$gBqgjspF45FcIKQEw8GmaQ$alrOCZ0YrDqOu8/aZiLDMGZo4vFkSEAXA0YoHhY0BDQ'),
+(2,'Olarn Rojanapornpun','olarn.roj@kmutt.ac.th','lecturer','2022-08-08 15:00:00+07:00','2022-08-08 15:00:00+07:00','$argon2id$v=19$m=4096,t=3,p=1$Sx7y2jxKZSjpWUV4srd8eg$AMH09iFiPQgAZ00cAdN3Gucqfhx2kRo3tQbHeLSR0RE'),
+(3,'Pichet Limvachiranan','pichet.limv@kmutt.ac.th','lecturer','2022-08-08 15:00:01+07:00','2022-08-08 15:00:01+07:00','$argon2id$v=19$m=4096,t=3,p=1$46EB43gQ46Z1/EmdqxtKNA$7m6cWGO2iDlFl/ETDYuYf+ArnSjRnsNwXLIP18DTYQY'),
+(4,'Umaporn Supasitthimethee','umaporn.sup@kmutt.ac.th','lecturer','2022-08-08 15:00:02+07:00','2022-08-08 15:00:02+07:00','$argon2id$v=19$m=4096,t=3,p=1$1Z2UK1zC76FIQeLH54GVAQ$qfXcHF31LnuWpt37QAcWyNp8PdbOQ+jjaV1xWXixS0M'),
+(5,'Siam Yamsaengsung','siam.yam@kmutt.ac.th','lecturer','2022-08-08 15:00:03+07:00','2022-08-08 15:00:03+07:00','$argon2id$v=19$m=4096,t=3,p=1$C4pPaNWKTnZQX2mPs14jlg$rQ5W5NYKqGOu1B4GkUWq8cFbcg2peFWGjpUMr9Nkm8g'),
+(6,'Sunisa Sathapornvajan','sunisa.sat@kmutt.ac.th','lecturer','2022-08-08 15:00:04+07:00','2022-08-08 15:00:04+07:00','$argon2id$v=19$m=4096,t=3,p=1$i6znt0o+PWIbqyanPKpkLg$yLVOclVOV+z4RrMsnpyp87KUS/tZPid8KNNne8DARKI');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
--- UNLOCK TABLES;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-CREATE USER 'dev'@'%' IDENTIFIED WITH mysql_native_password BY '0000';
-GRANT ALL PRIVILEGES ON *.* TO 'dev'@'%';
-flush PRIVILEGES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -119,4 +156,4 @@ flush PRIVILEGES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-25 15:55:49
+-- Dump completed on 2022-10-08 21:48:53
