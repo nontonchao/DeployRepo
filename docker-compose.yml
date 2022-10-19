@@ -47,7 +47,8 @@ services:
     "spring.datasource.username" : "dev",
     "spring.datasource.password" : "0000",
     "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-    "spring.jpa.hibernate.ddl-auto" : "update"}'
+    "spring.jpa.hibernate.ddl-auto" : "update"
+    "file.upload-dir": "../files"}'
   networks:
    - oasip-nw
 

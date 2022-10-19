@@ -33,6 +33,7 @@ CREATE TABLE `event` (
   `eventStartTime` timestamp NOT NULL,
   `eventDuration` int NOT NULL,
   `eventNotes` varchar(500) DEFAULT NULL,
+  `attachment` varchar(500) DEFAULT NULL,
   `eventCategory` int NOT NULL,
   PRIMARY KEY (`event_id`),
   KEY `fk_event_event_category_idx` (`eventCategory`),
@@ -46,9 +47,9 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,'Somchai Jaidee (OR-7)','somchai.jai@mail.kmutt.ac.th','2022-05-23 06:30:00',30,'',2),
-(2,'Somsri Rakdee (SJ-3)','somsri.rak@mail.kmutt.ac.th','2022-04-27 06:30:00',30,'ขอปรึกษาปัญหาเพื่อนไม่ช่วยงาน',1),
-(3,'สมเกียรติ ขยันเรียน กลุ่ม TT-4','somkiat.kay@kmutt.ac.th','2022-05-23 09:30:00',15,'',3);
+INSERT INTO `event` VALUES (1,'Somchai Jaidee (OR-7)','somchai.jai@mail.kmutt.ac.th','2022-05-23 06:30:00',30,'','',2),
+(2,'Somsri Rakdee (SJ-3)','somsri.rak@mail.kmutt.ac.th','2022-04-27 06:30:00',30,'ขอปรึกษาปัญหาเพื่อนไม่ช่วยงาน','',1),
+(3,'สมเกียรติ ขยันเรียน กลุ่ม TT-4','somkiat.kay@kmutt.ac.th','2022-05-23 09:30:00',15,'','',3);
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
