@@ -62,7 +62,7 @@ const members = [
         <div class="row mb-5">
           <div class="col-md-8 col-xl-6 text-center mx-auto">
             <h2>SY1-NONTONCHAO</h2>
-            <p class="w-lg-50">พร้อมที่จะนอนแล้ว =_=<br /></p>
+            <p class="w-lg-50">พร้อมที่จะนอนแล้ว<br /></p>
           </div>
         </div>
         <section class="position-relative py-4 py-xl-1" v-show="!toggleEdit">
