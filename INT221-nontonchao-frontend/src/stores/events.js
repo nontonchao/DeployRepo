@@ -77,6 +77,7 @@ export const useEvents = defineStore("events", () => {
   };
 
   const editEvent = async (eventId, editEvent) => {
+    console.log(editEvent);
     const res = await fetch(
       `${import.meta.env.VITE_BASE_URL}events/${eventId}`,
       {
@@ -91,7 +92,7 @@ export const useEvents = defineStore("events", () => {
 
     if (res.status == 200) {
       statusCode.value = res.status
-      alert("event edited");
+      // alert("event edited");
     } else if (res.status == 400) {
       statusCode.value = res.status
     } else {

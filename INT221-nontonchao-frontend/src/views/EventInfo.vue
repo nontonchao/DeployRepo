@@ -27,7 +27,8 @@ const isPastOrOngoing = (thisEvent) => {
       currentDateTime.getTime() >
       new Date(thisEvent.eventStartTime).getTime() &&
       currentDateTime <
-      endtime(thisEvent.eventStartTime, thisEvent.eventDuration)) || loginStore.role == "ROLE_LECTURER"
+      endtime(thisEvent.eventStartTime, thisEvent.eventDuration)) ||
+    loginStore.role == "ROLE_LECTURER"
   ) {
     canEdit.value = true;
   } else {
@@ -35,25 +36,38 @@ const isPastOrOngoing = (thisEvent) => {
   }
 };
 
-
 const downloadFile = async () => {
-  fetch('http://localhost:8080/api/file/get/' + thisEvent.value.attachment, {
-    method: 'GET',
+  fetch(`${import.meta.env.VITE_BASE_URL}file/get/` + thisEvent.value.attachment, {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    },
+  })
+    .then((r) => r.blob())
+    .then((data) => {
+      var a = document.createElement("a");
+      a.href = window.URL.createObjectURL(data);
+      a.download = thisEvent.value.attachment.split(",")[1];
+      a.click();
+    });
+};
+
+const deleteFile = async () => {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}file/` + thisEvent.value.attachment, {
+    method: 'DELETE',
     headers: {
       "Authorization": "Bearer " + localStorage.getItem("access_token")
     }
-  })
-    .then(r => r.blob())
-    .then(data => {
-      var a = document.createElement("a");
-      a.href = window.URL.createObjectURL(data);
-      a.download = thisEvent.value.attachment.split(',')[1];
-      a.click();
-    })
+  });
+  if (await res.status == 200) {
+    alert('Attachment deleted!');
+  } else {
+    alert('Error while deleting');
+  }
 }
 
-
 onBeforeMount(async () => {
+  topFunc();
   eventStore.statusCode = 0;
   thisEvent.value = {
     eventCategory: {
@@ -62,12 +76,15 @@ onBeforeMount(async () => {
   };
   thisEvent.value = await eventStore.getEventById(route.params.event_id);
   isPastOrOngoing(thisEvent.value);
-
 });
 
 const removeEvent = async () => {
   await eventStore.removeEvent(thisEvent.value.id);
 };
+function topFunc() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
 </script>
 <template>
   <div>
@@ -129,9 +146,9 @@ const removeEvent = async () => {
                 <p class="px-4 fw-bold text-primary mb-0">วันที่</p>
                 <p class="px-4 text-muted mb-5">
                   {{
-                  new Date(thisEvent.eventStartTime).toLocaleDateString() +
-                  " " +
-                  new Date(thisEvent.eventStartTime).toLocaleTimeString()
+                      new Date(thisEvent.eventStartTime).toLocaleDateString() +
+                      " " +
+                      new Date(thisEvent.eventStartTime).toLocaleTimeString()
                   }}
                 </p>
                 <p class="px-4 fw-bold text-primary mb-0">รายละเอียด</p>
@@ -143,11 +160,16 @@ const removeEvent = async () => {
                 </p>
                 <div v-if="thisEvent.attachment != null">
                   <div class="d-flex justify-content-start">
-                    <p class="px-4 text-muted mb-5 d-flex">{{thisEvent.attachment.split(',')[1]}}<button class="btn btn-primary btn-sm mx-4" type="button" style="--bs-btn-border-radius: 1rem"
-                      @click="downloadFile()">
-                      ดาวน์โหลด
-                    </button></p>
-                    
+                    <p class="px-4 text-muted mb-5">
+                      {{ thisEvent.attachment.split(",")[1] }}
+                    </p>
+                    <div>
+                      <button class="btn btn-primary btn-sm mx-4" type="button" style="--bs-btn-border-radius: 1rem"
+                        @click="downloadFile()">
+                        ดาวน์โหลด
+                      </button>
+               
+                    </div>
                   </div>
                 </div>
                 <div v-else>
@@ -159,7 +181,7 @@ const removeEvent = async () => {
             </div>
           </div>
         </div>
-        <div class=" d-flex flex-row-reverse bd-highlight">
+        <div class="d-flex flex-row-reverse bd-highlight">
           <div v-show="loginStore.isAdmin && canEdit">
             <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#myModal"
               style="--bs-btn-border-radius: 1rem">
@@ -205,8 +227,8 @@ const removeEvent = async () => {
           <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-primary rounded-pill" data-bs-dismiss="modal" data-dismiss="modal"
               @click="
-                removeEvent();
-                router.push(`/check-event`);
+  removeEvent();
+router.push(`/check-event`);
               ">
               ยืนยัน
             </button>

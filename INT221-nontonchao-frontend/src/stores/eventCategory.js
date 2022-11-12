@@ -26,6 +26,60 @@ export const useEventCategory = defineStore("eventCategory", () => {
     }
   };
 
+  const getEventCategoryOwners = async () => {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}events-category/owner`, {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("access_token")
+      }
+    });
+    if (res.status == 200) {
+      return res.json();
+    } else {
+      console.log("error while fetching");
+    }
+  }
+
+  const removeEventCategoryOwners = async (e, u) => {
+    const res = await fetch(
+      `${import.meta.env.VITE_BASE_URL}events-category/owner/${e}/${u}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("access_token")
+        }
+      }
+    );
+    if (res.status === 200) {
+      return res.status;
+    } else {
+      console.log('error while delete');
+      return res.status;
+    }
+  }
+
+  const addEventCategoryOwners = async (e, u) => {
+    const res = await fetch(
+      `${import.meta.env.VITE_BASE_URL}events-category/owner`,
+      {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("access_token"),
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          "eventCategory_id": e,
+          "user_id": u
+        })
+      }
+    );
+    if (res.status === 201) {
+      return res.status;
+    } else {
+      console.log('error while adding');
+      return res.status;
+    }
+  }
+
   const editEventCategory = async (updatedEventCat) => {
     const res = await fetch(
       `${import.meta.env.VITE_BASE_URL}events-category/${updatedEventCat.id}`,
@@ -33,12 +87,12 @@ export const useEventCategory = defineStore("eventCategory", () => {
         method: "PUT",
         headers: {
           "content-type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("access_token")
         },
         body: JSON.stringify(updatedEventCat),
       }
     );
     if (res.status == 200) {
-      // alert(`${updatedEventCat.id} edit แล้ว`);
       resEditText.value = await res.json();
       console.log(resEditText.value);
       return getEventCategoryList();
@@ -61,6 +115,9 @@ export const useEventCategory = defineStore("eventCategory", () => {
   return {
     getEventCategoryList,
     editEventCategory,
+    getEventCategoryOwners,
+    removeEventCategoryOwners,
+    addEventCategoryOwners,
     resEditText,
     eventCategoryList,
     isNotUnique,

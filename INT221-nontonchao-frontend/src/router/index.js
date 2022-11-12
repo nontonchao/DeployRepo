@@ -18,7 +18,6 @@ import UserInfo from "../views/UserInfo.vue";
 import EditEvent from "../views/EditEvent.vue";
 import EditUser from "../views/EditUser.vue";
 
-
 const history = createWebHistory('/sy1/');
 const routes = [{
     path: "/",

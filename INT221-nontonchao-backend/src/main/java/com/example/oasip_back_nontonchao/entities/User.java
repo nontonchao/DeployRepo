@@ -1,5 +1,6 @@
 package com.example.oasip_back_nontonchao.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -49,6 +50,7 @@ public class User {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "onUpdated", nullable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Instant onUpdated;
+
 
     @NotNull(message = "password shouldn't be null or blank")
     @NotBlank(message = "password shouldn't be null or blank")
