@@ -51,6 +51,9 @@ public class EventService {
     public ResponseEntity createEvent(Event req) {
         Event event = req;
         if (CategoryRepository.existsById(req.getEventCategory().getId())) {
+            if(!CategoryRepository.existsByIdAndEventCategoryStatus(req.getEventCategory().getId(),Byte.parseByte("1"))) {
+                return new ResponseEntity("eventCategory closed!", HttpStatus.BAD_REQUEST);
+            }
             Instant dt = req.getEventStartTime().minusSeconds(86400);
             Instant dt2 = req.getEventStartTime().plusSeconds(86400);
             List<Event> compare = repository.findByEventCategoryIdAndEventStartTimeIsBetween(event.getEventCategory().getId(), dt, dt2, Sort.by(Sort.Direction.DESC, "eventStartTime"));
@@ -71,6 +74,7 @@ public class EventService {
                 s.start();
                 //
                 return ResponseEntity.status(HttpStatus.CREATED).body("Event Added! || event id: " + event.getId());
+
             }
             return new ResponseEntity("eventStartTime is overlapped!", HttpStatus.BAD_REQUEST);
         } else {
@@ -184,6 +188,7 @@ public class EventService {
 
     public ResponseEntity deleteEventFromIdAndEmail(String id, String email) {
         if (repository.findByIdAndBookingEmail(Integer.parseInt(id), email) != null) {
+            fileStorageService.deleteFile(repository.findById(Integer.parseInt(id)).get().getAttachment());
             repository.deleteById(Integer.parseInt(id));
             return ResponseEntity.ok().body("event " + id + " deleted!");
         } else {

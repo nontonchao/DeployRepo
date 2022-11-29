@@ -65,6 +65,7 @@ CREATE TABLE `event_category` (
   `eventCategoryName` varchar(45) NOT NULL,
   `eventCategoryDescription` varchar(500) DEFAULT NULL,
   `eventDuration` int NOT NULL,
+  `eventCategoryStatus` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`eventCategory_id`),
   UNIQUE KEY `eventCategoryName` (`eventCategoryName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -76,7 +77,7 @@ CREATE TABLE `event_category` (
 
 LOCK TABLES `event_category` WRITE;
 /*!40000 ALTER TABLE `event_category` DISABLE KEYS */;
-INSERT INTO `event_category` VALUES (1,'Project Management Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย project management clinic ในวิชา INT221 integrated project I ให้นักศึกษาเตรียมเอกสารที่เกี่ยวข้องเพื่อแสดงระหว่างขอคำปรึกษา',30),(2,'DevOps/Infra Clinic','Use this event category for DevOps/Infra clinic.',20),(3,'Database Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย database clinic ใน วิชา INT221 integrated project I',15),(4,'Client-side Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ใน วิชา INT221 integrated project I',30),(5,'Server-side Clinic','',30);
+INSERT INTO `event_category` VALUES (1,'Project Management Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย project management clinic ในวิชา INT221 integrated project I ให้นักศึกษาเตรียมเอกสารที่เกี่ยวข้องเพื่อแสดงระหว่างขอคำปรึกษา',30,0),(2,'DevOps/Infra Clinic','Use this event category for DevOps/Infra clinic.',20,0),(3,'Database Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย database clinic ใน วิชา INT221 integrated project I',15,1),(4,'Client-side Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ใน วิชา INT221 integrated project IX',30,1),(5,'Server-side Clinic','',30,1);
 /*!40000 ALTER TABLE `event_category` ENABLE KEYS */;
 UNLOCK TABLES;
 

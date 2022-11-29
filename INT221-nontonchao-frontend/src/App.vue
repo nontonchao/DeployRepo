@@ -13,11 +13,12 @@ import Footer from './components/footer.vue';
     <Footer />
   </div>
 
-  <link rel="stylesheet" href="/src/assets/fonts/font-awesome.min.css">
-  <link rel="stylesheet" href="/src/assets/css/Navbar---Apple-1.css">
-  <link rel="stylesheet" href="/src/assets/css/Navbar---Apple.css">
-  <link rel="stylesheet" href="/src/assets/css/Navbar-Right-Links-Dark.css">
-  <link rel="stylesheet" href="/src/assets/css/styles.css">
+
+  <link rel="stylesheet" href="/sy1/assets/fonts/font-awesome.min.css">
+  <link rel="stylesheet" href="/sy1/assets/css/Navbar---Apple-1.css">
+  <link rel="stylesheet" href="/sy1/assets/css/Navbar---Apple.css">
+  <link rel="stylesheet" href="/sy1/assets/css/Navbar-Right-Links-Dark.css">
+  <link rel="stylesheet" href="/sy1/assets/css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300&display=swap" rel="stylesheet">
