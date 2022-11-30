@@ -1,5 +1,6 @@
 package com.example.oasip_back_nontonchao.services;
 
+import com.example.oasip_back_nontonchao.dtos.EventDateDTO;
 import com.example.oasip_back_nontonchao.dtos.EventGet;
 import com.example.oasip_back_nontonchao.dtos.EventUpdate;
 import com.example.oasip_back_nontonchao.entities.Event;
@@ -51,7 +52,7 @@ public class EventService {
     public ResponseEntity createEvent(Event req) {
         Event event = req;
         if (CategoryRepository.existsById(req.getEventCategory().getId())) {
-            if(!CategoryRepository.existsByIdAndEventCategoryStatus(req.getEventCategory().getId(),Byte.parseByte("1"))) {
+            if (!CategoryRepository.existsByIdAndEventCategoryStatus(req.getEventCategory().getId(), Byte.parseByte("1"))) {
                 return new ResponseEntity("eventCategory closed!", HttpStatus.BAD_REQUEST);
             }
             Instant dt = req.getEventStartTime().minusSeconds(86400);
@@ -101,17 +102,13 @@ public class EventService {
             } else if ((update.getAttachment() != null) && (!update.getAttachment().equals(event.getAttachment()))) { // edit file
                 fileStorageService.deleteFile(event.getAttachment());
                 toUpdate.setAttachment(update.getAttachment());
-            } else {
-
             }
             //
 
             repository.saveAndFlush(event);
             return ResponseEntity.ok("Event Edited! || event id: " + event.getId());
         }
-        return new
-
-                ResponseEntity("eventStartTime is overlapped!", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("eventStartTime is overlapped!", HttpStatus.BAD_REQUEST);
 
     }
 
@@ -125,7 +122,6 @@ public class EventService {
         List<Event> compare = repository.findByEventCategoryIdAndEventStartTimeIsBetweenAndIdIsNot(event.getEventCategory().getId(), dt, dt2, id, Sort.by(Sort.Direction.DESC, "eventStartTime"));
         if (checkOverlap(compare, toUpdate)) {
             if (event.getBookingEmail().equals(email)) {
-
                 // file update
                 if (update.getAttachment() == null && event.getAttachment() != null) { // delete
                     fileStorageService.deleteFile(event.getAttachment());
@@ -135,26 +131,19 @@ public class EventService {
                 } else if ((update.getAttachment() != null) && (!update.getAttachment().equals(event.getAttachment()))) { // edit file
                     fileStorageService.deleteFile(event.getAttachment());
                     toUpdate.setAttachment(update.getAttachment());
-                } else {
-
                 }
                 //
-
                 repository.saveAndFlush(event);
                 return ResponseEntity.ok("Event Edited! || event id: " + event.getId());
             } else {
                 return new ResponseEntity("this event is not yours", HttpStatus.FORBIDDEN);
             }
         }
-        return new
-
-                ResponseEntity("eventStartTime is overlapped!", HttpStatus.BAD_REQUEST);
-
+        return new ResponseEntity("eventStartTime is overlapped!", HttpStatus.BAD_REQUEST);
     }
 
-    public List<EventGet> getEventDateDTO(String date, Integer eventCategoryId) {
-        System.out.println(date);
-        return listMapper.mapList(repository.findAllByEventStartTime(date, eventCategoryId), EventGet.class, modelMapper);
+    public List<EventDateDTO> getEventDateDTO(String date, Integer eventCategoryId) {
+        return listMapper.mapList(repository.findAllByEventStartTime(date, eventCategoryId), EventDateDTO.class, modelMapper);
     }
 
     public List<EventGet> getEventDTO() {
@@ -162,7 +151,6 @@ public class EventService {
     }
 
     public List<EventGet> getEventByEmailDTO(String email) {
-
         return listMapper.mapList(repository.findByBookingEmail(Sort.by(Sort.Direction.DESC, "eventStartTime"), email), EventGet.class, modelMapper);
     }
 

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useEvents } from "../stores/events.js";
 import { useRouter } from "vue-router";
 const router = useRouter();
@@ -118,6 +118,9 @@ const sizeCheck = () => {
     //alert('file size should be less than 10MB!');
   } else {
     fileName.value = document.getElementById("fileupload").files[0].name;
+    console.log(props.eventz.attachment);
+    console.log(document.getElementById("fileupload").files[0].name);
+    console.log(fileName.value);
   }
   //uploadFile();
 };
@@ -173,6 +176,11 @@ const clearFile = () => {
   props.eventz.attachment = "";
   fileName.value = "";
 };
+
+onBeforeMount(() => {
+  console.log(props.eventz.attachment);
+  console.log(fileName.value);
+})
 </script>
 <template>
   <div>
@@ -366,15 +374,15 @@ const clearFile = () => {
                   "
                 >
                   <div div class="col">
-                    <p>
+                    <!-- <p>
                       {{
                         fileName.includes(",")
                           ? fileName.split(",")[1] //work in local well
                           : fileName
                       }}
-                    </p>
-                    <!-- <p v-if="checkFileName()">{{eventz.attachment.split(",")[1]}}</p>
-                    <p v-else>{{fileName}}</p> -->
+                    </p> -->
+                    <p v-if="fileName">{{fileName}}</p>
+                    <p v-else>{{eventz.attachment.split(',')[1]}}</p>
                     <!-- <p>{{ props.eventz.attachment.split(',')[1] }}</p> -->
                   </div>
                   <div div class="col" @click="deleteFile()">

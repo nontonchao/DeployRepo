@@ -1,5 +1,6 @@
 package com.example.oasip_back_nontonchao.controllers;
 
+import com.example.oasip_back_nontonchao.dtos.EventDateDTO;
 import com.example.oasip_back_nontonchao.dtos.EventGet;
 import com.example.oasip_back_nontonchao.dtos.EventUpdate;
 import com.example.oasip_back_nontonchao.entities.Event;
@@ -30,6 +31,7 @@ public class EventController {
     private JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("")
+    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
     public ResponseEntity createEvent(@Valid @RequestBody Event req, @RequestHeader HttpHeaders headers) {
         String token = null;
         try {
@@ -85,7 +87,7 @@ public class EventController {
     }
 
     @GetMapping("/date/{date}/{eventCategoryId}")
-    public List<EventGet> getAllEventByDate(@PathVariable String date, @PathVariable Integer eventCategoryId) {
+    public List<EventDateDTO> getAllEventByDate(@PathVariable String date, @PathVariable Integer eventCategoryId) {
         return service.getEventDateDTO(date, eventCategoryId);
     }
 
