@@ -207,7 +207,7 @@ onMounted(async () => {
         </div>
         <div v-else>
           <div v-if="eventList.length <= 0">
-            <div v-if="loginStore.role !== 'ROLE_LECTURER'" class="text-center p-4 p-lg-5">
+            <div v-if="loginStore.roles !== 'ROLE_LECTURER'" class="text-center p-4 p-lg-5">
               <h1 class=" fw-bold mb-4 display-5" style="margin: 125px">
                 No Scheduled Events
               </h1>
@@ -236,7 +236,7 @@ onMounted(async () => {
               <figure style="margin: 0px; padding: 45px">
                 <blockquote class="blockquote">
                   <p class="mb-0 display-6">
-                    คลินิกของคุณยังใครจองนัดหมายเลย!
+                    คลินิกของคุณยังไม่มีใครจองนัดหมายเลย!
                   </p>
                 </blockquote>
                 <figcaption class="text-muted" style="font-size: 20px">
