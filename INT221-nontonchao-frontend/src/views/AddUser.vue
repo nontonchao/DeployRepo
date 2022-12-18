@@ -2,7 +2,9 @@
 import { ref } from "vue";
 import { useUsers } from "../stores/users.js";
 import { useRouter } from "vue-router";
+import { useLogin } from "../stores/login";
 const userStore = useUsers();
+const userLogin = useLogin();
 const router = useRouter();
 const firstname = ref("");
 const lastname = ref("");
@@ -17,7 +19,7 @@ const register = async () => {
   await userStore.userRegister({
     name: firstname.value.trim() + " " + lastname.value.trim(),
     email: email_.value.trim(),
-    role: role_.value == "นักศึกษา" ? "student" : "lecturer",
+    role: role_.value == "นักศึกษา" ? "student" : role_.value == "แอดมิน" ? "admin" : "lecturer",
     password: passwordX.value,
   });
   console.log(await `status ${userStore.resStatus}`);
@@ -71,18 +73,18 @@ const validatePass = () => {
             <a class="navbar-brand d-flex align-items-center" href="#"><span class="fw-bold">OASIP ID</span></a>
             <div class="collapse navbar-collapse" id="navcol-2">
               <ul class="navbar-nav ms-auto">
-                <li class="nav-item px-4">
+                <!-- <li v-show="useLogin.roles!=='ROLE_ADMIN'" class="nav-item px-4">
                   <router-link class="nav-link" :to="{
                     name: 'Login',
                   }">
                     ลงชื่อเข้าใช้
                   </router-link>
-                </li>
+                </li> -->
                 <li class="nav-item">
                   <router-link class="nav-link" :to="{
                     name: 'AddUser',
                   }">
-                    สร้าง OASIP 
+                    สร้าง OASIP
                   </router-link>
                 </li>
               </ul>
@@ -122,6 +124,7 @@ const validatePass = () => {
                         <select v-model="role_" class="form-select form-select mt-1">
                           <option selected>นักศึกษา</option>
                           <option>อาจารย์</option>
+                          <option>แอดมิน</option>
                         </select>
                       </div>
                       <div>
@@ -245,8 +248,8 @@ const validatePass = () => {
         <div class="modal-footer justify-content-center">
           <button data-bs-dismiss="modal" type="button" class="btn btn-primary rounded-pill" data-dismiss="modal"
             data-bs-toggle="modal" data-bs-target="#myModal" @change="validatePass()" @click="
-              register();
-              router.push('/Login');
+  register();
+router.push('/Login');
             ">
             ยืนยัน
           </button>
@@ -296,7 +299,7 @@ const validatePass = () => {
       </div>
 
       <div class="modal-content" v-show="
-        !email_ == 0 && validateEmail(email_) && userStore.resStatus == 200
+  !email_ == 0 && validateEmail(email_) && userStore.resStatus == 200
       ">
         <div class="modal-header flex-column">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
