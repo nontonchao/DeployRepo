@@ -327,15 +327,15 @@ d_tmp = new Date(x.split('-')[0].trim()).toISOString();
                   (fileName != null && fileName != '')
                 ">
                   <div div class="col">
-                    <!-- <p>
+                    <p>
                       {{
                           fileName.includes(",")
                             ? fileName.split(",")[1] //work in local well
                             : fileName
                       }}
-                    </p> -->
-                    <p v-if="fileName">{{fileName}}</p>
-                    <p v-else>{{eventz.attachment.split(',')[1]}}</p>
+                    </p>
+                    <!-- <p v-if="fileName">{{fileName}}</p>
+                    <p v-else>{{eventz.attachment.split(',')[1]}}</p> -->
                     <!-- <p>{{ props.eventz.attachment.split(',')[1] }}</p> -->
                   </div>
                   <div div class="col" @click="deleteFile()">

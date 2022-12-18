@@ -31,9 +31,8 @@ const ValidateEmail = (mail) => {
       : (emailErr.value = 2);
 };
 const onEnter = () => {
-  document.getElementById("loginBtn").click()
-}
-
+  document.getElementById("loginBtn").click();
+};
 </script>
 
 <template>
@@ -43,24 +42,6 @@ const onEnter = () => {
         <nav class="navbar navbar-light navbar-expand-md py-3" style="margin: 2px">
           <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#"><span class="fw-bold">OASIP ID</span></a>
-            <div class="collapse navbar-collapse" id="navcol-2">
-              <ul class="navbar-nav ms-auto">
-                <li class="nav-item px-4">
-                  <router-link class="nav-link" :to="{
-                    name: 'Login',
-                  }">
-                    ลงชื่อเข้าใช้
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link class="nav-link" :to="{
-                    name: 'AddUser',
-                  }">
-                    สร้าง OASIP ID ของคุณ
-                  </router-link>
-                </li>
-              </ul>
-            </div>
           </div>
         </nav>
       </section>
@@ -103,7 +84,7 @@ const onEnter = () => {
                         <input v-model="password" v-on:keyup.enter="onEnter()" class="form-control" type="password"
                           id="password" name="password" placeholder="รหัสผ่าน" />
                       </div>
-                      <div class="text-center ">
+                      <div class="text-center mb-4">
                         <button @click="login(), (loginStore.resToken = 0)" id="loginBtn"
                           class="btn btn-danger btn-sm mx-4" type="button" style="--bs-btn-border-radius: 1rem"
                           data-bs-toggle="modal" data-bs-target="#loginModal" :disabled="
@@ -115,7 +96,8 @@ const onEnter = () => {
                         </button>
                       </div>
                       <div class="text-center ee-ee">
-                        <a @click="loginStore.oauth_login()">
+                        <a @click="loginStore.oauth_login(); loginStore.resToken = 0" data-bs-toggle="modal"
+                          data-bs-target="#loginModal">
                           ลงชื่อเข้าใช้ด้วยบัญชี
                           <svg width="100px" height="100px" viewBox="0 -406.53 1033.746 1033.746"
                             xmlns="http://www.w3.org/2000/svg">
@@ -130,13 +112,6 @@ const onEnter = () => {
                         </a>
                       </div>
                     </div>
-                  </div>
-                  <div class="text-center">
-                    <router-link :to="{
-                      name: 'AddUser',
-                    }">
-                      ไม่มี OASIP ID ใช่ไหม? สร้างของคุณเองตอนนี้ >
-                    </router-link>
                   </div>
                 </div>
               </div>
@@ -187,7 +162,9 @@ router.push(`/`);
               </svg>
             </div>
 
-            <h4 class="modal-title w-100">สวัสดี {{ name.split(" ")[0] }}</h4>
+            <h4 class="modal-title w-100">สวัสดี {{ loginStore.isMs == true ? loginStore.name.split(" ")[0] :
+                name.split(" ")[0]
+            }}</h4>
           </div>
           <div class="modal-body">
             <p>OASIP by NTC ยินดีให้บริการ<br /></p>
