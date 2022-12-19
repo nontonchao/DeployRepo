@@ -39,6 +39,8 @@ services:
   restart: on-failure
   depends_on:
    - database
+  volumes:
+   - "~/files:/files"
   ports:
    - "8080:8080"
   environment:
