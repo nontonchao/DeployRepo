@@ -77,7 +77,7 @@ CREATE TABLE `event_category` (
 
 LOCK TABLES `event_category` WRITE;
 /*!40000 ALTER TABLE `event_category` DISABLE KEYS */;
-INSERT INTO `event_category` VALUES (1,'Project Management Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย project management clinic ในวิชา INT221 integrated project I ให้นักศึกษาเตรียมเอกสารที่เกี่ยวข้องเพื่อแสดงระหว่างขอคำปรึกษา',30,0),(2,'DevOps/Infra Clinic','Use this event category for DevOps/Infra clinic.',20,0),(3,'Database Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย database clinic ใน วิชา INT221 integrated project I',15,1),(4,'Client-side Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ใน วิชา INT221 integrated project IX',30,1),(5,'Server-side Clinic','',30,1);
+INSERT INTO `event_category` VALUES (1,'Project Management Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย project management clinic ในวิชา INT221 integrated project I ให้นักศึกษาเตรียมเอกสารที่เกี่ยวข้องเพื่อแสดงระหว่างขอคำปรึกษา',30,0),(2,'DevOps/Infra Clinic','Use this event category for DevOps/Infra clinic.',20,1),(3,'Database Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย database clinic ใน วิชา INT221 integrated project I',15,1),(4,'Client-side Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ใน วิชา INT221 integrated project IX',30,1),(5,'Server-side Clinic','',30,1);
 /*!40000 ALTER TABLE `event_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,7 +145,7 @@ INSERT INTO `users` VALUES (1,'OASIP ADMIN','oasip.admin@kmutt.ac.th','admin','2
 (3,'Pichet Limvachiranan','pichet.limv@kmutt.ac.th','lecturer','2022-08-08 15:00:01+07:00','2022-08-08 15:00:01+07:00','$argon2id$v=19$m=4096,t=3,p=1$46EB43gQ46Z1/EmdqxtKNA$7m6cWGO2iDlFl/ETDYuYf+ArnSjRnsNwXLIP18DTYQY'),
 (4,'Umaporn Supasitthimethee','umaporn.sup@kmutt.ac.th','lecturer','2022-08-08 15:00:02+07:00','2022-08-08 15:00:02+07:00','$argon2id$v=19$m=4096,t=3,p=1$1Z2UK1zC76FIQeLH54GVAQ$qfXcHF31LnuWpt37QAcWyNp8PdbOQ+jjaV1xWXixS0M'),
 (5,'Siam Yamsaengsung','siam.yam@kmutt.ac.th','lecturer','2022-08-08 15:00:03+07:00','2022-08-08 15:00:03+07:00','$argon2id$v=19$m=4096,t=3,p=1$C4pPaNWKTnZQX2mPs14jlg$rQ5W5NYKqGOu1B4GkUWq8cFbcg2peFWGjpUMr9Nkm8g'),
-(6,'Sunisa Sathapornvajan','sunisa.sat@kmutt.ac.th','lecturer','2022-08-08 15:00:04+07:00','2022-08-08 15:00:04+07:00','$argon2id$v=19$m=4096,t=3,p=1$i6znt0o+PWIbqyanPKpkLg$yLVOclVOV+z4RrMsnpyp87KUS/tZPid8KNNne8DARKI');
+(6,'Sunisa Sathapornvajan','sunisa.sat@kmutt.ac.th','lecturer','2022-08-08 15:00:04+07:00','2022-08-08 15:00:04+07:00','$argon2id$v=19$m=4096,t=3,p=1$5burUfX/JYgKUp4G+JS9kA$/1GveyF7t2ByQAFVPLiclvXTcZVDErRlQo5ULPVz6dg');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
