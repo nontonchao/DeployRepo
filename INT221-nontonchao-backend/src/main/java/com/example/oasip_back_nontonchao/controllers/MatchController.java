@@ -7,7 +7,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.oasip_back_nontonchao.entities.JwtRequest;
-import com.example.oasip_back_nontonchao.entities.User;
 import com.example.oasip_back_nontonchao.repositories.UserRepository;
 import com.example.oasip_back_nontonchao.services.JwtUserDetailsService;
 import com.example.oasip_back_nontonchao.utils.JwtTokenUtil;
@@ -23,7 +22,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,8 +47,6 @@ public class MatchController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     @PostMapping("")
     public ResponseEntity check(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
@@ -74,15 +70,6 @@ public class MatchController {
             extract = payload.getString("roles").replaceAll("[^a-zA-Z]+", "");
         } catch (JSONException ex) {
             extract = "GUEST";
-        }
-        User c = userRepository.findUserByEmail(payload.getString("preferred_username"));
-
-        if( c ==  null && extract != "GUEST"){
-            userRepository.createUser(payload.getString("name"),payload.getString("preferred_username"),extract.toLowerCase(),passwordEncoder.encode(getAlphaNumericString(40)));
-        }else{
-            if(c.getRole() != extract){
-                userRepository.updateUser(c.getId(),payload.getString("name"),extract);
-            }
         }
 
         final String name = payload.getString("name");
@@ -146,22 +133,5 @@ public class MatchController {
 
     private static String decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
-    }
-
-    static String getAlphaNumericString(int n)
-    {
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "0123456789"
-                + "abcdefghijklmnopqrstuvxyz";
-        StringBuilder sb = new StringBuilder(n);
-        for (int i = 0; i < n; i++) {
-            int index
-                    = (int)(AlphaNumericString.length()
-                    * Math.random());
-
-            sb.append(AlphaNumericString
-                    .charAt(index));
-        }
-        return sb.toString();
     }
 }
