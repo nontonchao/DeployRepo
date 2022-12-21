@@ -30,7 +30,7 @@ services:
   environment:
    MYSQL_ROOT_PASSWORD: "1111"
   ports:
-   - "8080:8080"
+   - "3306:3306"
   networks:
    - oasip-nw
 
